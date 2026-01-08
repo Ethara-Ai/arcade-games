@@ -1,8 +1,10 @@
-import { GRID_SIZE, WINNING_TILE, GAME_1024_STATES } from '../constants/game1024Constants';
+import { GAME_1024_GRID_SIZE as GRID_SIZE, WINNING_TILE, GAME_1024_STATES } from "../constants";
 
 // Create empty grid
 export const createEmptyGrid = () => {
-  return Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0));
+  return Array(GRID_SIZE)
+    .fill(null)
+    .map(() => Array(GRID_SIZE).fill(0));
 };
 
 // Get empty cells
@@ -26,7 +28,7 @@ export const addRandomTile = (grid) => {
   const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
   const newValue = Math.random() < 0.9 ? 2 : 4;
 
-  const newGrid = grid.map(row => [...row]);
+  const newGrid = grid.map((row) => [...row]);
   newGrid[randomCell.row][randomCell.col] = newValue;
   return newGrid;
 };
@@ -42,7 +44,7 @@ export const initializeGrid = () => {
 // Slide and merge a single row to the left
 const slideRowLeft = (row) => {
   // Remove zeros
-  let newRow = row.filter(val => val !== 0);
+  let newRow = row.filter((val) => val !== 0);
   let score = 0;
 
   // Merge adjacent equal values
@@ -75,24 +77,24 @@ const rotateGrid = (grid) => {
 
 // Move tiles in a direction
 export const move = (grid, direction) => {
-  let workingGrid = grid.map(row => [...row]);
+  let workingGrid = grid.map((row) => [...row]);
   let totalScore = 0;
   let rotations = 0;
 
   // Rotate grid so we always slide left
   switch (direction) {
-    case 'UP':
-      rotations = 3;  // 270° clockwise = 90° counter-clockwise
+    case "UP":
+      rotations = 3; // 270° clockwise = 90° counter-clockwise
       break;
-    case 'RIGHT':
-      rotations = 2;  // 180°
+    case "RIGHT":
+      rotations = 2; // 180°
       break;
-    case 'DOWN':
-      rotations = 1;  // 90° clockwise
+    case "DOWN":
+      rotations = 1; // 90° clockwise
       break;
-    case 'LEFT':
+    case "LEFT":
     default:
-      rotations = 0;  // No rotation needed
+      rotations = 0; // No rotation needed
   }
 
   // Rotate to align for left slide

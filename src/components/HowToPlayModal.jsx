@@ -1,5 +1,4 @@
-import React from 'react';
-import { IoClose, IoGameController } from 'react-icons/io5';
+import { IoClose, IoGameController } from "react-icons/io5";
 
 /**
  * How to Play Modal - Reusable component for all games
@@ -8,7 +7,7 @@ const HowToPlayModal = ({
   isOpen,
   onClose,
   gameName,
-  accentColor = 'cyan',
+  accentColor = "cyan",
   instructions = [],
   controls = [],
   tips = [],
@@ -17,39 +16,38 @@ const HowToPlayModal = ({
 
   const colorConfig = {
     cyan: {
-      titleColor: 'text-cyan-400',
-      accent: 'text-cyan-400',
-      bgAccent: 'bg-cyan-500/10',
-      borderAccent: 'border-cyan-500/20',
-      buttonGradient: 'from-cyan-400 to-blue-500',
-      buttonShadow: 'shadow-cyan-400/30',
-      glow: 'bg-cyan-500/20',
+      titleColor: "text-cyan-400",
+      accent: "text-cyan-400",
+      bgAccent: "bg-cyan-500/10",
+      borderAccent: "border-cyan-500/20",
+      buttonGradient: "from-cyan-400 to-blue-500",
+      buttonShadow: "shadow-cyan-400/30",
+      glow: "bg-cyan-500/20",
     },
     green: {
-      titleColor: 'text-green-400',
-      accent: 'text-green-400',
-      bgAccent: 'bg-green-500/10',
-      borderAccent: 'border-green-500/20',
-      buttonGradient: 'from-green-400 to-emerald-500',
-      buttonShadow: 'shadow-green-400/30',
-      glow: 'bg-green-500/20',
+      titleColor: "text-green-400",
+      accent: "text-green-400",
+      bgAccent: "bg-green-500/10",
+      borderAccent: "border-green-500/20",
+      buttonGradient: "from-green-400 to-emerald-500",
+      buttonShadow: "shadow-green-400/30",
+      glow: "bg-green-500/20",
     },
   };
 
   const colors = colorConfig[accentColor] || colorConfig.cyan;
 
   return (
-    <div 
-      className="fixed inset-0 glass-overlay flex items-center justify-center z-[100] p-3 sm:p-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 glass-overlay flex items-center justify-center z-[100] p-3 sm:p-4" onClick={onClose}>
       {/* Background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 ${colors.glow} rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px]`}></div>
+        <div
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 ${colors.glow} rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px]`}
+        ></div>
       </div>
 
       {/* Glass panel */}
-      <div 
+      <div
         className="relative glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 max-w-md w-full max-h-[90vh] sm:max-h-[85vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
@@ -67,11 +65,13 @@ const HowToPlayModal = ({
         <div className="relative z-10">
           {/* Header */}
           <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl ${colors.bgAccent} flex items-center justify-center border ${colors.borderAccent}`}>
+            <div
+              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl ${colors.bgAccent} flex items-center justify-center border ${colors.borderAccent}`}
+            >
               <IoGameController className={`text-xl sm:text-2xl ${colors.accent}`} />
             </div>
             <div>
-              <h2 
+              <h2
                 className={`text-xl sm:text-2xl font-black ${colors.titleColor}`}
                 style={{ fontFamily: '"Raleway", sans-serif' }}
               >
@@ -106,12 +106,14 @@ const HowToPlayModal = ({
               </h3>
               <div className="grid gap-1.5 sm:gap-2">
                 {controls.map((control, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className={`flex items-center justify-between glass-stat rounded-md sm:rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 ${colors.borderAccent}`}
                   >
                     <span className="text-gray-400 text-xs sm:text-sm">{control.action}</span>
-                    <kbd className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded ${colors.bgAccent} ${colors.accent} text-[10px] sm:text-xs font-mono border ${colors.borderAccent}`}>
+                    <kbd
+                      className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded ${colors.bgAccent} ${colors.accent} text-[10px] sm:text-xs font-mono border ${colors.borderAccent}`}
+                    >
                       {control.key}
                     </kbd>
                   </div>

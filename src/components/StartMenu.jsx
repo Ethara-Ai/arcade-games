@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { IoHelpCircle, IoArrowBack } from 'react-icons/io5';
-import { HowToPlayModal } from '../shared';
+import { useState, useEffect } from "react";
+import { IoHelpCircle, IoArrowBack } from "react-icons/io5";
+import { HowToPlayModal } from "./";
 
 const BRICKRUSH_INSTRUCTIONS = [
-  'Break all the bricks to complete each level',
-  'Collect power-ups that fall from broken bricks',
-  'Don\'t let the ball fall below your paddle',
-  'Grey steel bricks cannot be destroyed but reflect the ball',
+  "Break all the bricks to complete each level",
+  "Collect power-ups that fall from broken bricks",
+  "Don't let the ball fall below your paddle",
+  "Grey steel bricks cannot be destroyed but reflect the ball",
 ];
 
 const BRICKRUSH_CONTROLS = [
-  { key: '← →', action: 'Move paddle' },
-  { key: 'Mouse', action: 'Move paddle (follow cursor)' },
-  { key: 'Space / Click', action: 'Launch ball' },
-  { key: 'P / Esc', action: 'Pause game' },
+  { key: "← →", action: "Move paddle" },
+  { key: "Mouse", action: "Move paddle (follow cursor)" },
+  { key: "Space / Click", action: "Launch ball" },
+  { key: "P / Esc", action: "Pause game" },
 ];
 
 const BRICKRUSH_TIPS = [
-  'Aim for the corners to clear more bricks',
-  'Multi-ball power-ups help clear levels faster',
-  'The ball speeds up as you progress',
+  "Aim for the corners to clear more bricks",
+  "Multi-ball power-ups help clear levels faster",
+  "The ball speeds up as you progress",
 ];
 
 const StartMenu = ({ onStart, onBack }) => {
@@ -28,12 +28,12 @@ const StartMenu = ({ onStart, onBack }) => {
   // Enter key to start game
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Enter' && !showHelp) {
+      if (e.key === "Enter" && !showHelp) {
         onStart();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onStart, showHelp]);
 
   return (

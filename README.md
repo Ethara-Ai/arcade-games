@@ -346,4 +346,3 @@ Contributions are welcome. Please read the [CONTRIBUTING.md](CONTRIBUTING.md) fi
 - Inspired by classic arcade games
 - Built with modern web technologies
 - Designed for accessibility and responsiveness
->>>>>>> b391420 (update the code)

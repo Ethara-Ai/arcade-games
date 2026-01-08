@@ -1,5 +1,3 @@
-# Project Prompt
-
 I need you to act as a Senior React Developer to help me build an Arcade Games Collection featuring three classic games: Brickrush (a breakout-style brick breaker), 1024 (a sliding tile puzzle), and Snake. I am looking for a production-ready solution that follows a strict component-based architecture with multiple reusable components rather than putting everything into a single file.
 
 First, please break the interface down into logical, reusable components such as a game selector screen, individual game components, menu overlays, control handlers, and shared UI elements. Organize them as if they were in a real project folder structure with separate directories for components, constants, hooks, and utilities. For the styling, use Tailwind CSS to ensure the application is responsive and modern, with support for desktop, tablet, and mobile devices.

@@ -1,5 +1,4 @@
-import React from 'react';
-import { IoCheckmarkCircle } from 'react-icons/io5';
+import { IoCheckmarkCircle } from "react-icons/io5";
 
 const LevelCompleteMenu = ({ score, level, onNextLevel, onMainMenu }) => {
   return (
@@ -13,7 +12,7 @@ const LevelCompleteMenu = ({ score, level, onNextLevel, onMainMenu }) => {
       <div className="relative z-10 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-md w-full mx-3 sm:mx-4">
         {/* Inner glass shine */}
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/[0.02] rounded-2xl sm:rounded-3xl pointer-events-none"></div>
-        
+
         <div className="relative z-10 flex flex-col items-center justify-center gap-3 sm:gap-4">
           {/* Icon */}
           <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/40">
@@ -25,7 +24,7 @@ const LevelCompleteMenu = ({ score, level, onNextLevel, onMainMenu }) => {
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-green-400 text-center"
             style={{
               fontFamily: '"Raleway", sans-serif',
-              textShadow: '0 0 30px rgba(74, 222, 128, 0.5)',
+              textShadow: "0 0 30px rgba(74, 222, 128, 0.5)",
             }}
           >
             Level Complete!
@@ -37,7 +36,7 @@ const LevelCompleteMenu = ({ score, level, onNextLevel, onMainMenu }) => {
               <div className="text-[9px] sm:text-[10px] text-green-400 font-semibold uppercase tracking-wider">
                 Level
               </div>
-              <div className="text-xl sm:text-2xl font-bold text-white">{level || '—'}</div>
+              <div className="text-xl sm:text-2xl font-bold text-white">{level || "—"}</div>
             </div>
             <div className="glass-stat border-cyan-500/20 rounded-lg sm:rounded-xl px-4 sm:px-6 py-2 sm:py-3 text-center min-w-[90px] sm:min-w-[110px]">
               <div className="text-[9px] sm:text-[10px] text-cyan-400 font-semibold uppercase tracking-wider">

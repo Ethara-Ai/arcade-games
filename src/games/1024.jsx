@@ -1,43 +1,42 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome } from 'react-icons/io5';
-import { GRID_SIZE, KEY_MAPPINGS, GAME_1024_STATES, WINNING_TILE } from '../../constants/game1024Constants';
-import { HowToPlayModal } from '../shared';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome } from "react-icons/io5";
 import {
-  initializeGrid,
-  move,
-  addRandomTile,
-  getGameState,
-  getHighestTile,
-} from '../../utils/game1024Logic';
-import { STORAGE_KEYS, debugLog } from '../../config';
-import Tile from './Tile';
+  GAME_1024_GRID_SIZE as GRID_SIZE,
+  GAME_1024_KEY_MAPPINGS as KEY_MAPPINGS,
+  GAME_1024_STATES,
+  WINNING_TILE,
+} from "../constants";
+import { HowToPlayModal } from "../components";
+import { initializeGrid, move, addRandomTile, getGameState, getHighestTile } from "../utils/game1024Logic";
+import { STORAGE_KEYS, debugLog } from "../config";
+import Tile from "./Tile";
 
 const GAME_1024_INSTRUCTIONS = [
-  'Slide tiles in any direction using arrow keys or swipe',
-  'When two tiles with the same number collide, they merge',
-  'Create a tile with the number 1024 to win',
-  'The game ends when no more moves are possible',
+  "Slide tiles in any direction using arrow keys or swipe",
+  "When two tiles with the same number collide, they merge",
+  "Create a tile with the number 1024 to win",
+  "The game ends when no more moves are possible",
 ];
 
 const GAME_1024_CONTROLS = [
-  { key: '↑ ↓ ← →', action: 'Move tiles' },
-  { key: 'W A S D', action: 'Move tiles (alternative)' },
-  { key: 'Swipe', action: 'Move tiles (touch)' },
+  { key: "↑ ↓ ← →", action: "Move tiles" },
+  { key: "W A S D", action: "Move tiles (alternative)" },
+  { key: "Swipe", action: "Move tiles (touch)" },
 ];
 
 const GAME_1024_TIPS = [
-  'Keep your highest tile in a corner',
-  'Build a chain of decreasing numbers',
-  'Plan several moves ahead',
-  'Don\'t chase small merges randomly',
+  "Keep your highest tile in a corner",
+  "Build a chain of decreasing numbers",
+  "Plan several moves ahead",
+  "Don't chase small merges randomly",
 ];
 
 const Game1024 = ({ onBack }) => {
   const [grid, setGrid] = useState(() => initializeGrid());
   const [score, setScore] = useState(0);
-  const [bestScore, setBestScore] = useState(() => {
+  const [bestScore] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.GAME_1024_BEST_SCORE);
-    debugLog('Loaded 1024 best score:', saved);
+    debugLog("Loaded 1024 best score:", saved);
     return saved ? parseInt(saved, 10) : 0;
   });
   const [gameState, setGameState] = useState(GAME_1024_STATES.START);
@@ -48,12 +47,14 @@ const Game1024 = ({ onBack }) => {
   const boardRef = useRef(null);
   const touchStartRef = useRef({ x: 0, y: 0 });
 
-  // Save best score
+  // Update best score when score changes (computed value, not in effect)
+  const effectiveBestScore = score > bestScore ? score : bestScore;
+
+  // Save best score to localStorage when it changes
   useEffect(() => {
     if (score > bestScore) {
-      setBestScore(score);
       localStorage.setItem(STORAGE_KEYS.GAME_1024_BEST_SCORE, score.toString());
-      debugLog('Saved 1024 best score:', score);
+      debugLog("Saved 1024 best score:", score);
     }
   }, [score, bestScore]);
 
@@ -63,35 +64,31 @@ const Game1024 = ({ onBack }) => {
   }, []);
 
   // Handle move
-  const handleMove = useCallback((direction) => {
-    if (gameState === GAME_1024_STATES.START) return;
-    if (gameState === GAME_1024_STATES.PAUSED) return;
-    if (gameState === GAME_1024_STATES.GAME_OVER || isAnimating) return;
-    if (gameState === GAME_1024_STATES.WON && !hasWonBefore) return;
+  const handleMove = useCallback(
+    (direction) => {
+      if (gameState === GAME_1024_STATES.START) return;
+      if (gameState === GAME_1024_STATES.PAUSED) return;
+      if (gameState === GAME_1024_STATES.GAME_OVER || isAnimating) return;
+      if (gameState === GAME_1024_STATES.WON && !hasWonBefore) return;
 
-    const result = move(grid, direction);
+      const result = move(grid, direction);
 
-    if (result.moved) {
-      setIsAnimating(true);
+      if (result.moved) {
+        setIsAnimating(true);
 
-      setTimeout(() => {
-        const newGrid = addRandomTile(result.grid);
-        setGrid(newGrid);
-        setScore(prev => prev + result.score);
+        setTimeout(() => {
+          const newGrid = addRandomTile(result.grid);
+          setGrid(newGrid);
+          setScore((prev) => prev + result.score);
 
-        const newState = getGameState(newGrid, hasWonBefore);
-        setGameState(newState);
-        setIsAnimating(false);
-      }, 100);
-    }
-  }, [grid, gameState, hasWonBefore, isAnimating]);
-
-  // Handle pause
-  const handlePause = useCallback(() => {
-    if (gameState === GAME_1024_STATES.PLAYING) {
-      setGameState(GAME_1024_STATES.PAUSED);
-    }
-  }, [gameState]);
+          const newState = getGameState(newGrid, hasWonBefore);
+          setGameState(newState);
+          setIsAnimating(false);
+        }, 100);
+      }
+    },
+    [grid, gameState, hasWonBefore, isAnimating],
+  );
 
   // Handle resume
   const handleResume = useCallback(() => {
@@ -113,14 +110,14 @@ const Game1024 = ({ onBack }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Enter key to start game from start menu
-      if (e.key === 'Enter' && gameState === GAME_1024_STATES.START && !showHelp) {
+      if (e.key === "Enter" && gameState === GAME_1024_STATES.START && !showHelp) {
         e.preventDefault();
         setGameState(GAME_1024_STATES.PLAYING);
         return;
       }
 
       // Handle pause with P or Escape
-      if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+      if (e.key === "p" || e.key === "P" || e.key === "Escape") {
         e.preventDefault();
         handlePauseToggle();
         return;
@@ -133,8 +130,8 @@ const Game1024 = ({ onBack }) => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleMove, handlePauseToggle, gameState, showHelp]);
 
   // Touch controls
@@ -143,22 +140,25 @@ const Game1024 = ({ onBack }) => {
     touchStartRef.current = { x: touch.clientX, y: touch.clientY };
   }, []);
 
-  const handleTouchEnd = useCallback((e) => {
-    const touch = e.changedTouches[0];
-    const deltaX = touch.clientX - touchStartRef.current.x;
-    const deltaY = touch.clientY - touchStartRef.current.y;
-    const minSwipe = 50;
+  const handleTouchEnd = useCallback(
+    (e) => {
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchStartRef.current.x;
+      const deltaY = touch.clientY - touchStartRef.current.y;
+      const minSwipe = 50;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      if (Math.abs(deltaX) > minSwipe) {
-        handleMove(deltaX > 0 ? 'RIGHT' : 'LEFT');
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (Math.abs(deltaX) > minSwipe) {
+          handleMove(deltaX > 0 ? "RIGHT" : "LEFT");
+        }
+      } else {
+        if (Math.abs(deltaY) > minSwipe) {
+          handleMove(deltaY > 0 ? "DOWN" : "UP");
+        }
       }
-    } else {
-      if (Math.abs(deltaY) > minSwipe) {
-        handleMove(deltaY > 0 ? 'DOWN' : 'UP');
-      }
-    }
-  }, [handleMove]);
+    },
+    [handleMove],
+  );
 
   // New game
   const handleNewGame = useCallback(() => {
@@ -181,8 +181,14 @@ const Game1024 = ({ onBack }) => {
       {/* Animated background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/15 rounded-full blur-[100px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px] animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
+        <div
+          className="absolute top-1/2 right-1/3 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
       </div>
 
       {/* Start Menu Overlay */}
@@ -215,7 +221,8 @@ const Game1024 = ({ onBack }) => {
 
               {/* Description */}
               <div className="glass-stat rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 text-gray-300 text-xs sm:text-sm md:text-base leading-relaxed border-amber-500/10 mb-3 sm:mb-4 md:mb-6">
-                Swipe or use arrow keys to move tiles. Merge matching numbers to reach <span className="text-amber-400 font-bold">1024</span>!
+                Swipe or use arrow keys to move tiles. Merge matching numbers to reach{" "}
+                <span className="text-amber-400 font-bold">1024</span>!
               </div>
 
               {/* Action Buttons */}
@@ -279,12 +286,14 @@ const Game1024 = ({ onBack }) => {
         <div className="flex items-center justify-between gap-2 sm:gap-3 mb-2 sm:mb-3 md:mb-4">
           <div className="flex gap-2 sm:gap-3">
             <div className="glass-stat border-cyan-500/20 rounded-lg sm:rounded-xl px-2.5 sm:px-4 py-1.5 sm:py-2 text-center min-w-[60px] sm:min-w-20">
-              <div className="text-[8px] sm:text-[10px] text-cyan-400 font-semibold uppercase tracking-wider">Score</div>
+              <div className="text-[8px] sm:text-[10px] text-cyan-400 font-semibold uppercase tracking-wider">
+                Score
+              </div>
               <div className="text-base sm:text-xl font-bold text-white">{score}</div>
             </div>
             <div className="glass-stat border-cyan-500/20 rounded-lg sm:rounded-xl px-2.5 sm:px-4 py-1.5 sm:py-2 text-center min-w-[60px] sm:min-w-20">
               <div className="text-[8px] sm:text-[10px] text-cyan-400 font-semibold uppercase tracking-wider">Best</div>
-              <div className="text-base sm:text-xl font-bold text-white">{bestScore}</div>
+              <div className="text-base sm:text-xl font-bold text-white">{effectiveBestScore}</div>
             </div>
           </div>
 
@@ -298,33 +307,27 @@ const Game1024 = ({ onBack }) => {
           ref={boardRef}
           className="game-1024-board relative glass-cyan rounded-2xl p-3"
           style={{
-            width: 'min(400px, 85vw, calc(100vh - 280px))',
-            height: 'min(400px, 85vw, calc(100vh - 280px))',
+            width: "min(400px, 85vw, calc(100vh - 280px))",
+            height: "min(400px, 85vw, calc(100vh - 280px))",
           }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
           {/* Grid background */}
           <div className="absolute inset-3 grid grid-cols-4 grid-rows-4 gap-2">
-            {Array(GRID_SIZE * GRID_SIZE).fill(null).map((_, i) => (
-              <div
-                key={i}
-                className="bg-white/5 rounded-lg"
-              />
-            ))}
+            {Array(GRID_SIZE * GRID_SIZE)
+              .fill(null)
+              .map((_, i) => (
+                <div key={i} className="bg-white/5 rounded-lg" />
+              ))}
           </div>
 
           {/* Tiles */}
           <div className="absolute inset-3">
             {grid.map((row, rowIndex) =>
               row.map((value, colIndex) => (
-                <Tile
-                  key={`${rowIndex}-${colIndex}`}
-                  value={value}
-                  row={rowIndex}
-                  col={colIndex}
-                />
-              ))
+                <Tile key={`${rowIndex}-${colIndex}`} value={value} row={rowIndex} col={colIndex} />
+              )),
             )}
           </div>
 
@@ -338,7 +341,7 @@ const Game1024 = ({ onBack }) => {
               <div className="relative z-10 flex flex-col items-center justify-center gap-3">
                 <h2
                   className="text-3xl sm:text-4xl font-black text-red-500 text-center"
-                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: '0 0 30px rgba(255,23,68,0.5)' }}
+                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: "0 0 30px rgba(255,23,68,0.5)" }}
                 >
                   Game Over!
                 </h2>
@@ -382,7 +385,7 @@ const Game1024 = ({ onBack }) => {
               <div className="relative z-10 flex flex-col items-center justify-center gap-3">
                 <h2
                   className="text-3xl sm:text-4xl font-black text-cyan-400 text-center"
-                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: '0 0 30px rgba(0,209,255,0.5)' }}
+                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: "0 0 30px rgba(0,209,255,0.5)" }}
                 >
                   You Win!
                 </h2>
@@ -426,7 +429,7 @@ const Game1024 = ({ onBack }) => {
               <div className="relative z-10 flex flex-col items-center justify-center gap-3">
                 <h2
                   className="text-3xl sm:text-4xl font-black text-cyan-400 text-center"
-                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: '0 0 30px rgba(0,209,255,0.5)' }}
+                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: "0 0 30px rgba(0,209,255,0.5)" }}
                 >
                   Paused
                 </h2>
@@ -468,11 +471,12 @@ const Game1024 = ({ onBack }) => {
           <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4">
             <button
               onClick={handlePauseToggle}
-              className={`w-12 h-10 flex items-center justify-center ${gameState === GAME_1024_STATES.PAUSED
-                ? 'bg-gradient-to-r from-green-400 to-emerald-500 shadow-green-400/30'
-                : 'bg-gradient-to-r from-orange-500 to-red-500 shadow-orange-400/30'
-                } text-white rounded-lg text-lg hover:scale-105 transition-transform shadow-lg`}
-              title={gameState === GAME_1024_STATES.PAUSED ? 'Resume' : 'Pause'}
+              className={`w-12 h-10 flex items-center justify-center ${
+                gameState === GAME_1024_STATES.PAUSED
+                  ? "bg-gradient-to-r from-green-400 to-emerald-500 shadow-green-400/30"
+                  : "bg-gradient-to-r from-orange-500 to-red-500 shadow-orange-400/30"
+              } text-white rounded-lg text-lg hover:scale-105 transition-transform shadow-lg`}
+              title={gameState === GAME_1024_STATES.PAUSED ? "Resume" : "Pause"}
             >
               {gameState === GAME_1024_STATES.PAUSED ? <IoPlay /> : <IoPause />}
             </button>

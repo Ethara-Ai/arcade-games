@@ -1,5 +1,3 @@
-import React from 'react';
-
 const PauseMenu = ({ onResume, onRestart, onMainMenu }) => {
   return (
     <div id="pauseMenu" className="glass-overlay">
@@ -10,7 +8,7 @@ const PauseMenu = ({ onResume, onRestart, onMainMenu }) => {
             className="text-2xl sm:text-3xl md:text-4xl font-black text-cyan-400 mb-4 sm:mb-6 md:mb-8 text-center"
             style={{
               fontFamily: '"Raleway", sans-serif',
-              textShadow: '0 0 30px rgba(0, 209, 255, 0.5)'
+              textShadow: "0 0 30px rgba(0, 209, 255, 0.5)",
             }}
           >
             Paused

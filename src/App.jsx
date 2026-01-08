@@ -1,26 +1,23 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import {
-  GAME_STATES,
-  INITIAL_LIVES,
-} from './constants/gameConstants';
-import useHighScore from './hooks/useHighScore';
-import useWindowSize from './hooks/useWindowSize';
-import LoadingScreen from './components/LoadingScreen';
-import TopBar from './components/TopBar';
-import MenuOverlay from './components/menus/MenuOverlay';
-import DesktopControls from './components/controls/DesktopControls';
-import MobileControls from './components/controls/MobileControls';
-import GameCanvas from './components/GameCanvas';
-import GameSelector from './components/GameSelector';
-import { Game1024 } from './components/Game1024';
-import { SnakeGame } from './components/SnakeGame';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { GAME_STATES, INITIAL_LIVES } from "./constants";
+import useHighScore from "./hooks/useHighScore";
+import useWindowSize from "./hooks/useWindowSize";
+import LoadingScreen from "./components/LoadingScreen";
+import TopBar from "./components/TopBar";
+import MenuOverlay from "./components/MenuOverlay";
+import DesktopControls from "./components/DesktopControls";
+import MobileControls from "./components/MobileControls";
+import GameCanvas from "./components/GameCanvas";
+import GameSelector from "./components/GameSelector";
+import { Game1024 } from "./games";
+import { SnakeGame } from "./games";
 
 // App-level game modes
 const APP_MODES = {
-  SELECTOR: 'SELECTOR',
-  BRICKRUSH: 'BRICKRUSH',
-  GAME_1024: 'GAME_1024',
-  SNAKE: 'SNAKE',
+  SELECTOR: "SELECTOR",
+  BRICKRUSH: "BRICKRUSH",
+  GAME_1024: "GAME_1024",
+  SNAKE: "SNAKE",
 };
 
 function App() {
@@ -51,12 +48,12 @@ function App() {
 
   // Handle game selection
   const handleSelectGame = useCallback((game) => {
-    if (game === 'brickrush') {
+    if (game === "brickrush") {
       setAppMode(APP_MODES.BRICKRUSH);
       setGameState(GAME_STATES.START_MENU);
-    } else if (game === '1024') {
+    } else if (game === "1024") {
       setAppMode(APP_MODES.GAME_1024);
-    } else if (game === 'snake') {
+    } else if (game === "snake") {
       setAppMode(APP_MODES.SNAKE);
     }
   }, []);
@@ -70,65 +67,6 @@ function App() {
     setCurrentLevel(1);
     setBallLaunched(false);
   }, []);
-
-  // Handle keyboard events (only for Brickrush)
-  useEffect(() => {
-    if (appMode !== APP_MODES.BRICKRUSH) return;
-
-    const handleKeyDown = (e) => {
-      setKeys((prev) => ({ ...prev, [e.key]: true }));
-
-      // Handle pause
-      if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
-        if (gameState === GAME_STATES.PLAYING) {
-          handlePause();
-        } else if (gameState === GAME_STATES.PAUSED) {
-          handleResume();
-        }
-      }
-
-      // Handle Enter key for menu navigation
-      if (e.key === 'Enter') {
-        if (gameState === GAME_STATES.START_MENU) {
-          handleStart();
-        } else if (gameState === GAME_STATES.GAME_OVER) {
-          handleRestart();
-        } else if (gameState === GAME_STATES.PAUSED) {
-          handleResume();
-        }
-      }
-
-      // Handle space for ball launch
-      if (e.key === ' ' && gameState === GAME_STATES.PLAYING && !ballLaunched) {
-        if (gameCanvasRef.current) {
-          gameCanvasRef.current.launchBall();
-        }
-      }
-    };
-
-    const handleKeyUp = (e) => {
-      setKeys((prev) => ({ ...prev, [e.key]: false }));
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [appMode, gameState, ballLaunched]);
-
-  // Loading screen timer
-  useEffect(() => {
-    loadHighScore();
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3500);
-
-    return () => clearTimeout(timer);
-  }, [loadHighScore]);
 
   // Initialize game
   const initGame = useCallback(() => {
@@ -189,6 +127,65 @@ function App() {
     }, 600);
   }, [initGame]);
 
+  // Handle keyboard events (only for Brickrush)
+  useEffect(() => {
+    if (appMode !== APP_MODES.BRICKRUSH) return;
+
+    const handleKeyDown = (e) => {
+      setKeys((prev) => ({ ...prev, [e.key]: true }));
+
+      // Handle pause
+      if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+        if (gameState === GAME_STATES.PLAYING) {
+          handlePause();
+        } else if (gameState === GAME_STATES.PAUSED) {
+          handleResume();
+        }
+      }
+
+      // Handle Enter key for menu navigation
+      if (e.key === "Enter") {
+        if (gameState === GAME_STATES.START_MENU) {
+          handleStart();
+        } else if (gameState === GAME_STATES.GAME_OVER) {
+          handleRestart();
+        } else if (gameState === GAME_STATES.PAUSED) {
+          handleResume();
+        }
+      }
+
+      // Handle space for ball launch
+      if (e.key === " " && gameState === GAME_STATES.PLAYING && !ballLaunched) {
+        if (gameCanvasRef.current) {
+          gameCanvasRef.current.launchBall();
+        }
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      setKeys((prev) => ({ ...prev, [e.key]: false }));
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [appMode, gameState, ballLaunched, handlePause, handleResume, handleStart, handleRestart]);
+
+  // Loading screen timer
+  useEffect(() => {
+    loadHighScore();
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3500);
+
+    return () => clearTimeout(timer);
+  }, [loadHighScore]);
+
   // Handle main menu - redirect to game selector page
   const handleMainMenu = useCallback(() => {
     setIsFadingOut(true);
@@ -236,8 +233,8 @@ function App() {
     }
   }, [gameState, handlePause, handleResume]);
 
-  // Get balls from canvas
-  const hasBalls = gameCanvasRef.current?.getBalls?.()?.length > 0;
+  // hasBalls is true when game is playing (balls are created when playing state begins)
+  const hasBalls = gameState === GAME_STATES.PLAYING;
 
   // Render loading screen
   if (isLoading) {
@@ -263,12 +260,7 @@ function App() {
   return (
     <div className="game-container">
       {/* Top Bar */}
-      <TopBar
-        gameState={gameState}
-        score={score}
-        level={currentLevel}
-        lives={lives}
-      />
+      <TopBar gameState={gameState} score={score} level={currentLevel} lives={lives} />
 
       {/* Desktop Controls */}
       {isDesktop && (

@@ -1,5 +1,4 @@
-import React from 'react';
-import { IoTrophy } from 'react-icons/io5';
+import { IoTrophy } from "react-icons/io5";
 
 const GameOverMenu = ({ score, highScore, onRestart, onMainMenu }) => {
   const isNewHighScore = score >= highScore && score > 0;
@@ -15,14 +14,14 @@ const GameOverMenu = ({ score, highScore, onRestart, onMainMenu }) => {
       <div className="relative z-10 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-md w-full mx-3 sm:mx-4">
         {/* Inner glass shine */}
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/[0.02] rounded-2xl sm:rounded-3xl pointer-events-none"></div>
-        
+
         <div className="relative z-10 flex flex-col items-center justify-center gap-3 sm:gap-4">
           {/* Title */}
           <h2
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-red-500 text-center"
             style={{
               fontFamily: '"Raleway", sans-serif',
-              textShadow: '0 0 30px rgba(255, 23, 68, 0.5)',
+              textShadow: "0 0 30px rgba(255, 23, 68, 0.5)",
             }}
           >
             Game Over
@@ -46,9 +45,7 @@ const GameOverMenu = ({ score, highScore, onRestart, onMainMenu }) => {
               <div className="text-xl sm:text-2xl font-bold text-white">{score}</div>
             </div>
             <div className="glass-stat border-cyan-500/20 rounded-lg sm:rounded-xl px-4 sm:px-6 py-2 sm:py-3 text-center min-w-[90px] sm:min-w-[110px]">
-              <div className="text-[9px] sm:text-[10px] text-cyan-400 font-semibold uppercase tracking-wider">
-                Best
-              </div>
+              <div className="text-[9px] sm:text-[10px] text-cyan-400 font-semibold uppercase tracking-wider">Best</div>
               <div className="text-xl sm:text-2xl font-bold text-white">{highScore}</div>
             </div>
           </div>
