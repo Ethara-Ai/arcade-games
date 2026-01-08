@@ -1,0 +1,90 @@
+# =============================================================================
+# Continuous Integration Pipeline
+# =============================================================================
+# This workflow runs on pull requests and pushes to ensure code quality.
+# It builds the application and can run tests and linting.
+# =============================================================================
+
+name: CI
+
+on:
+  # Trigger on pull requests to main branch
+  pull_request:
+    branches:
+      - main
+  
+  # Trigger on push to any branch
+  push:
+    branches:
+      - '**'
+    # Don't run on tag pushes
+    tags-ignore:
+      - '**'
+
+# Cancel in-progress runs for the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # =============================================================================
+  # Build and Test Job
+  # =============================================================================
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 4: Run linting (optional - uncomment if ESLint is configured)
+      # - name: Run Linter
+      #   run: npm run lint
+
+      # Step 5: Run tests (optional - uncomment if tests are configured)
+      # - name: Run Tests
+      #   run: npm test
+
+      # Step 6: Build the application
+      - name: Build Application
+        run: npm run build
+        env:
+          VITE_APP_NAME: 'Arcade Games'
+          VITE_APP_VERSION: '1.0.0'
+          VITE_STORAGE_PREFIX: 'arcade_'
+          VITE_DEBUG_MODE: 'false'
+
+      # Step 7: Check build output
+      - name: Verify Build Output
+        run: |
+          echo "Build completed successfully!"
+          echo "Contents of dist folder:"
+          ls -la dist/
+          echo ""
+          echo "Build size:"
+          du -sh dist/
+
+      # Step 8: Upload build artifacts (for inspection)
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'pull_request'
+        with:
+          name: build-preview-${{ github.sha }}
+          path: dist/
+          retention-days: 7

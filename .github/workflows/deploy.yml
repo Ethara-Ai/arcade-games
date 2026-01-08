@@ -1,0 +1,161 @@
+# =============================================================================
+# CI/CD Pipeline - Deploy to AWS S3
+# =============================================================================
+# This workflow builds the React application and deploys it to an AWS S3 bucket
+# configured for static website hosting.
+#
+# Triggers:
+# - Push to main branch
+# - Manual trigger via workflow_dispatch
+#
+# Required GitHub Secrets:
+# - AWS_ACCESS_KEY_ID: AWS access key with S3 permissions
+# - AWS_SECRET_ACCESS_KEY: AWS secret access key
+# - AWS_S3_BUCKET: Name of the S3 bucket (e.g., my-arcade-games-bucket)
+# - AWS_REGION: AWS region where the bucket is located (e.g., us-east-1)
+#
+# Optional GitHub Secrets:
+# - AWS_CLOUDFRONT_DISTRIBUTION_ID: CloudFront distribution ID for cache invalidation
+# =============================================================================
+
+name: Deploy to AWS S3
+
+on:
+  # Trigger on push to main branch
+  push:
+    branches:
+      - main
+  
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+# Set permissions for the workflow
+permissions:
+  contents: read
+  id-token: write
+
+# Environment variables
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # =============================================================================
+  # Build Job
+  # =============================================================================
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 4: Run linting (optional - uncomment if you have ESLint configured)
+      # - name: Run Linter
+      #   run: npm run lint
+
+      # Step 5: Build the application
+      - name: Build Application
+        run: npm run build
+        env:
+          VITE_APP_NAME: ${{ vars.VITE_APP_NAME || 'Arcade Games' }}
+          VITE_APP_VERSION: ${{ vars.VITE_APP_VERSION || '1.0.0' }}
+          VITE_STORAGE_PREFIX: ${{ vars.VITE_STORAGE_PREFIX || 'arcade_' }}
+          VITE_DEBUG_MODE: 'false'
+
+      # Step 6: Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+          retention-days: 1
+
+  # =============================================================================
+  # Deploy Job
+  # =============================================================================
+  deploy:
+    name: Deploy to S3
+    runs-on: ubuntu-latest
+    needs: build
+    
+    # Only deploy on main branch or manual trigger
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      # Step 1: Download build artifacts
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Step 3: Deploy to S3
+      - name: Deploy to S3
+        run: |
+          echo "Deploying to S3 bucket: ${{ secrets.AWS_S3_BUCKET }}"
+          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --exclude "index.html" \
+            --exclude "*.json"
+          
+          # Upload index.html and JSON files with no-cache
+          aws s3 cp dist/index.html s3://${{ secrets.AWS_S3_BUCKET }}/index.html \
+            --cache-control "no-cache, no-store, must-revalidate"
+          
+          # Upload any JSON files with no-cache (if they exist)
+          if ls dist/*.json 1> /dev/null 2>&1; then
+            aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} \
+              --exclude "*" \
+              --include "*.json" \
+              --cache-control "no-cache, no-store, must-revalidate"
+          fi
+
+      # Step 4: Invalidate CloudFront cache (optional)
+      - name: Invalidate CloudFront Cache
+        if: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+        continue-on-error: true
+
+      # Step 5: Output deployment URL
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Successful! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**S3 Bucket:** ${{ secrets.AWS_S3_BUCKET }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Region:** ${{ secrets.AWS_REGION }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Website URL:** http://${{ secrets.AWS_S3_BUCKET }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com" >> $GITHUB_STEP_SUMMARY

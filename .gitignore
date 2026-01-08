@@ -1,4 +1,5 @@
 # Dependencies
+<<<<<<< HEAD
 node_modules
 .pnp
 .pnp.js
@@ -28,6 +29,16 @@ pids
 coverage
 .nyc_output
 *.lcov
+=======
+node_modules/
+.pnp/
+.pnp.js
+
+# Build output
+dist/
+build/
+out/
+>>>>>>> b391420 (update the code)
 
 # Environment files
 .env
@@ -36,6 +47,7 @@ coverage
 .env.test.local
 .env.production.local
 
+<<<<<<< HEAD
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -43,6 +55,29 @@ coverage
 .idea
 *.sublime-workspace
 *.sublime-project
+=======
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+>>>>>>> b391420 (update the code)
 
 # OS generated files
 .DS_Store
@@ -52,6 +87,7 @@ coverage
 .Trashes
 ehthumbs.db
 Thumbs.db
+<<<<<<< HEAD
 *.suo
 *.ntvs*
 *.njsproj
@@ -60,10 +96,36 @@ Thumbs.db
 
 # Optional npm cache directory
 .npm
+=======
+Desktop.ini
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm/
+>>>>>>> b391420 (update the code)
 
 # Optional eslint cache
 .eslintcache
 
+<<<<<<< HEAD
 # Vite cache
 .vite
 
@@ -80,3 +142,16 @@ Thumbs.db
 
 # TypeScript cache
 *.tsbuildinfo
+=======
+# Vite
+*.local
+
+# Debug
+debug/
+*.debug
+
+# Misc
+*.pem
+.vercel
+.netlify
+>>>>>>> b391420 (update the code)
