@@ -61,7 +61,8 @@ const GameSelector = ({ onSelectGame }) => {
             animation: "gradientMove 4s linear infinite",
           }}
         >
-          Arcade Games        </h1>
+          Arcade Games
+        </h1>
         <p className="text-gray-400 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-10">Choose your game</p>
 
         {/* Game Cards */}
