@@ -55,6 +55,11 @@ export function handleBallBrickCollision(balls, bricks, brickRowCount, brickColu
 
   const newBalls = balls.map((ball) => {
     let updatedBall = { ...ball };
+    
+    // Skip if ball is in collision cooldown
+    if (updatedBall.collisionCooldown && updatedBall.collisionCooldown > 0) {
+      return { ...updatedBall, collisionCooldown: updatedBall.collisionCooldown - 1 };
+    }
 
     for (let c = 0; c < brickColumnCount; c++) {
       for (let r = 0; r < brickRowCount; r++) {
@@ -71,26 +76,41 @@ export function handleBallBrickCollision(balls, bricks, brickRowCount, brickColu
           updatedBall.y + updatedBall.radius > brick.y &&
           updatedBall.y - updatedBall.radius < brick.y + brick.height
         ) {
-          // Calculate collision side
+          // Calculate collision side and overlap amounts
+          const ballCenterX = updatedBall.x;
+          const ballCenterY = updatedBall.y;
+          const brickCenterX = brick.x + brick.width / 2;
+          const brickCenterY = brick.y + brick.height / 2;
+          
           const overlapX =
-            updatedBall.radius + brick.width / 2 - Math.abs(updatedBall.x - (brick.x + brick.width / 2));
+            updatedBall.radius + brick.width / 2 - Math.abs(ballCenterX - brickCenterX);
           const overlapY =
-            updatedBall.radius + brick.height / 2 - Math.abs(updatedBall.y - (brick.y + brick.height / 2));
+            updatedBall.radius + brick.height / 2 - Math.abs(ballCenterY - brickCenterY);
 
           let newDx = updatedBall.dx;
           let newDy = updatedBall.dy;
+          let newX = updatedBall.x;
+          let newY = updatedBall.y;
 
+          // Determine collision direction and push ball out of brick
           if (overlapX < overlapY && overlapX > 0) {
-            const ballMovingTowardsCenterX =
-              (updatedBall.dx > 0 && updatedBall.x < brick.x + brick.width / 2) ||
-              (updatedBall.dx < 0 && updatedBall.x > brick.x + brick.width / 2);
-            if (ballMovingTowardsCenterX) {
-              newDx = -updatedBall.dx;
+            // Horizontal collision
+            newDx = -updatedBall.dx;
+            // Push ball out horizontally
+            if (ballCenterX < brickCenterX) {
+              newX = brick.x - updatedBall.radius - 1;
             } else {
-              newDy = -updatedBall.dy;
+              newX = brick.x + brick.width + updatedBall.radius + 1;
             }
           } else {
+            // Vertical collision
             newDy = -updatedBall.dy;
+            // Push ball out vertically
+            if (ballCenterY < brickCenterY) {
+              newY = brick.y - updatedBall.radius - 1;
+            } else {
+              newY = brick.y + brick.height + updatedBall.radius + 1;
+            }
           }
 
           // Only destroy non-steel bricks
@@ -106,9 +126,24 @@ export function handleBallBrickCollision(balls, bricks, brickRowCount, brickColu
               newDy = (newDy / currentMagnitude) * newSpeed;
             }
 
-            updatedBall = { ...updatedBall, dx: newDx, dy: newDy, speed: newSpeed };
+            updatedBall = { 
+              ...updatedBall, 
+              x: newX,
+              y: newY,
+              dx: newDx, 
+              dy: newDy, 
+              speed: newSpeed,
+              collisionCooldown: 3  // Cooldown frames to prevent multiple hits
+            };
           } else {
-            updatedBall = { ...updatedBall, dx: newDx, dy: newDy };
+            updatedBall = { 
+              ...updatedBall, 
+              x: newX,
+              y: newY,
+              dx: newDx, 
+              dy: newDy,
+              collisionCooldown: 3
+            };
           }
 
           // Only handle one brick collision per ball per frame

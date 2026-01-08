@@ -1321,3 +1321,24 @@ body {
     font-size: 16px !important;
   }
 }
+
+/* Prevent vertical scrolling in Snake game on mobile */
+@media (max-width: 768px) {
+  .snake-game-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+  }
+
+  .snake-game-container canvas {
+    touch-action: none;
+  }
+}

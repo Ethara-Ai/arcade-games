@@ -1,44 +1,44 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { IoArrowBack, IoTrophy, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome } from "react-icons/io5";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { IoArrowBack, IoTrophy, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome } from 'react-icons/io5';
 import {
-  SNAKE_GRID_SIZE as GRID_SIZE,
-  SNAKE_CELL_SIZE as CELL_SIZE,
-  SNAKE_CANVAS_SIZE as CANVAS_SIZE,
+  GRID_SIZE,
+  CELL_SIZE,
+  CANVAS_SIZE,
   SNAKE_GAME_STATES,
-  SNAKE_DIRECTIONS as DIRECTIONS,
-  SNAKE_KEY_MAPPINGS as KEY_MAPPINGS,
-  SNAKE_OPPOSITE_DIRECTIONS as OPPOSITE_DIRECTIONS,
-  SNAKE_BASE_SPEED as BASE_SPEED,
-  SNAKE_MIN_SPEED as MIN_SPEED,
-  SNAKE_SPEED_INCREASE_PER_FOOD as SPEED_INCREASE_PER_FOOD,
-  SNAKE_COLORS as COLORS,
-  SNAKE_INITIAL_POSITION as INITIAL_SNAKE,
-  SNAKE_FOOD_POINTS as FOOD_POINTS,
-  SNAKE_BONUS_FOOD_POINTS as BONUS_FOOD_POINTS,
-  SNAKE_BONUS_FOOD_CHANCE as BONUS_FOOD_CHANCE,
-} from "../constants";
-import { STORAGE_KEYS, debugLog } from "../config";
-import { HowToPlayModal } from "../components";
+  DIRECTIONS,
+  KEY_MAPPINGS,
+  OPPOSITE_DIRECTIONS,
+  BASE_SPEED,
+  MIN_SPEED,
+  SPEED_INCREASE_PER_FOOD,
+  COLORS,
+  INITIAL_SNAKE,
+  FOOD_POINTS,
+  BONUS_FOOD_POINTS,
+  BONUS_FOOD_CHANCE,
+} from '../../constants/snakeConstants';
+import { STORAGE_KEYS, debugLog } from '../../config';
+import { HowToPlayModal } from '../shared';
 
 const SNAKE_INSTRUCTIONS = [
-  "Guide the snake to eat food and grow longer",
-  "Pink food gives 10 points, golden food gives 50 points",
-  "Avoid hitting the walls or your own tail",
-  "The snake speeds up as you eat more food",
+  'Guide the snake to eat food and grow longer',
+  'Pink food gives 10 points, golden food gives 50 points',
+  'Avoid hitting the walls or your own tail',
+  'The snake speeds up as you eat more food',
 ];
 
 const SNAKE_CONTROLS = [
-  { key: "↑ ↓ ← →", action: "Change direction" },
-  { key: "W A S D", action: "Change direction (alternative)" },
-  { key: "Swipe", action: "Change direction (touch)" },
-  { key: "P / Space", action: "Pause game" },
+  { key: '↑ ↓ ← →', action: 'Change direction' },
+  { key: 'W A S D', action: 'Change direction (alternative)' },
+  { key: 'Swipe', action: 'Change direction (touch)' },
+  { key: 'P / Space', action: 'Pause game' },
 ];
 
 const SNAKE_TIPS = [
-  "Plan your path to avoid trapping yourself",
-  "Use the edges carefully - don't get cornered",
-  "Grab bonus food quickly for extra points",
-  "Stay calm as the speed increases",
+  'Plan your path to avoid trapping yourself',
+  'Use the edges carefully - don\'t get cornered',
+  'Grab bonus food quickly for extra points',
+  'Stay calm as the speed increases',
 ];
 
 const SnakeGame = ({ onBack }) => {
@@ -50,15 +50,15 @@ const SnakeGame = ({ onBack }) => {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.SNAKE_HIGH_SCORE);
-    debugLog("Loaded Snake high score:", saved);
+    debugLog('Loaded Snake high score:', saved);
     return saved ? parseInt(saved, 10) : 0;
   });
   const [showHelp, setShowHelp] = useState(false);
 
   const snakeRef = useRef([...INITIAL_SNAKE]);
-  const directionRef = useRef("RIGHT");
-  const nextDirectionRef = useRef("RIGHT");
-  const foodRef = useRef({ x: 5, y: 5, isBonus: false }); // Initial food position
+  const directionRef = useRef('RIGHT');
+  const nextDirectionRef = useRef('RIGHT');
+  const foodRef = useRef(null);
   const bonusFoodRef = useRef(null);
   const scoreRef = useRef(0);
 
@@ -71,14 +71,14 @@ const SnakeGame = ({ onBack }) => {
         y: Math.floor(Math.random() * GRID_SIZE),
         isBonus: isBonus,
       };
-    } while (snake.some((segment) => segment.x === newFood.x && segment.y === newFood.y));
+    } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
     return newFood;
   }, []);
 
   const initGame = useCallback(() => {
-    snakeRef.current = [...INITIAL_SNAKE.map((s) => ({ ...s }))];
-    directionRef.current = "RIGHT";
-    nextDirectionRef.current = "RIGHT";
+    snakeRef.current = [...INITIAL_SNAKE.map(s => ({ ...s }))];
+    directionRef.current = 'RIGHT';
+    nextDirectionRef.current = 'RIGHT';
     foodRef.current = generateFood(false); // Regular food
     bonusFoodRef.current = null;
     scoreRef.current = 0;
@@ -104,7 +104,7 @@ const SnakeGame = ({ onBack }) => {
       return false;
     }
 
-    if (snake.some((segment) => segment.x === newHead.x && segment.y === newHead.y)) {
+    if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
       return false;
     }
 
@@ -137,7 +137,7 @@ const SnakeGame = ({ onBack }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     const snake = snakeRef.current;
     const food = foodRef.current;
     const bonusFood = bonusFoodRef.current;
@@ -172,7 +172,7 @@ const SnakeGame = ({ onBack }) => {
         food.y * CELL_SIZE + CELL_SIZE / 2,
         CELL_SIZE / 2 - 2,
         0,
-        Math.PI * 2,
+        Math.PI * 2
       );
       ctx.fill();
 
@@ -190,7 +190,7 @@ const SnakeGame = ({ onBack }) => {
         bonusFood.y * CELL_SIZE + CELL_SIZE / 2,
         CELL_SIZE / 2 - 1,
         0,
-        Math.PI * 2,
+        Math.PI * 2
       );
       ctx.fill();
 
@@ -220,7 +220,7 @@ const SnakeGame = ({ onBack }) => {
     });
   }, []);
 
-  const gameLoopCallback = useCallback(() => {
+  const gameLoop = useCallback(() => {
     if (gameState !== SNAKE_GAME_STATES.PLAYING) return;
 
     const continueGame = moveSnake();
@@ -230,30 +230,19 @@ const SnakeGame = ({ onBack }) => {
       if (scoreRef.current > highScore) {
         setHighScore(scoreRef.current);
         localStorage.setItem(STORAGE_KEYS.SNAKE_HIGH_SCORE, scoreRef.current.toString());
-        debugLog("Saved Snake high score:", scoreRef.current);
+        debugLog('Saved Snake high score:', scoreRef.current);
       }
       return;
     }
 
     draw();
 
-    return true; // Signal to continue the loop
-  }, [gameState, moveSnake, draw, highScore]);
-
-  // Start the game loop
-  const startGameLoop = useCallback(() => {
-    const runLoop = () => {
-      const shouldContinue = gameLoopCallback();
-      if (shouldContinue) {
-        gameLoopRef.current = setTimeout(runLoop, getGameSpeed());
-      }
-    };
-    runLoop();
-  }, [gameLoopCallback, getGameSpeed]);
+    gameLoopRef.current = setTimeout(gameLoop, getGameSpeed());
+  }, [gameState, moveSnake, draw, getGameSpeed, highScore]);
 
   useEffect(() => {
     if (gameState === SNAKE_GAME_STATES.PLAYING) {
-      startGameLoop();
+      gameLoopRef.current = setTimeout(gameLoop, getGameSpeed());
     }
 
     return () => {
@@ -261,23 +250,14 @@ const SnakeGame = ({ onBack }) => {
         clearTimeout(gameLoopRef.current);
       }
     };
-  }, [gameState, startGameLoop]);
+  }, [gameState, gameLoop, getGameSpeed]);
 
-  // Initialize on first render only - no setState in effect
-  const hasInitializedRef = useRef(false);
   useEffect(() => {
-    if (gameState === SNAKE_GAME_STATES.START && !hasInitializedRef.current) {
-      hasInitializedRef.current = true;
-      // Initialize refs without calling setState (score is already 0)
-      snakeRef.current = [...INITIAL_SNAKE.map((s) => ({ ...s }))];
-      directionRef.current = "RIGHT";
-      nextDirectionRef.current = "RIGHT";
-      foodRef.current = generateFood(false);
-      bonusFoodRef.current = null;
-      scoreRef.current = 0;
+    if (gameState === SNAKE_GAME_STATES.START) {
+      initGame();
       draw();
     }
-  }, [gameState, generateFood, draw]);
+  }, [gameState, initGame, draw]);
 
   const changeDirection = useCallback((newDirection) => {
     if (!newDirection) return;
@@ -306,12 +286,12 @@ const SnakeGame = ({ onBack }) => {
       }
 
       // Enter key to start game from start menu
-      if (e.key === "Enter" && gameState === SNAKE_GAME_STATES.START && !showHelp) {
+      if (e.key === 'Enter' && gameState === SNAKE_GAME_STATES.START && !showHelp) {
         e.preventDefault();
         setGameState(SNAKE_GAME_STATES.PLAYING);
       }
 
-      if (e.key === " ") {
+      if (e.key === ' ') {
         e.preventDefault();
         if (gameState === SNAKE_GAME_STATES.START) {
           setGameState(SNAKE_GAME_STATES.PLAYING);
@@ -322,7 +302,7 @@ const SnakeGame = ({ onBack }) => {
         }
       }
 
-      if (e.key === "p" || e.key === "P") {
+      if (e.key === 'p' || e.key === 'P') {
         if (gameState === SNAKE_GAME_STATES.PLAYING) {
           setGameState(SNAKE_GAME_STATES.PAUSED);
         } else if (gameState === SNAKE_GAME_STATES.PAUSED) {
@@ -331,8 +311,8 @@ const SnakeGame = ({ onBack }) => {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [gameState, changeDirection, showHelp]);
 
   const handleTouchStart = useCallback((e) => {
@@ -340,30 +320,27 @@ const SnakeGame = ({ onBack }) => {
     touchStartRef.current = { x: touch.clientX, y: touch.clientY };
   }, []);
 
-  const handleTouchEnd = useCallback(
-    (e) => {
-      const touch = e.changedTouches[0];
-      const deltaX = touch.clientX - touchStartRef.current.x;
-      const deltaY = touch.clientY - touchStartRef.current.y;
-      const minSwipe = 30;
+  const handleTouchEnd = useCallback((e) => {
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartRef.current.x;
+    const deltaY = touch.clientY - touchStartRef.current.y;
+    const minSwipe = 30;
 
-      if (gameState === SNAKE_GAME_STATES.START) {
-        setGameState(SNAKE_GAME_STATES.PLAYING);
-        return;
-      }
+    if (gameState === SNAKE_GAME_STATES.START) {
+      setGameState(SNAKE_GAME_STATES.PLAYING);
+      return;
+    }
 
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (Math.abs(deltaX) > minSwipe) {
-          changeDirection(deltaX > 0 ? "RIGHT" : "LEFT");
-        }
-      } else {
-        if (Math.abs(deltaY) > minSwipe) {
-          changeDirection(deltaY > 0 ? "DOWN" : "UP");
-        }
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (Math.abs(deltaX) > minSwipe) {
+        changeDirection(deltaX > 0 ? 'RIGHT' : 'LEFT');
       }
-    },
-    [gameState, changeDirection],
-  );
+    } else {
+      if (Math.abs(deltaY) > minSwipe) {
+        changeDirection(deltaY > 0 ? 'DOWN' : 'UP');
+      }
+    }
+  }, [gameState, changeDirection]);
 
   const handleNewGame = useCallback(() => {
     initGame();
@@ -372,6 +349,10 @@ const SnakeGame = ({ onBack }) => {
 
   const handleResume = useCallback(() => {
     setGameState(SNAKE_GAME_STATES.PLAYING);
+  }, []);
+
+  const handlePause = useCallback(() => {
+    setGameState(SNAKE_GAME_STATES.PAUSED);
   }, []);
 
   const handlePauseToggle = useCallback(() => {
@@ -388,18 +369,15 @@ const SnakeGame = ({ onBack }) => {
   }, [initGame]);
 
   return (
-    <div className="snake-game-container flex flex-col items-center justify-center h-screen overflow-hidden p-4 bg-[#0a0a0a]" style={{ touchAction: "none", overscrollBehavior: "none" }}>
+    <div
+      className="snake-game-container flex flex-col items-center justify-center h-screen overflow-hidden p-4 bg-[#0a0a0a]"
+      style={{ touchAction: 'none', overscrollBehavior: 'none' }}
+    >
       {/* Animated background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/15 rounded-full blur-[100px] animate-pulse"></div>
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute top-1/2 right-1/3 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] animate-pulse"
-          style={{ animationDelay: "2s" }}
-        ></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
       {/* Start Menu Overlay */}
@@ -469,7 +447,7 @@ const SnakeGame = ({ onBack }) => {
 
       <div className="relative z-10 w-full max-w-md mx-auto flex flex-col items-center px-2 sm:px-0">
         {/* Header Row */}
-        <div className="flex items-center justify-between mb-2 sm:mb-3 md:mb-4 w-full" style={{ maxWidth: "min(400px, 85vw, calc(100vh - 280px))" }}>
+        <div className="flex items-center justify-between mb-2 sm:mb-3 md:mb-4 w-full" style={{ maxWidth: 'min(400px, 85vw, calc(100vh - 280px))' }}>
           <button
             onClick={onBack}
             className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full text-white font-bold flex items-center justify-center shadow-lg shadow-green-400/40 hover:scale-105 active:scale-95 transition-transform text-sm sm:text-lg"
@@ -493,18 +471,14 @@ const SnakeGame = ({ onBack }) => {
         </div>
 
         {/* Score Row - Glass stat boxes */}
-        <div className="flex items-center justify-between gap-2 sm:gap-3 mb-2 sm:mb-3 md:mb-4 w-full" style={{ maxWidth: "min(400px, 85vw, calc(100vh - 280px))" }}>
+        <div className="flex items-center justify-between gap-2 sm:gap-3 mb-2 sm:mb-3 md:mb-4 w-full" style={{ maxWidth: 'min(400px, 85vw, calc(100vh - 280px))' }}>
           <div className="flex gap-2 sm:gap-3">
             <div className="glass-stat border-green-500/20 rounded-lg sm:rounded-xl px-2.5 sm:px-4 py-1.5 sm:py-2 text-center min-w-[60px] sm:min-w-20">
-              <div className="text-[8px] sm:text-[10px] text-green-400 font-semibold uppercase tracking-wider">
-                Score
-              </div>
+              <div className="text-[8px] sm:text-[10px] text-green-400 font-semibold uppercase tracking-wider">Score</div>
               <div className="text-base sm:text-xl font-bold text-white">{score}</div>
             </div>
             <div className="glass-stat border-green-500/20 rounded-lg sm:rounded-xl px-2.5 sm:px-4 py-1.5 sm:py-2 text-center min-w-[60px] sm:min-w-20">
-              <div className="text-[8px] sm:text-[10px] text-green-400 font-semibold uppercase tracking-wider">
-                Best
-              </div>
+              <div className="text-[8px] sm:text-[10px] text-green-400 font-semibold uppercase tracking-wider">Best</div>
               <div className="text-base sm:text-xl font-bold text-white">{highScore}</div>
             </div>
           </div>
@@ -517,14 +491,14 @@ const SnakeGame = ({ onBack }) => {
         {/* Game Canvas - Glass panel */}
         <div
           className="relative glass-green rounded-2xl p-3 mx-auto"
-          style={{ width: "min(400px, 85vw, calc(100vh - 280px))", height: "min(400px, 85vw, calc(100vh - 280px))" }}
+          style={{ width: 'min(400px, 85vw, calc(100vh - 280px))', height: 'min(400px, 85vw, calc(100vh - 280px))' }}
         >
           <canvas
             ref={canvasRef}
             width={CANVAS_SIZE}
             height={CANVAS_SIZE}
             className="rounded-lg w-full h-full"
-            style={{ imageRendering: "pixelated" }}
+            style={{ imageRendering: 'pixelated' }}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           />
@@ -539,7 +513,7 @@ const SnakeGame = ({ onBack }) => {
               <div className="relative z-10 flex flex-col items-center justify-center gap-3">
                 <h2
                   className="text-3xl sm:text-4xl font-black text-green-400 text-center"
-                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: "0 0 30px rgba(74,222,128,0.5)" }}
+                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: '0 0 30px rgba(74,222,128,0.5)' }}
                 >
                   Paused
                 </h2>
@@ -585,7 +559,7 @@ const SnakeGame = ({ onBack }) => {
               <div className="relative z-10 flex flex-col items-center justify-center gap-3">
                 <h2
                   className="text-3xl sm:text-4xl font-black text-red-500 text-center"
-                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: "0 0 30px rgba(255,23,68,0.5)" }}
+                  style={{ fontFamily: '"Raleway", sans-serif', textShadow: '0 0 30px rgba(255,23,68,0.5)' }}
                 >
                   Game Over!
                 </h2>
@@ -630,15 +604,14 @@ const SnakeGame = ({ onBack }) => {
 
         {/* Control Buttons - Icon only, consistent position across all games */}
         {(gameState === SNAKE_GAME_STATES.PLAYING || gameState === SNAKE_GAME_STATES.PAUSED) && (
-          <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4 w-full" style={{ maxWidth: "min(400px, 85vw, calc(100vh - 280px))" }}>
+          <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4 w-full" style={{ maxWidth: 'min(400px, 85vw, calc(100vh - 280px))' }}>
             <button
               onClick={handlePauseToggle}
-              className={`w-12 h-10 flex items-center justify-center ${
-                gameState === SNAKE_GAME_STATES.PAUSED
-                  ? "bg-gradient-to-r from-green-400 to-emerald-500 shadow-green-400/30"
-                  : "bg-gradient-to-r from-orange-500 to-red-500 shadow-orange-400/30"
-              } text-white rounded-lg text-lg hover:scale-105 transition-transform shadow-lg`}
-              title={gameState === SNAKE_GAME_STATES.PAUSED ? "Resume" : "Pause"}
+              className={`w-12 h-10 flex items-center justify-center ${gameState === SNAKE_GAME_STATES.PAUSED
+                ? 'bg-gradient-to-r from-green-400 to-emerald-500 shadow-green-400/30'
+                : 'bg-gradient-to-r from-orange-500 to-red-500 shadow-orange-400/30'
+                } text-white rounded-lg text-lg hover:scale-105 transition-transform shadow-lg`}
+              title={gameState === SNAKE_GAME_STATES.PAUSED ? 'Resume' : 'Pause'}
             >
               {gameState === SNAKE_GAME_STATES.PAUSED ? <IoPlay /> : <IoPause />}
             </button>
@@ -660,7 +633,7 @@ const SnakeGame = ({ onBack }) => {
         )}
 
         {/* Controls hint */}
-        <div className="mt-2 sm:mt-3 text-center w-full" style={{ maxWidth: "min(400px, 85vw, calc(100vh - 280px))" }}>
+        <div className="mt-2 sm:mt-3 text-center w-full" style={{ maxWidth: 'min(400px, 85vw, calc(100vh - 280px))' }}>
           <p className="text-xs sm:text-sm text-gray-500 mb-1">
             <span className="text-green-400 font-semibold">CONTROLS:</span> Arrow keys / WASD / Swipe
           </p>
