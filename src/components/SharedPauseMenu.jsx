@@ -68,7 +68,7 @@ const PauseMenu = ({
   }, [onResume]);
 
   return (
-    <div id="pauseMenu" className="glass-overlay">
+    <div id="pauseMenu" className="fixed inset-0 z-50 flex items-center justify-center glass-overlay">
       <div className="menu-content">
         {/* Glass panel container */}
         <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-sm mx-3 sm:mx-4">
@@ -84,19 +84,19 @@ const PauseMenu = ({
           <div className="flex flex-col gap-2 sm:gap-3">
             <button
               onClick={onResume}
-              className="w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white font-semibold cursor-pointer rounded-lg sm:rounded-xl shadow-lg shadow-green-400/30 transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-green-400/50 active:scale-95 focus:outline-none py-3 sm:py-4 text-sm sm:text-base"
+              className="w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white font-semibold cursor-pointer rounded-lg sm:rounded-xl shadow-lg shadow-green-400/30 transition-all duration-300 hover:brightness-110 hover:shadow-xl hover:shadow-green-400/50 active:brightness-90 focus:outline-none py-3 sm:py-4 text-sm sm:text-base"
             >
               {resumeText}
             </button>
             <button
               onClick={onRestart}
-              className={`w-full bg-gradient-to-r ${colors.primaryGradient} text-white font-semibold cursor-pointer rounded-lg sm:rounded-xl shadow-lg ${colors.primaryShadow} transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${colors.primaryHoverShadow} active:scale-95 focus:outline-none py-3 sm:py-4 text-sm sm:text-base`}
+              className={`w-full bg-gradient-to-r ${colors.primaryGradient} text-white font-semibold cursor-pointer rounded-lg sm:rounded-xl shadow-lg ${colors.primaryShadow} transition-all duration-300 hover:brightness-110 hover:shadow-xl ${colors.primaryHoverShadow} active:brightness-90 focus:outline-none py-3 sm:py-4 text-sm sm:text-base`}
             >
               {restartText}
             </button>
             <button
               onClick={onMainMenu}
-              className="w-full glass-button text-gray-300 font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none py-3 sm:py-4 text-sm sm:text-base"
+              className="w-full glass-button text-gray-300 font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 active:brightness-90 focus:outline-none py-3 sm:py-4 text-sm sm:text-base"
             >
               {mainMenuText}
             </button>

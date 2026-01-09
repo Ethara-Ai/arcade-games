@@ -124,7 +124,7 @@ const GameResultCard = ({
                 <button
                   key={index}
                   onClick={button.onClick}
-                  className={`px-6 py-3 bg-gradient-to-r ${btnGradient} text-white rounded-xl font-semibold hover:scale-105 transition-transform shadow-lg ${btnShadow} text-sm sm:text-base whitespace-nowrap`}
+                  className={`px-6 py-3 bg-gradient-to-r ${btnGradient} text-white rounded-xl font-semibold hover:brightness-110 active:brightness-90 transition-all shadow-lg ${btnShadow} text-sm sm:text-base whitespace-nowrap`}
                 >
                   {button.label}
                 </button>

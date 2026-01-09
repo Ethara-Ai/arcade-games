@@ -5,6 +5,8 @@ import {
   IoPause,
   IoPlay,
   IoRefresh,
+  IoRemove,
+  IoAdd,
 } from "react-icons/io5";
 import { SNAKE_GAME_STATES } from "../../constants";
 import {
@@ -30,13 +32,14 @@ const SNAKE_CONTROLS = [
   { key: "W A S D", action: "Change direction (alternative)" },
   { key: "Swipe", action: "Change direction (touch)" },
   { key: "P / Space", action: "Pause game" },
+  { key: "+ / -", action: "Adjust speed" },
 ];
 
 const SNAKE_TIPS = [
   "Plan your path to avoid trapping yourself",
   "Use the edges carefully - don't get cornered",
   "Grab bonus food quickly for extra points",
-  "Stay calm as the speed increases",
+  "Adjust speed to your skill level",
 ];
 
 /**
@@ -52,6 +55,7 @@ const SnakeGameContent = ({ onBack }) => {
     score,
     highScore,
     snakeLength,
+    speedLevel,
     gameLoopRef,
     handleStartGame,
     handleNewGame,
@@ -64,6 +68,8 @@ const SnakeGameContent = ({ onBack }) => {
     moveSnake,
     getGameSpeed,
     getGameObjects,
+    increaseSpeed,
+    decreaseSpeed,
   } = useSnakeGame();
 
   // UI state
@@ -157,7 +163,7 @@ const SnakeGameContent = ({ onBack }) => {
           {/* Back button */}
           <button
             onClick={onBack}
-            className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform"
+            className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all"
             title="Back to Game Selector"
             aria-label="Back to Game Selector"
           >
@@ -179,7 +185,7 @@ const SnakeGameContent = ({ onBack }) => {
           <div className="flex items-center gap-2">
             <button
               onClick={handleOpenHelp}
-              className="w-10 h-10 glass-button rounded-full text-green-400 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+              className="w-10 h-10 glass-button rounded-full text-green-400 flex items-center justify-center hover:brightness-110 active:brightness-90 transition-all"
               title="How to Play"
               aria-label="How to Play"
             >
@@ -187,7 +193,7 @@ const SnakeGameContent = ({ onBack }) => {
             </button>
             <button
               onClick={handlePauseToggle}
-              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
+              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:brightness-110 active:brightness-90 transition-all ${
                 isPaused
                   ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
                   : "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
@@ -199,7 +205,7 @@ const SnakeGameContent = ({ onBack }) => {
             </button>
             <button
               onClick={handleNewGame}
-              className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-green-400/40 hover:scale-105 active:scale-95 transition-transform"
+              className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-green-400/40 hover:brightness-110 active:brightness-90 transition-all"
               title="New Game"
               aria-label="Start New Game"
             >
@@ -211,8 +217,8 @@ const SnakeGameContent = ({ onBack }) => {
 
       {/* Score Display - visible when game is active */}
       {isGameActive && (
-        <div className="relative z-10 flex items-center justify-center gap-3 sm:gap-4 w-full max-w-[min(90vw,400px)] mb-4">
-          <div className="glass-stat border-green-500/20 rounded-lg px-4 py-2 text-center flex-1">
+        <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 w-full max-w-[min(90vw,400px)] mb-4">
+          <div className="glass-stat border-green-500/20 rounded-lg px-3 py-2 text-center flex-1">
             <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
               Score
             </div>
@@ -220,7 +226,7 @@ const SnakeGameContent = ({ onBack }) => {
               {score}
             </div>
           </div>
-          <div className="glass-stat border-green-500/20 rounded-lg px-4 py-2 text-center flex-1">
+          <div className="glass-stat border-green-500/20 rounded-lg px-3 py-2 text-center flex-1">
             <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
               Best
             </div>
@@ -228,13 +234,56 @@ const SnakeGameContent = ({ onBack }) => {
               {highScore}
             </div>
           </div>
-          <div className="glass-stat border-green-500/20 rounded-lg px-4 py-2 text-center flex-1">
+          <div className="glass-stat border-green-500/20 rounded-lg px-3 py-2 text-center flex-1">
             <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
               Length
             </div>
             <div className="text-lg sm:text-xl font-bold text-green-400">
               {snakeLength}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Speed Control - visible when game is active */}
+      {isGameActive && (
+        <div className="relative z-10 flex items-center justify-center gap-3 w-full max-w-[min(90vw,400px)] mb-4">
+          <div className="glass-stat border-green-500/20 rounded-lg px-4 py-2 flex items-center gap-3">
+            <button
+              onClick={decreaseSpeed}
+              disabled={speedLevel <= 1}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                speedLevel <= 1
+                  ? "bg-gray-700/50 text-gray-500 cursor-not-allowed"
+                  : "bg-gradient-to-br from-green-400 to-emerald-500 text-white hover:brightness-110 active:brightness-90"
+              }`}
+              title="Decrease Speed"
+              aria-label="Decrease Speed"
+            >
+              <IoRemove className="text-lg" />
+            </button>
+            <div className="text-center min-w-[80px]">
+              <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
+                Speed
+              </div>
+              <div className="text-lg font-bold text-white flex items-center justify-center gap-1">
+                {speedLevel}
+                <span className="text-xs text-gray-400">/5</span>
+              </div>
+            </div>
+            <button
+              onClick={increaseSpeed}
+              disabled={speedLevel >= 5}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                speedLevel >= 5
+                  ? "bg-gray-700/50 text-gray-500 cursor-not-allowed"
+                  : "bg-gradient-to-br from-green-400 to-emerald-500 text-white hover:brightness-110 active:brightness-90"
+              }`}
+              title="Increase Speed"
+              aria-label="Increase Speed"
+            >
+              <IoAdd className="text-lg" />
+            </button>
           </div>
         </div>
       )}

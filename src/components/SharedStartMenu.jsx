@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IoHelpCircle, IoArrowBack } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import HowToPlayModal from "./HowToPlayModal";
 
 /**
@@ -31,40 +31,36 @@ const StartMenu = ({
   const colorConfig = {
     cyan: {
       gradient: "from-cyan-400 to-blue-500",
-      shadow: "shadow-cyan-400/40",
-      hoverShadow: "hover:shadow-cyan-400/60",
+      hoverShadow: "hover:shadow-xl hover:shadow-cyan-400/60",
+      activeShadow: "active:shadow-lg active:shadow-cyan-400/40",
       titleColor: "text-cyan-400",
-      titleShadow: "0 0 30px rgba(0, 209, 255, 0.5)",
       border: "border-cyan-500/10",
       helpBorder: "border-cyan-400/30",
       helpHoverBorder: "hover:border-cyan-400/50",
     },
     green: {
       gradient: "from-green-400 to-emerald-500",
-      shadow: "shadow-green-400/40",
-      hoverShadow: "hover:shadow-green-400/60",
+      hoverShadow: "hover:shadow-xl hover:shadow-green-400/60",
+      activeShadow: "active:shadow-lg active:shadow-green-400/40",
       titleColor: "text-green-400",
-      titleShadow: "0 0 30px rgba(74, 222, 128, 0.5)",
       border: "border-green-500/10",
       helpBorder: "border-green-400/30",
       helpHoverBorder: "hover:border-green-400/50",
     },
     amber: {
       gradient: "from-amber-400 to-orange-500",
-      shadow: "shadow-amber-400/40",
-      hoverShadow: "hover:shadow-amber-400/60",
+      hoverShadow: "hover:shadow-xl hover:shadow-amber-400/60",
+      activeShadow: "active:shadow-lg active:shadow-amber-400/40",
       titleColor: "text-amber-400",
-      titleShadow: "0 0 30px rgba(251, 191, 36, 0.5)",
       border: "border-amber-500/10",
       helpBorder: "border-amber-400/30",
       helpHoverBorder: "hover:border-amber-400/50",
     },
     pink: {
       gradient: "from-pink-400 to-rose-500",
-      shadow: "shadow-pink-400/40",
-      hoverShadow: "hover:shadow-pink-400/60",
+      hoverShadow: "hover:shadow-xl hover:shadow-pink-400/60",
+      activeShadow: "active:shadow-lg active:shadow-pink-400/40",
       titleColor: "text-pink-400",
-      titleShadow: "0 0 30px rgba(236, 72, 153, 0.5)",
       border: "border-pink-500/10",
       helpBorder: "border-pink-400/30",
       helpHoverBorder: "hover:border-pink-400/50",
@@ -93,7 +89,7 @@ const StartMenu = ({
           <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
             <button
               onClick={onBack}
-              className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform text-sm sm:text-lg flex-shrink-0`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all text-sm sm:text-lg flex-shrink-0`}
               title="Back to Game Selector"
             >
               <IoArrowBack />
@@ -117,7 +113,7 @@ const StartMenu = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
             <button
               onClick={onStart}
-              className={`w-full sm:w-auto bg-gradient-to-r ${colors.gradient} text-white border-none font-raleway font-semibold cursor-pointer rounded-lg sm:rounded-xl shadow-lg ${colors.shadow} transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${colors.hoverShadow} active:scale-95 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg flex items-center justify-center gap-2`}
+              className={`w-full sm:flex-1 bg-gradient-to-r ${colors.gradient} text-white border-none font-raleway font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 ${colors.hoverShadow} active:brightness-90 ${colors.activeShadow} focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg flex items-center justify-center`}
             >
               {startButtonText}
             </button>
@@ -126,9 +122,8 @@ const StartMenu = ({
               tips.length > 0) && (
                 <button
                   onClick={() => setShowHelp(true)}
-                  className={`w-full sm:w-auto flex items-center justify-center gap-2 glass-button ${colors.titleColor} font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg ${colors.helpBorder} ${colors.helpHoverBorder}`}
+                  className={`w-full sm:flex-1 flex items-center justify-center glass-button ${colors.titleColor} font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 active:brightness-90 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg ${colors.helpBorder} ${colors.helpHoverBorder}`}
                 >
-                  <IoHelpCircle className="text-lg sm:text-xl" />
                   How to Play
                 </button>
               )}

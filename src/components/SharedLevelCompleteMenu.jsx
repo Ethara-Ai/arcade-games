@@ -145,13 +145,13 @@ const LevelCompleteMenu = ({
           <div className="flex items-stretch justify-center gap-2 sm:gap-3 mt-1 sm:mt-2 w-full">
             <button
               onClick={onNextLevel}
-              className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r ${colors.primaryGradient} text-white rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:scale-105 active:scale-95 transition-transform shadow-lg ${colors.primaryShadow} whitespace-nowrap`}
+              className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r ${colors.primaryGradient} text-white rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:brightness-110 active:brightness-90 transition-all shadow-lg ${colors.primaryShadow} whitespace-nowrap`}
             >
               {nextLevelText}
             </button>
             <button
               onClick={onMainMenu}
-              className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 glass-button text-gray-300 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:scale-105 active:scale-95 transition-transform whitespace-nowrap"
+              className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 glass-button text-gray-300 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:brightness-110 active:brightness-90 transition-all whitespace-nowrap"
             >
               {mainMenuText}
             </button>

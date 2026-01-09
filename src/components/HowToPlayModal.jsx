@@ -69,7 +69,7 @@ const HowToPlayModal = ({
 
       {/* Glass panel */}
       <div
-        className="relative glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 max-w-md w-full max-h-[90vh] sm:max-h-[85vh] overflow-y-auto"
+        className="relative glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 max-w-md w-full max-h-[90vh] sm:max-h-[85vh] overflow-y-auto scrollbar-hide"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Inner glass shine */}
@@ -78,7 +78,7 @@ const HowToPlayModal = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full glass-button text-gray-400 hover:text-white active:scale-95 transition-all z-20"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full glass-button text-gray-400 hover:text-white hover:brightness-110 active:brightness-90 transition-all z-20"
         >
           <IoClose className="text-lg sm:text-xl" />
         </button>
@@ -179,7 +179,7 @@ const HowToPlayModal = ({
           {/* Got It Button */}
           <button
             onClick={onClose}
-            className={`w-full py-2.5 sm:py-3 bg-gradient-to-r ${colors.buttonGradient} text-white rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:scale-[1.02] active:scale-95 transition-transform ${colors.buttonShadow} shadow-lg mt-1 sm:mt-2`}
+            className={`w-full py-2.5 sm:py-3 bg-gradient-to-r ${colors.buttonGradient} text-white rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:brightness-110 active:brightness-90 transition-all ${colors.buttonShadow} shadow-lg mt-1 sm:mt-2`}
           >
             Got It!
           </button>

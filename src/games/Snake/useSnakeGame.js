@@ -30,6 +30,7 @@ export const useSnakeGame = () => {
   const [gameState, setGameState] = useState(SNAKE_GAME_STATES.START);
   const [score, setScore] = useState(0);
   const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE.length);
+  const [speedLevel, setSpeedLevel] = useState(3); // Speed level: 1 (slowest) to 5 (fastest), default is 3 (normal)
 
   // High score state - using safe storage for initialization
   const [highScore, setHighScore] = useState(() => {
@@ -86,11 +87,32 @@ export const useSnakeGame = () => {
     setSnakeLength(INITIAL_SNAKE.length);
   }, [generateFood]);
 
-  // Get game speed based on score
+  // Speed level multipliers (1 = slowest, 5 = fastest)
+  const SPEED_MULTIPLIERS = {
+    1: 1.5,   // 50% slower
+    2: 1.25,  // 25% slower
+    3: 1.0,   // Normal speed
+    4: 0.75,  // 25% faster
+    5: 0.5,   // 50% faster
+  };
+
+  // Get game speed based on score and speed level
   const getGameSpeed = useCallback(() => {
     const speedReduction =
       Math.floor(scoreRef.current / FOOD_POINTS) * SPEED_INCREASE_PER_FOOD;
-    return Math.max(MIN_SPEED, BASE_SPEED - speedReduction);
+    const baseSpeed = Math.max(MIN_SPEED, BASE_SPEED - speedReduction);
+    const multiplier = SPEED_MULTIPLIERS[speedLevel] || 1.0;
+    return Math.max(MIN_SPEED * 0.5, baseSpeed * multiplier);
+  }, [speedLevel]);
+
+  // Increase speed (lower level number = slower)
+  const increaseSpeed = useCallback(() => {
+    setSpeedLevel((prev) => Math.min(5, prev + 1));
+  }, []);
+
+  // Decrease speed
+  const decreaseSpeed = useCallback(() => {
+    setSpeedLevel((prev) => Math.max(1, prev - 1));
   }, []);
 
   // Move snake
@@ -265,6 +287,18 @@ export const useSnakeGame = () => {
         return true;
       }
 
+      // Handle speed control with +/- keys
+      if (e.key === "+" || e.key === "=" || e.key === "]") {
+        e.preventDefault();
+        increaseSpeed();
+        return true;
+      }
+      if (e.key === "-" || e.key === "_" || e.key === "[") {
+        e.preventDefault();
+        decreaseSpeed();
+        return true;
+      }
+
       // Handle direction change
       const direction = KEY_MAPPINGS[e.key];
       if (direction && gameState === SNAKE_GAME_STATES.PLAYING) {
@@ -275,7 +309,7 @@ export const useSnakeGame = () => {
 
       return false;
     },
-    [gameState, handleStartGame, handlePauseToggle, changeDirection],
+    [gameState, handleStartGame, handlePauseToggle, changeDirection, increaseSpeed, decreaseSpeed],
   );
 
   // Handle touch start
@@ -333,6 +367,7 @@ export const useSnakeGame = () => {
     score,
     highScore,
     snakeLength,
+    speedLevel,
 
     // Refs for direct access
     snakeRef,
@@ -350,6 +385,10 @@ export const useSnakeGame = () => {
     handleTouchStart,
     handleTouchEnd,
     handleGameOver,
+
+    // Speed control
+    increaseSpeed,
+    decreaseSpeed,
 
     // Game logic
     initGame,

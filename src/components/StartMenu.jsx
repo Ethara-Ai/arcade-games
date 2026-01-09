@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IoHelpCircle, IoArrowBack } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import HowToPlayModal from "./HowToPlayModal";
 
 const BRICKRUSH_INSTRUCTIONS = [
@@ -37,7 +37,7 @@ const StartMenu = ({ onStart, onBack }) => {
   }, [onStart, showHelp]);
 
   return (
-    <div id="startMenu" className="glass-overlay">
+    <div id="startMenu" className="fixed inset-0 z-50 flex items-center justify-center glass-overlay">
       <div className="menu-content">
         {/* Glass panel container */}
         <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-md mx-3 sm:mx-4">
@@ -45,7 +45,7 @@ const StartMenu = ({ onStart, onBack }) => {
           <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
             <button
               onClick={onBack}
-              className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform text-sm sm:text-lg flex-shrink-0"
+              className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all text-sm sm:text-lg flex-shrink-0"
               title="Back to Game Selector"
             >
               <IoArrowBack />
@@ -68,15 +68,14 @@ const StartMenu = ({ onStart, onBack }) => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
             <button
               onClick={onStart}
-              className="w-full sm:w-auto bg-gradient-to-r from-cyan-400 to-blue-500 text-white border-none font-raleway font-semibold cursor-pointer rounded-lg sm:rounded-xl shadow-lg shadow-cyan-400/40 transition-all duration-300 transform hover:from-blue-500 hover:to-cyan-400 hover:scale-105 hover:shadow-xl hover:shadow-cyan-400/60 active:scale-95 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg flex items-center justify-center gap-2"
+              className="w-full sm:flex-1 bg-gradient-to-r from-cyan-400 to-blue-500 text-white border-none font-raleway font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 hover:shadow-xl hover:shadow-cyan-400/60 active:brightness-90 active:shadow-lg active:shadow-cyan-400/40 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg flex items-center justify-center"
             >
               Start Game
             </button>
             <button
               onClick={() => setShowHelp(true)}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 glass-button text-cyan-400 font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg border-cyan-400/30 hover:border-cyan-400/50"
+              className="w-full sm:flex-1 flex items-center justify-center glass-button text-cyan-400 font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 active:brightness-90 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg border-cyan-400/30 hover:border-cyan-400/50"
             >
-              <IoHelpCircle className="text-lg sm:text-xl" />
               How to Play
             </button>
           </div>

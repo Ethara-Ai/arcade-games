@@ -185,7 +185,7 @@ class GameErrorBoundary extends Component {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={this.handleRetry}
-                className={`flex-1 px-6 py-3 bg-gradient-to-r ${colors.gradient} text-white rounded-xl font-semibold hover:scale-105 active:scale-95 transition-transform shadow-lg ${colors.shadow} flex items-center justify-center gap-2`}
+                className={`flex-1 px-6 py-3 bg-gradient-to-r ${colors.gradient} text-white rounded-xl font-semibold hover:brightness-110 active:brightness-90 transition-all shadow-lg ${colors.shadow} flex items-center justify-center gap-2`}
               >
                 <IoRefresh className="text-lg" />
                 Try Again
@@ -194,7 +194,7 @@ class GameErrorBoundary extends Component {
               {this.props.onBack && (
                 <button
                   onClick={this.handleBack}
-                  className="flex-1 px-6 py-3 glass-button text-gray-300 rounded-xl font-semibold hover:scale-105 active:scale-95 transition-transform flex items-center justify-center gap-2"
+                  className="flex-1 px-6 py-3 glass-button text-gray-300 rounded-xl font-semibold hover:brightness-110 active:brightness-90 transition-all flex items-center justify-center gap-2"
                 >
                   <IoArrowBack className="text-lg" />
                   Back to Menu

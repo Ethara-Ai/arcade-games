@@ -117,7 +117,7 @@ const Game1024Content = ({ onBack }) => {
           {/* Back button */}
           <button
             onClick={onBack}
-            className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform"
+            className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all"
             title="Back to Game Selector"
             aria-label="Back to Game Selector"
           >
@@ -139,7 +139,7 @@ const Game1024Content = ({ onBack }) => {
           <div className="flex items-center gap-2">
             <button
               onClick={handleOpenHelp}
-              className="w-10 h-10 glass-button rounded-full text-amber-400 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+              className="w-10 h-10 glass-button rounded-full text-amber-400 flex items-center justify-center hover:brightness-110 active:brightness-90 transition-all"
               title="How to Play"
               aria-label="How to Play"
             >
@@ -147,7 +147,7 @@ const Game1024Content = ({ onBack }) => {
             </button>
             <button
               onClick={handlePauseToggle}
-              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
+              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:brightness-110 active:brightness-90 transition-all ${
                 isPaused
                   ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
                   : "bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-400/40"
@@ -159,7 +159,7 @@ const Game1024Content = ({ onBack }) => {
             </button>
             <button
               onClick={handleNewGame}
-              className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-amber-400/40 hover:scale-105 active:scale-95 transition-transform"
+              className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-amber-400/40 hover:brightness-110 active:brightness-90 transition-all"
               title="New Game"
               aria-label="Start New Game"
             >
@@ -266,13 +266,13 @@ const Game1024Content = ({ onBack }) => {
               <div className="flex gap-3 mt-2 w-full">
                 <button
                   onClick={handleContinue}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-xl font-semibold hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-amber-400/30"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-xl font-semibold hover:brightness-110 active:brightness-90 transition-all shadow-lg shadow-amber-400/30"
                 >
                   Keep Playing
                 </button>
                 <button
                   onClick={handleNewGame}
-                  className="flex-1 px-6 py-3 glass-button text-gray-300 rounded-xl font-semibold hover:scale-105 active:scale-95 transition-transform"
+                  className="flex-1 px-6 py-3 glass-button text-gray-300 rounded-xl font-semibold hover:brightness-110 active:brightness-90 transition-all"
                 >
                   New Game
                 </button>
