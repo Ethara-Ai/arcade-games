@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { GAME_STATES, INITIAL_LIVES, TRANSITION_TIMINGS } from '../../constants';
 import { useHighScore, useWindowSize } from '../../hooks';
 import { STORAGE_KEYS } from '../../config';
-import { GameErrorBoundary } from '../../components';
+import { GameErrorBoundary, HowToPlayModal } from '../../components';
 import LevelTransition from '../../components/LevelTransition';
 import { useLevelTransition } from '../../components/useLevelTransition';
 import {
@@ -13,6 +13,27 @@ import {
 } from './components';
 import { useBrickrushGame } from './useBrickrushGame';
 import BrickrushCanvas from './BrickrushCanvas';
+
+// Brickrush-specific content for the How to Play modal
+const BRICKRUSH_INSTRUCTIONS = [
+  'Break all the bricks to complete each level',
+  'Collect power-ups that fall from broken bricks',
+  "Don't let the ball fall below your paddle",
+  'Grey steel bricks cannot be destroyed but reflect the ball',
+];
+
+const BRICKRUSH_CONTROLS = [
+  { key: '← →', action: 'Move paddle' },
+  { key: 'Mouse', action: 'Move paddle (follow cursor)' },
+  { key: 'Space / Click', action: 'Launch ball' },
+  { key: 'P / Esc', action: 'Pause game' },
+];
+
+const BRICKRUSH_TIPS = [
+  'Aim for the corners to clear more bricks',
+  'Multi-ball power-ups help clear levels faster',
+  'The ball speeds up as you progress',
+];
 
 /**
  * BrickrushGame - Main component for the Brickrush game
@@ -36,6 +57,7 @@ const BrickrushGameContent = ({ onBack }) => {
   // UI state for transitions
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [canvasFadeIn, setCanvasFadeIn] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   // Level transition callback ref
   const levelTransitionCallbackRef = useRef(null);
@@ -193,6 +215,16 @@ const BrickrushGameContent = ({ onBack }) => {
     }
   }, [gameState, handlePause, handleResume]);
 
+  // Handle help modal open
+  const handleOpenHelp = useCallback(() => {
+    setShowHelp(true);
+  }, []);
+
+  // Handle help modal close
+  const handleCloseHelp = useCallback(() => {
+    setShowHelp(false);
+  }, []);
+
   // Handle keyboard events
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -255,10 +287,12 @@ const BrickrushGameContent = ({ onBack }) => {
           gameState={gameState}
           ballLaunched={ballLaunched}
           hasBalls={hasBalls}
+          isHelpOpen={showHelp}
           onPauseResume={handlePauseResume}
           onRestart={handleRestart}
           onMainMenu={handleMainMenu}
           onBack={onBack}
+          onHowToPlay={handleOpenHelp}
         />
       )}
 
@@ -280,9 +314,12 @@ const BrickrushGameContent = ({ onBack }) => {
           gameState={gameState}
           ballLaunched={ballLaunched}
           hasBalls={hasBalls}
+          isHelpOpen={showHelp}
           onPause={handlePauseResume}
           onBack={onBack}
           onLaunchBall={handleLaunchBall}
+          onRestart={handleRestart}
+          onHowToPlay={handleOpenHelp}
         />
       )}
 
@@ -303,6 +340,17 @@ const BrickrushGameContent = ({ onBack }) => {
 
       {/* Level Transition Overlay - React-managed via hook */}
       <LevelTransition {...transitionProps} accentColor="cyan" message="Level Complete!" />
+
+      {/* How to Play Modal */}
+      <HowToPlayModal
+        isOpen={showHelp}
+        onClose={handleCloseHelp}
+        gameName="Brickrush"
+        accentColor="cyan"
+        instructions={BRICKRUSH_INSTRUCTIONS}
+        controls={BRICKRUSH_CONTROLS}
+        tips={BRICKRUSH_TIPS}
+      />
     </div>
   );
 };

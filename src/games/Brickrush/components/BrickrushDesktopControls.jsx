@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { IoArrowBack, IoPause, IoPlay, IoRefresh, IoHome } from 'react-icons/io5';
+import { IoArrowBack, IoPause, IoPlay, IoRefresh, IoHome, IoHelpCircle } from 'react-icons/io5';
 import { GAME_STATES } from '../../../constants';
 
 /**
@@ -10,10 +10,12 @@ const BrickrushDesktopControls = ({
   gameState,
   ballLaunched,
   hasBalls,
+  isHelpOpen,
   onPauseResume,
   onRestart,
   _onMainMenu,
   onBack,
+  onHowToPlay,
 }) => {
   const isPlaying = gameState === GAME_STATES.PLAYING;
   const isPaused = gameState === GAME_STATES.PAUSED;
@@ -30,9 +32,9 @@ const BrickrushDesktopControls = ({
         <IoArrowBack />
       </button>
 
-      {/* Launch Hint */}
+      {/* Launch Hint - Hidden when help modal is open */}
       <div
-        className={`desktop-launch-hint ${isPlaying && !ballLaunched && hasBalls ? 'show' : ''}`}
+        className={`desktop-launch-hint ${isPlaying && !ballLaunched && hasBalls && !isHelpOpen ? 'show' : ''}`}
       >
         Click/Press Space to launch the ball
       </div>
@@ -50,6 +52,13 @@ const BrickrushDesktopControls = ({
         className={`desktop-action-buttons ${showControls ? 'show' : ''}`}
         style={{ display: showControls ? 'flex' : 'none' }}
       >
+        <button
+          onClick={onHowToPlay}
+          className="desktop-action-btn bg-gradient-to-r from-violet-500 to-purple-600 text-white border-none w-12 h-10 text-lg cursor-pointer rounded-lg font-medium shadow-lg shadow-violet-400/40 transition-all duration-200 flex items-center justify-center hover:brightness-110 hover:shadow-xl hover:shadow-violet-400/60 active:brightness-90 focus:outline-none"
+          title="How to Play"
+        >
+          <IoHelpCircle />
+        </button>
         <button
           onClick={onPauseResume}
           className={`desktop-action-btn ${
@@ -95,6 +104,10 @@ BrickrushDesktopControls.propTypes = {
   _onMainMenu: PropTypes.func,
   /** Callback for back action */
   onBack: PropTypes.func.isRequired,
+  /** Callback for how to play action */
+  onHowToPlay: PropTypes.func.isRequired,
+  /** Whether the help modal is open */
+  isHelpOpen: PropTypes.bool,
 };
 
 export default BrickrushDesktopControls;
