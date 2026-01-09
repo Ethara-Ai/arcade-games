@@ -45,12 +45,15 @@ const StartMenu = ({ onStart, onBack }) => {
           <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
             <button
               onClick={onBack}
-              className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-cyan-400/40 hover:scale-105 active:scale-95 transition-transform text-sm sm:text-lg flex-shrink-0"
+              className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform text-sm sm:text-lg flex-shrink-0"
               title="Back to Game Selector"
             >
               <IoArrowBack />
             </button>
-            <h1 className="game-title text-2xl sm:text-3xl md:text-4xl">
+            <h1
+              className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent"
+              style={{ fontFamily: '"Raleway", sans-serif' }}
+            >
               Brickrush
             </h1>
           </div>

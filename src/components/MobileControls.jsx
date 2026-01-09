@@ -8,10 +8,10 @@ const MobileControls = ({ gameState, ballLaunched, hasBalls, onPause, onBack, on
 
   return (
     <div className="mobile-controls">
-      {/* Back Button */}
+      {/* Back Button - Black color to match dark UI */}
       <button
         onClick={onBack}
-        className={`mobile-back-btn bg-gradient-to-br from-cyan-400 to-blue-500 border-none rounded-full text-white text-sm sm:text-base cursor-pointer shadow-lg shadow-cyan-400/40 transition-all duration-300 transform active:scale-95 focus:outline-none ${showControls ? "show" : ""}`}
+        className={`mobile-back-btn bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white text-sm sm:text-base cursor-pointer shadow-lg shadow-black/40 transition-all duration-300 transform active:scale-95 hover:border-gray-500/50 focus:outline-none ${showControls ? "show" : ""}`}
         title="Back to Main Menu"
         style={{
           width: "clamp(36px, 10vw, 44px)",

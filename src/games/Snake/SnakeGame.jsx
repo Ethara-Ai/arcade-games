@@ -141,10 +141,10 @@ const SnakeGame = ({ onBack }) => {
       {/* Header with controls - visible when game is active */}
       {isGameActive && (
         <div className="relative z-20 flex items-center justify-between w-full max-w-[min(90vw,400px)] mb-4">
-          {/* Back button */}
+          {/* Back button - Black color to match dark UI */}
           <button
             onClick={onBack}
-            className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-green-400/40 hover:scale-105 active:scale-95 transition-transform"
+            className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform"
             title="Back to Game Selector"
           >
             <IoArrowBack />
@@ -172,11 +172,10 @@ const SnakeGame = ({ onBack }) => {
             </button>
             <button
               onClick={handlePauseToggle}
-              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
-                isPaused
+              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${isPaused
                   ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
                   : "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
-              }`}
+                }`}
               title={isPaused ? "Resume" : "Pause"}
             >
               {isPaused ? <IoPlay /> : <IoPause />}

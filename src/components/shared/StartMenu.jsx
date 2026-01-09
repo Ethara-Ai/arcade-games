@@ -85,7 +85,7 @@ const StartMenu = ({
   }, [onStart, showHelp]);
 
   return (
-    <div id="startMenu" className="glass-overlay">
+    <div id="startMenu" className="fixed inset-0 z-50 flex items-center justify-center glass-overlay">
       <div className="menu-content">
         {/* Glass panel container */}
         <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-md mx-3 sm:mx-4">
@@ -93,17 +93,14 @@ const StartMenu = ({
           <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
             <button
               onClick={onBack}
-              className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br ${colors.gradient} rounded-full text-white flex items-center justify-center shadow-lg ${colors.shadow} hover:scale-105 active:scale-95 transition-transform text-sm sm:text-lg flex-shrink-0`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform text-sm sm:text-lg flex-shrink-0`}
               title="Back to Game Selector"
             >
               <IoArrowBack />
             </button>
             <h1
-              className={`game-title text-2xl sm:text-3xl md:text-4xl font-black ${colors.titleColor}`}
-              style={{
-                fontFamily: '"Raleway", sans-serif',
-                textShadow: colors.titleShadow,
-              }}
+              className={`text-2xl sm:text-3xl md:text-4xl font-black ${colors.titleColor}`}
+              style={{ fontFamily: '"Raleway", sans-serif' }}
             >
               {title}
             </h1>
@@ -127,14 +124,14 @@ const StartMenu = ({
             {(instructions.length > 0 ||
               controls.length > 0 ||
               tips.length > 0) && (
-              <button
-                onClick={() => setShowHelp(true)}
-                className={`w-full sm:w-auto flex items-center justify-center gap-2 glass-button ${colors.titleColor} font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg ${colors.helpBorder} ${colors.helpHoverBorder}`}
-              >
-                <IoHelpCircle className="text-lg sm:text-xl" />
-                How to Play
-              </button>
-            )}
+                <button
+                  onClick={() => setShowHelp(true)}
+                  className={`w-full sm:w-auto flex items-center justify-center gap-2 glass-button ${colors.titleColor} font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg ${colors.helpBorder} ${colors.helpHoverBorder}`}
+                >
+                  <IoHelpCircle className="text-lg sm:text-xl" />
+                  How to Play
+                </button>
+              )}
           </div>
         </div>
       </div>
