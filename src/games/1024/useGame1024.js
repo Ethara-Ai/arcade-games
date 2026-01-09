@@ -2,8 +2,10 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import {
   GAME_1024_KEY_MAPPINGS as KEY_MAPPINGS,
   GAME_1024_STATES,
+  ANIMATION_TIMINGS,
 } from "../../constants";
 import { STORAGE_KEYS, debugLog } from "../../config";
+import { safeGetInt, safeSetItem } from "../../utils/safeStorage";
 import {
   initializeGrid,
   move,
@@ -15,17 +17,22 @@ import {
 /**
  * useGame1024 - Custom hook for 1024 game logic
  * Separates game state and logic from rendering concerns
+ *
+ * Refactored to use:
+ * - Safe storage utilities for localStorage access
+ * - Centralized timing constants
+ * - Improved error handling
  */
 export const useGame1024 = () => {
   // Grid state
   const [grid, setGrid] = useState(() => initializeGrid());
 
-  // Score state
+  // Score state - using safe storage for initialization
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.GAME_1024_BEST_SCORE);
+    const saved = safeGetInt(STORAGE_KEYS.GAME_1024_BEST_SCORE, 0);
     debugLog("Loaded 1024 best score:", saved);
-    return saved ? parseInt(saved, 10) : 0;
+    return saved;
   });
 
   // Game state
@@ -36,18 +43,44 @@ export const useGame1024 = () => {
   // Touch handling ref
   const touchStartRef = useRef({ x: 0, y: 0 });
 
-  // Computed values
+  // Animation timeout ref for cleanup
+  const animationTimeoutRef = useRef(null);
+
+  // Computed values - effectiveBestScore is derived, not stored
   const effectiveBestScore = score > bestScore ? score : bestScore;
   const highestTile = getHighestTile(grid);
 
-  // Save best score when it changes
+  // Get animation timing (with fallback)
+  const moveAnimationDelay = ANIMATION_TIMINGS?.TILE_MERGE || 100;
+
+  // Helper to save and update best score (called from event handlers, not effects)
+  const saveBestScore = useCallback(
+    (newScore) => {
+      if (newScore > bestScore) {
+        const success = safeSetItem(
+          STORAGE_KEYS.GAME_1024_BEST_SCORE,
+          newScore.toString(),
+        );
+        if (success) {
+          debugLog("Saved 1024 best score:", newScore);
+        } else {
+          debugLog("Failed to save 1024 best score to storage:", newScore);
+        }
+        setBestScore(newScore);
+      }
+    },
+    [bestScore],
+  );
+
+  // Cleanup animation timeout on unmount
   useEffect(() => {
-    if (score > bestScore) {
-      localStorage.setItem(STORAGE_KEYS.GAME_1024_BEST_SCORE, score.toString());
-      setBestScore(score);
-      debugLog("Saved 1024 best score:", score);
-    }
-  }, [score, bestScore]);
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+        animationTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   // Start game
   const handleStartGame = useCallback(() => {
@@ -67,7 +100,12 @@ export const useGame1024 = () => {
       if (result.moved) {
         setIsAnimating(true);
 
-        setTimeout(() => {
+        // Clear any existing animation timeout
+        if (animationTimeoutRef.current) {
+          clearTimeout(animationTimeoutRef.current);
+        }
+
+        animationTimeoutRef.current = setTimeout(() => {
           const newGrid = addRandomTile(result.grid);
           setGrid(newGrid);
           setScore((prev) => prev + result.score);
@@ -75,10 +113,28 @@ export const useGame1024 = () => {
           const newState = getGameState(newGrid, hasWonBefore);
           setGameState(newState);
           setIsAnimating(false);
-        }, 100);
+          animationTimeoutRef.current = null;
+
+          // Save best score when game ends
+          if (newState === GAME_1024_STATES.GAME_OVER) {
+            const finalScore = score + result.score;
+            if (finalScore > bestScore) {
+              saveBestScore(finalScore);
+            }
+          }
+        }, moveAnimationDelay);
       }
     },
-    [grid, gameState, hasWonBefore, isAnimating],
+    [
+      grid,
+      gameState,
+      hasWonBefore,
+      isAnimating,
+      moveAnimationDelay,
+      score,
+      bestScore,
+      saveBestScore,
+    ],
   );
 
   // Handle resume
@@ -106,10 +162,17 @@ export const useGame1024 = () => {
 
   // New game
   const handleNewGame = useCallback(() => {
+    // Clear any pending animation
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
     setGrid(initializeGrid());
     setScore(0);
     setGameState(GAME_1024_STATES.PLAYING);
     setHasWonBefore(false);
+    setIsAnimating(false);
   }, []);
 
   // Continue after winning
@@ -178,6 +241,15 @@ export const useGame1024 = () => {
     [handleMove],
   );
 
+  // Check if game can accept moves
+  const canAcceptInput = useCallback(() => {
+    return (
+      (gameState === GAME_1024_STATES.PLAYING ||
+        (gameState === GAME_1024_STATES.WON && hasWonBefore)) &&
+      !isAnimating
+    );
+  }, [gameState, hasWonBefore, isAnimating]);
+
   return {
     // State
     grid,
@@ -199,6 +271,9 @@ export const useGame1024 = () => {
     handleKeyDown,
     handleTouchStart,
     handleTouchEnd,
+
+    // Utilities
+    canAcceptInput,
 
     // State setters (for external control if needed)
     setGameState,

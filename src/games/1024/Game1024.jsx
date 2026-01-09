@@ -12,6 +12,7 @@ import {
   PauseMenu,
   GameOverMenu,
   HowToPlayModal,
+  GameErrorBoundary,
 } from "../../components";
 import { useGame1024 } from "./useGame1024";
 import Game1024Board from "./Game1024Board";
@@ -38,10 +39,12 @@ const GAME_1024_TIPS = [
 ];
 
 /**
- * Game1024 - Container component for the 1024 game
+ * Game1024Content - Internal component for the 1024 game
  * Manages game state and composes UI components
+ *
+ * Separated from wrapper to allow error boundary to catch errors
  */
-const Game1024 = ({ onBack }) => {
+const Game1024Content = ({ onBack }) => {
   // Game logic hook
   const {
     grid,
@@ -62,7 +65,7 @@ const Game1024 = ({ onBack }) => {
   // UI state
   const [showHelp, setShowHelp] = useState(false);
 
-  // Keyboard controls
+  // Keyboard controls with cleanup
   useEffect(() => {
     const onKeyDown = (e) => {
       handleKeyDown(e, showHelp);
@@ -84,6 +87,16 @@ const Game1024 = ({ onBack }) => {
     onBack();
   }, [onBack]);
 
+  // Handle help modal open
+  const handleOpenHelp = useCallback(() => {
+    setShowHelp(true);
+  }, []);
+
+  // Handle help modal close
+  const handleCloseHelp = useCallback(() => {
+    setShowHelp(false);
+  }, []);
+
   return (
     <div className="game-1024-container flex flex-col items-center justify-center min-h-screen overflow-hidden p-4 bg-[#0a0a0a]">
       {/* Animated background */}
@@ -101,11 +114,12 @@ const Game1024 = ({ onBack }) => {
       {/* Header with controls - visible when game is active */}
       {isGameActive && (
         <div className="relative z-20 flex items-center justify-between w-full max-w-[min(90vw,400px)] mb-4">
-          {/* Back button - Black color to match dark UI */}
+          {/* Back button */}
           <button
             onClick={onBack}
             className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform"
             title="Back to Game Selector"
+            aria-label="Back to Game Selector"
           >
             <IoArrowBack />
           </button>
@@ -124,9 +138,10 @@ const Game1024 = ({ onBack }) => {
           {/* Action buttons */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setShowHelp(true)}
+              onClick={handleOpenHelp}
               className="w-10 h-10 glass-button rounded-full text-amber-400 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
               title="How to Play"
+              aria-label="How to Play"
             >
               <IoHelpCircle className="text-xl" />
             </button>
@@ -138,6 +153,7 @@ const Game1024 = ({ onBack }) => {
                   : "bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-400/40"
               }`}
               title={isPaused ? "Resume" : "Pause"}
+              aria-label={isPaused ? "Resume Game" : "Pause Game"}
             >
               {isPaused ? <IoPlay /> : <IoPause />}
             </button>
@@ -145,6 +161,7 @@ const Game1024 = ({ onBack }) => {
               onClick={handleNewGame}
               className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-amber-400/40 hover:scale-105 active:scale-95 transition-transform"
               title="New Game"
+              aria-label="Start New Game"
             >
               <IoRefresh />
             </button>
@@ -211,7 +228,12 @@ const Game1024 = ({ onBack }) => {
 
       {/* Win Screen */}
       {gameState === GAME_1024_STATES.WON && (
-        <div className="fixed inset-0 glass-overlay flex flex-col items-center justify-center z-50 p-4">
+        <div
+          className="fixed inset-0 glass-overlay flex flex-col items-center justify-center z-50 p-4"
+          role="dialog"
+          aria-labelledby="win-title"
+          aria-modal="true"
+        >
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/20 rounded-full blur-[100px]" />
           </div>
@@ -219,6 +241,7 @@ const Game1024 = ({ onBack }) => {
           <div className="relative z-10 glass-panel rounded-3xl p-8 max-w-md w-full">
             <div className="flex flex-col items-center gap-4">
               <h2
+                id="win-title"
                 className="text-4xl font-black text-amber-400 text-center"
                 style={{
                   fontFamily: '"Raleway", sans-serif',
@@ -262,7 +285,7 @@ const Game1024 = ({ onBack }) => {
       {/* How to Play Modal */}
       <HowToPlayModal
         isOpen={showHelp}
-        onClose={() => setShowHelp(false)}
+        onClose={handleCloseHelp}
         gameName="1024"
         accentColor="amber"
         instructions={GAME_1024_INSTRUCTIONS}
@@ -270,6 +293,23 @@ const Game1024 = ({ onBack }) => {
         tips={GAME_1024_TIPS}
       />
     </div>
+  );
+};
+
+/**
+ * Game1024 - Container component wrapped with error boundary
+ * Provides crash protection for the game
+ */
+const Game1024 = ({ onBack }) => {
+  return (
+    <GameErrorBoundary
+      gameName="1024"
+      accentColor="amber"
+      onBack={onBack}
+      showErrorDetails={import.meta.env.DEV}
+    >
+      <Game1024Content onBack={onBack} />
+    </GameErrorBoundary>
   );
 };
 

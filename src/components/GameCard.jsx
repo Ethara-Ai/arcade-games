@@ -67,7 +67,7 @@ const GameCard = memo(({
   return (
     <button
       onClick={onClick}
-      className={`game-card glass-card group relative rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 ${colors.hoverBorder} transition-all duration-300 active:scale-95 sm:hover:scale-105 text-left overflow-hidden`}
+      className={`game-card glass-card group relative rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 ${colors.hoverBorder} transition-all duration-300 active:scale-95 sm:hover:scale-105 text-left overflow-hidden focus:outline-none focus-visible:outline-none`}
     >
       {/* Glass gradient shine */}
       <div

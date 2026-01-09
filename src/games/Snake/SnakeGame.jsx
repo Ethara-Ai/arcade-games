@@ -12,6 +12,7 @@ import {
   PauseMenu,
   GameOverMenu,
   HowToPlayModal,
+  GameErrorBoundary,
 } from "../../components";
 import { useSnakeGame } from "./useSnakeGame";
 import SnakeCanvas from "./SnakeCanvas";
@@ -39,10 +40,12 @@ const SNAKE_TIPS = [
 ];
 
 /**
- * SnakeGame - Container component for the Snake game
+ * SnakeGameContent - Internal component for the Snake game
  * Manages game state and composes UI components
+ *
+ * Separated from wrapper to allow error boundary to catch errors
  */
-const SnakeGame = ({ onBack }) => {
+const SnakeGameContent = ({ onBack }) => {
   // Game logic hook
   const {
     gameState,
@@ -69,7 +72,7 @@ const SnakeGame = ({ onBack }) => {
   // Canvas ref
   const canvasRef = useRef(null);
 
-  // Keyboard controls
+  // Keyboard controls with cleanup
   useEffect(() => {
     const onKeyDown = (e) => {
       handleKeyDown(e, showHelp);
@@ -118,6 +121,16 @@ const SnakeGame = ({ onBack }) => {
     onBack();
   }, [onBack]);
 
+  // Handle help modal open
+  const handleOpenHelp = useCallback(() => {
+    setShowHelp(true);
+  }, []);
+
+  // Handle help modal close
+  const handleCloseHelp = useCallback(() => {
+    setShowHelp(false);
+  }, []);
+
   return (
     <div
       className="snake-game-container flex flex-col items-center justify-center min-h-screen overflow-hidden p-4 bg-[#0a0a0a]"
@@ -141,11 +154,12 @@ const SnakeGame = ({ onBack }) => {
       {/* Header with controls - visible when game is active */}
       {isGameActive && (
         <div className="relative z-20 flex items-center justify-between w-full max-w-[min(90vw,400px)] mb-4">
-          {/* Back button - Black color to match dark UI */}
+          {/* Back button */}
           <button
             onClick={onBack}
             className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-105 hover:border-gray-500/50 active:scale-95 transition-transform"
             title="Back to Game Selector"
+            aria-label="Back to Game Selector"
           >
             <IoArrowBack />
           </button>
@@ -164,9 +178,10 @@ const SnakeGame = ({ onBack }) => {
           {/* Action buttons */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setShowHelp(true)}
+              onClick={handleOpenHelp}
               className="w-10 h-10 glass-button rounded-full text-green-400 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
               title="How to Play"
+              aria-label="How to Play"
             >
               <IoHelpCircle className="text-xl" />
             </button>
@@ -178,6 +193,7 @@ const SnakeGame = ({ onBack }) => {
                   : "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
               }`}
               title={isPaused ? "Resume" : "Pause"}
+              aria-label={isPaused ? "Resume Game" : "Pause Game"}
             >
               {isPaused ? <IoPlay /> : <IoPause />}
             </button>
@@ -185,6 +201,7 @@ const SnakeGame = ({ onBack }) => {
               onClick={handleNewGame}
               className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-green-400/40 hover:scale-105 active:scale-95 transition-transform"
               title="New Game"
+              aria-label="Start New Game"
             >
               <IoRefresh />
             </button>
@@ -292,7 +309,7 @@ const SnakeGame = ({ onBack }) => {
       {/* How to Play Modal */}
       <HowToPlayModal
         isOpen={showHelp}
-        onClose={() => setShowHelp(false)}
+        onClose={handleCloseHelp}
         gameName="Snake"
         accentColor="green"
         instructions={SNAKE_INSTRUCTIONS}
@@ -300,6 +317,23 @@ const SnakeGame = ({ onBack }) => {
         tips={SNAKE_TIPS}
       />
     </div>
+  );
+};
+
+/**
+ * SnakeGame - Container component wrapped with error boundary
+ * Provides crash protection for the game
+ */
+const SnakeGame = ({ onBack }) => {
+  return (
+    <GameErrorBoundary
+      gameName="Snake"
+      accentColor="green"
+      onBack={onBack}
+      showErrorDetails={import.meta.env.DEV}
+    >
+      <SnakeGameContent onBack={onBack} />
+    </GameErrorBoundary>
   );
 };
 

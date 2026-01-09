@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { GAME_STATES, INITIAL_LIVES } from "../../constants";
+import {
+  GAME_STATES,
+  INITIAL_LIVES,
+  TRANSITION_TIMINGS,
+} from "../../constants";
 import { useHighScore, useWindowSize } from "../../hooks";
 import { STORAGE_KEYS } from "../../config";
 import {
@@ -7,15 +11,25 @@ import {
   MenuOverlay,
   DesktopControls,
   MobileControls,
+  GameErrorBoundary,
 } from "../../components";
+import LevelTransition, {
+  useLevelTransition,
+} from "../../components/LevelTransition";
 import { useBrickrushGame } from "./useBrickrushGame";
 import BrickrushCanvas from "./BrickrushCanvas";
 
 /**
  * BrickrushGame - Main component for the Brickrush game
  * Manages game state and composes UI components
+ *
+ * Refactored to use proper React patterns:
+ * - No direct DOM manipulation
+ * - Centralized timing constants
+ * - Error boundary protection
+ * - Proper state management for transitions
  */
-const BrickrushGame = ({ onBack }) => {
+const BrickrushGameContent = ({ onBack }) => {
   // Game state
   const [gameState, setGameState] = useState(GAME_STATES.START_MENU);
   const [score, setScore] = useState(0);
@@ -23,9 +37,25 @@ const BrickrushGame = ({ onBack }) => {
   const [currentLevel, setCurrentLevel] = useState(1);
   const [ballLaunched, setBallLaunched] = useState(false);
 
-  // UI state
+  // UI state for transitions
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [canvasFadeIn, setCanvasFadeIn] = useState(false);
+
+  // Level transition callback ref
+  const levelTransitionCallbackRef = useRef(null);
+
+  // Level transition hook (replaces DOM manipulation)
+  const { transitionProps, startTransition } = useLevelTransition({
+    onMidpoint: () => {
+      if (levelTransitionCallbackRef.current) {
+        levelTransitionCallbackRef.current();
+        levelTransitionCallbackRef.current = null;
+      }
+    },
+    onComplete: () => {
+      // Transition complete, nothing extra needed
+    },
+  });
 
   // Keyboard state
   const [keys, setKeys] = useState({});
@@ -40,29 +70,15 @@ const BrickrushGame = ({ onBack }) => {
   );
   const { isMobile, isDesktop } = useWindowSize();
 
-  // Handle level complete with transition
-  const handleLevelComplete = useCallback((onComplete) => {
-    const gameContainer = document.querySelector(".game-container");
-    if (gameContainer) {
-      const overlay = document.createElement("div");
-      overlay.className = "level-transition-overlay";
-      overlay.style.opacity = "0";
-      gameContainer.appendChild(overlay);
-
-      setTimeout(() => {
-        overlay.style.opacity = "1";
-        setTimeout(() => {
-          onComplete();
-          overlay.style.opacity = "0";
-          setTimeout(() => {
-            overlay.remove();
-          }, 500);
-        }, 500);
-      }, 10);
-    } else {
-      onComplete();
-    }
-  }, []);
+  // Handle level complete with React-managed transition (no DOM manipulation)
+  const handleLevelComplete = useCallback(
+    (onComplete) => {
+      // Store callback and trigger transition via hook
+      levelTransitionCallbackRef.current = onComplete;
+      startTransition();
+    },
+    [startTransition],
+  );
 
   // Game logic hook
   const {
@@ -90,11 +106,11 @@ const BrickrushGame = ({ onBack }) => {
     onLevelComplete: handleLevelComplete,
   });
 
-  // Handle start game
+  // Handle start game with proper timing constants
   const handleStart = useCallback(() => {
     setIsFadingOut(true);
 
-    setTimeout(() => {
+    const fadeOutTimer = setTimeout(() => {
       setScore(0);
       setLives(INITIAL_LIVES);
       setCurrentLevel(1);
@@ -104,10 +120,14 @@ const BrickrushGame = ({ onBack }) => {
       setIsFadingOut(false);
       setCanvasFadeIn(true);
 
-      setTimeout(() => {
+      const fadeInTimer = setTimeout(() => {
         setCanvasFadeIn(false);
-      }, 800);
-    }, 600);
+      }, TRANSITION_TIMINGS.CANVAS_FADE_IN);
+
+      return () => clearTimeout(fadeInTimer);
+    }, TRANSITION_TIMINGS.MENU_FADE_OUT);
+
+    return () => clearTimeout(fadeOutTimer);
   }, [initGame]);
 
   // Handle pause
@@ -115,21 +135,23 @@ const BrickrushGame = ({ onBack }) => {
     setGameState(GAME_STATES.PAUSED);
   }, []);
 
-  // Handle resume
+  // Handle resume with timing constants
   const handleResume = useCallback(() => {
     setIsFadingOut(true);
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setGameState(GAME_STATES.PLAYING);
       setIsFadingOut(false);
-    }, 600);
+    }, TRANSITION_TIMINGS.MENU_FADE_OUT);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  // Handle restart
+  // Handle restart with timing constants
   const handleRestart = useCallback(() => {
     setIsFadingOut(true);
 
-    setTimeout(() => {
+    const fadeOutTimer = setTimeout(() => {
       setScore(0);
       setLives(INITIAL_LIVES);
       setCurrentLevel(1);
@@ -139,24 +161,30 @@ const BrickrushGame = ({ onBack }) => {
       setIsFadingOut(false);
       setCanvasFadeIn(true);
 
-      setTimeout(() => {
+      const fadeInTimer = setTimeout(() => {
         setCanvasFadeIn(false);
-      }, 800);
-    }, 600);
+      }, TRANSITION_TIMINGS.CANVAS_FADE_IN);
+
+      return () => clearTimeout(fadeInTimer);
+    }, TRANSITION_TIMINGS.MENU_FADE_OUT);
+
+    return () => clearTimeout(fadeOutTimer);
   }, [initGame]);
 
-  // Handle main menu
+  // Handle main menu with timing constants
   const handleMainMenu = useCallback(() => {
     setIsFadingOut(true);
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setGameState(GAME_STATES.START_MENU);
       setScore(0);
       setLives(INITIAL_LIVES);
       setCurrentLevel(1);
       setBallLaunched(false);
       setIsFadingOut(false);
-    }, 600);
+    }, TRANSITION_TIMINGS.MENU_FADE_OUT);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Handle ball launch (for mobile)
@@ -290,7 +318,30 @@ const BrickrushGame = ({ onBack }) => {
         onNextLevel={startNextLevel}
         onBack={onBack}
       />
+
+      {/* Level Transition Overlay - React-managed via hook */}
+      <LevelTransition
+        {...transitionProps}
+        accentColor="cyan"
+        message="Level Complete!"
+      />
     </div>
+  );
+};
+
+/**
+ * BrickrushGame - Wrapped with error boundary for crash protection
+ */
+const BrickrushGame = ({ onBack }) => {
+  return (
+    <GameErrorBoundary
+      gameName="Brickrush"
+      accentColor="cyan"
+      onBack={onBack}
+      showErrorDetails={import.meta.env.DEV}
+    >
+      <BrickrushGameContent onBack={onBack} />
+    </GameErrorBoundary>
   );
 };
 

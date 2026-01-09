@@ -1139,13 +1139,10 @@ body {
   cursor: pointer;
 }
 
-.game-card:focus {
-  outline: none;
-}
-
+.game-card:focus,
 .game-card:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 4px;
+  outline: none;
+  box-shadow: none;
 }
 
 /* Gradient animation for game selector title */

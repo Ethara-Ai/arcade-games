@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { LoadingScreen, GameSelector } from "./components";
+import { LoadingScreen, GameSelector, GameErrorBoundary } from "./components";
 import { BrickrushGame, Game1024, SnakeGame } from "./games";
+import { TRANSITION_TIMINGS } from "./constants";
 
 // App-level game modes
 const APP_MODES = {
@@ -11,10 +12,12 @@ const APP_MODES = {
 };
 
 /**
- * App - Main application component
+ * AppContent - Main application content component
  * Acts as a clean router between different games
+ *
+ * Separated from App wrapper to allow top-level error boundary
  */
-function App() {
+function AppContent() {
   // App mode - which game/screen is selected
   const [appMode, setAppMode] = useState(APP_MODES.SELECTOR);
 
@@ -43,11 +46,13 @@ function App() {
     setAppMode(APP_MODES.SELECTOR);
   }, []);
 
-  // Loading screen timer
+  // Loading screen timer - using centralized timing constant
   useEffect(() => {
+    const loadingDuration = TRANSITION_TIMINGS?.LOADING_SCREEN || 3500;
+
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3500);
+    }, loadingDuration);
 
     return () => clearTimeout(timer);
   }, []);
@@ -72,6 +77,32 @@ function App() {
     default:
       return <GameSelector onSelectGame={handleSelectGame} />;
   }
+}
+
+/**
+ * App - Root application component wrapped with error boundary
+ *
+ * Provides top-level crash protection for the entire application.
+ * Individual games also have their own error boundaries for more
+ * granular error handling.
+ */
+function App() {
+  // Handler for when user clicks back from app-level error
+  const handleAppError = useCallback(() => {
+    // Reload the page to recover from catastrophic errors
+    window.location.reload();
+  }, []);
+
+  return (
+    <GameErrorBoundary
+      gameName="Arcade Games"
+      accentColor="cyan"
+      onBack={handleAppError}
+      showErrorDetails={import.meta.env.DEV}
+    >
+      <AppContent />
+    </GameErrorBoundary>
+  );
 }
 
 export default App;

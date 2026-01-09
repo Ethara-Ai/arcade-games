@@ -1,4 +1,18 @@
 // ============================================
+// Timing Constants (re-exported from timing.js)
+// ============================================
+export {
+  TRANSITION_TIMINGS,
+  ANIMATION_TIMINGS,
+  DELAY_TIMINGS,
+  GAME_TIMINGS,
+  CSS_TRANSITIONS,
+  REDUCED_MOTION_TIMINGS,
+  getAccessibleTiming,
+  prefersReducedMotion,
+} from "./timing";
+
+// ============================================
 // BrickRush Game Constants
 // ============================================
 
@@ -28,7 +42,9 @@ export const BRICK_PADDING = 5;
 export const BRICK_OFFSET_TOP = 80;
 export const BRICK_OFFSET_LEFT = 30;
 export const BRICK_BASE_WIDTH =
-  (GAME_WIDTH - 2 * BRICK_OFFSET_LEFT - (BRICK_COLUMN_COUNT - 1) * BRICK_PADDING) /
+  (GAME_WIDTH -
+    2 * BRICK_OFFSET_LEFT -
+    (BRICK_COLUMN_COUNT - 1) * BRICK_PADDING) /
   BRICK_COLUMN_COUNT;
 export const BRICK_HEIGHT = 20;
 export const BRICK_COLORS = ["#f9a825", "#ff7043", "#66bb6a", "#29b6f6"];

@@ -27,6 +27,7 @@ import {
   GAME_STATES,
   BRICK_PATTERNS,
   STEEL_BRICK_PATTERNS,
+  ANIMATION_TIMINGS,
 } from "../../constants";
 import {
   handleBallPaddleCollision,
@@ -38,6 +39,11 @@ import {
 /**
  * Custom hook for Brickrush game state and logic
  * Separates game logic from rendering concerns
+ *
+ * Refactored to fix:
+ * - Memory leaks from untracked animation frames
+ * - Verbose ref syncing with multiple effects
+ * - Proper cleanup on unmount
  */
 export const useBrickrushGame = ({
   gameState,
@@ -70,38 +76,62 @@ export const useBrickrushGame = ({
   const brickDropAnimatingRef = useRef(false);
   const levelTransitioningRef = useRef(false);
 
-  // Refs for values needed in game loop (avoid stale closures)
-  const gameStateRef = useRef(gameState);
-  const scoreRef = useRef(score);
-  const livesRef = useRef(lives);
-  const currentLevelRef = useRef(currentLevel);
-  const ballLaunchedRef = useRef(ballLaunched);
-  const keysRef = useRef(keys);
+  // Animation frame tracking for proper cleanup (fixes memory leak)
+  const brickDropAnimationFrameRef = useRef(null);
+  const paddleStretchAnimationFrameRef = useRef(null);
+  const paddleShrinkAnimationFrameRef = useRef(null);
 
-  // Keep refs in sync with props
-  useEffect(() => {
-    gameStateRef.current = gameState;
-  }, [gameState]);
+  // Consolidated refs for values needed in game loop (avoid stale closures)
+  // Using a single ref object reduces the number of effects needed
+  const gameValuesRef = useRef({
+    gameState,
+    score,
+    lives,
+    currentLevel,
+    ballLaunched,
+    keys,
+  });
 
+  // Single effect to keep all game values in sync
   useEffect(() => {
-    scoreRef.current = score;
-  }, [score]);
+    gameValuesRef.current = {
+      gameState,
+      score,
+      lives,
+      currentLevel,
+      ballLaunched,
+      keys,
+    };
+  }, [gameState, score, lives, currentLevel, ballLaunched, keys]);
 
+  // Cleanup all animation frames on unmount
   useEffect(() => {
-    livesRef.current = lives;
-  }, [lives]);
+    return () => {
+      // Clean up brick drop animation
+      if (brickDropAnimationFrameRef.current) {
+        cancelAnimationFrame(brickDropAnimationFrameRef.current);
+        brickDropAnimationFrameRef.current = null;
+      }
 
-  useEffect(() => {
-    currentLevelRef.current = currentLevel;
-  }, [currentLevel]);
+      // Clean up paddle stretch animation
+      if (paddleStretchAnimationFrameRef.current) {
+        cancelAnimationFrame(paddleStretchAnimationFrameRef.current);
+        paddleStretchAnimationFrameRef.current = null;
+      }
 
-  useEffect(() => {
-    ballLaunchedRef.current = ballLaunched;
-  }, [ballLaunched]);
+      // Clean up paddle shrink animation
+      if (paddleShrinkAnimationFrameRef.current) {
+        cancelAnimationFrame(paddleShrinkAnimationFrameRef.current);
+        paddleShrinkAnimationFrameRef.current = null;
+      }
 
-  useEffect(() => {
-    keysRef.current = keys;
-  }, [keys]);
+      // Clean up paddle stretch timeout
+      if (paddleStretchTimeoutRef.current) {
+        clearTimeout(paddleStretchTimeoutRef.current);
+        paddleStretchTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   // Create bricks for current level
   const createBricks = useCallback((level) => {
@@ -175,7 +205,7 @@ export const useBrickrushGame = ({
 
     ballsRef.current = [];
 
-    if (gameStateRef.current === GAME_STATES.PLAYING) {
+    if (gameValuesRef.current.gameState === GAME_STATES.PLAYING) {
       ballsRef.current = [
         {
           x: paddle.x + paddle.width / 2,
@@ -201,9 +231,20 @@ export const useBrickrushGame = ({
       dx: 0,
     };
 
+    // Clear paddle stretch timeout
     if (paddleStretchTimeoutRef.current) {
       clearTimeout(paddleStretchTimeoutRef.current);
       paddleStretchTimeoutRef.current = null;
+    }
+
+    // Clear any ongoing animations
+    if (paddleStretchAnimationFrameRef.current) {
+      cancelAnimationFrame(paddleStretchAnimationFrameRef.current);
+      paddleStretchAnimationFrameRef.current = null;
+    }
+    if (paddleShrinkAnimationFrameRef.current) {
+      cancelAnimationFrame(paddleShrinkAnimationFrameRef.current);
+      paddleShrinkAnimationFrameRef.current = null;
     }
 
     activePowerUpsRef.current = [];
@@ -214,8 +255,8 @@ export const useBrickrushGame = ({
   // Launch ball
   const launchBall = useCallback(() => {
     if (
-      !ballLaunchedRef.current &&
-      gameStateRef.current === GAME_STATES.PLAYING &&
+      !gameValuesRef.current.ballLaunched &&
+      gameValuesRef.current.gameState === GAME_STATES.PLAYING &&
       ballsRef.current.length > 0
     ) {
       const ball = ballsRef.current[0];
@@ -229,24 +270,35 @@ export const useBrickrushGame = ({
     }
   }, [onBallLaunchedChange]);
 
-  // Start brick drop animation
+  // Start brick drop animation with proper cleanup
   const startBrickDropAnimation = useCallback(() => {
+    // Cancel any existing animation
+    if (brickDropAnimationFrameRef.current) {
+      cancelAnimationFrame(brickDropAnimationFrameRef.current);
+      brickDropAnimationFrameRef.current = null;
+    }
+
     brickDropProgressRef.current = 0;
     brickDropAnimatingRef.current = true;
-    const duration = 700;
+    const duration = ANIMATION_TIMINGS?.BRICK_DROP_DURATION || 700;
     const startTime = performance.now();
 
     const animateDrop = (now) => {
       const elapsed = now - startTime;
       brickDropProgressRef.current = Math.min(1, elapsed / duration);
+
       if (brickDropProgressRef.current < 1) {
-        requestAnimationFrame(animateDrop);
+        // Store the frame ID for cleanup
+        brickDropAnimationFrameRef.current = requestAnimationFrame(animateDrop);
       } else {
         brickDropProgressRef.current = 1;
         brickDropAnimatingRef.current = false;
+        brickDropAnimationFrameRef.current = null;
       }
     };
-    requestAnimationFrame(animateDrop);
+
+    // Start animation and store frame ID
+    brickDropAnimationFrameRef.current = requestAnimationFrame(animateDrop);
   }, []);
 
   // Start next level
@@ -257,14 +309,28 @@ export const useBrickrushGame = ({
     // Notify parent about level complete for transition overlay
     if (onLevelComplete) {
       onLevelComplete(() => {
-        const newLevel = currentLevelRef.current + 1;
+        const newLevel = gameValuesRef.current.currentLevel + 1;
         onLevelChange(newLevel);
 
+        // Reset paddle width
         paddleRef.current.width = PADDLE_BASE_WIDTH;
+
+        // Clear paddle stretch timeout
         if (paddleStretchTimeoutRef.current) {
           clearTimeout(paddleStretchTimeoutRef.current);
           paddleStretchTimeoutRef.current = null;
         }
+
+        // Clear paddle animations
+        if (paddleStretchAnimationFrameRef.current) {
+          cancelAnimationFrame(paddleStretchAnimationFrameRef.current);
+          paddleStretchAnimationFrameRef.current = null;
+        }
+        if (paddleShrinkAnimationFrameRef.current) {
+          cancelAnimationFrame(paddleShrinkAnimationFrameRef.current);
+          paddleShrinkAnimationFrameRef.current = null;
+        }
+
         activePowerUpsRef.current = [];
         onBallLaunchedChange(false);
 
@@ -308,14 +374,14 @@ export const useBrickrushGame = ({
     }
   }, []);
 
-  // Activate power-up
+  // Activate power-up with proper animation cleanup
   const activatePowerUp = useCallback((powerUp) => {
     const paddle = paddleRef.current;
 
     if (powerUp.type === POWERUP_TYPES.MULTIBALL) {
       if (
         ballsRef.current.length === 0 ||
-        gameStateRef.current !== GAME_STATES.PLAYING
+        gameValuesRef.current.gameState !== GAME_STATES.PLAYING
       )
         return;
 
@@ -323,7 +389,7 @@ export const useBrickrushGame = ({
       const spawnX = paddle.x + paddle.width / 2;
       const spawnY = paddle.y - BALL_RADIUS;
 
-      if (ballLaunchedRef.current && originalBall) {
+      if (gameValuesRef.current.ballLaunched && originalBall) {
         for (let i = 0; i < 2; i++) {
           ballsRef.current.push({
             x: spawnX,
@@ -337,33 +403,49 @@ export const useBrickrushGame = ({
         }
       }
     } else if (powerUp.type === POWERUP_TYPES.STRETCH_PADDLE) {
+      // Cancel any existing paddle animations
+      if (paddleStretchAnimationFrameRef.current) {
+        cancelAnimationFrame(paddleStretchAnimationFrameRef.current);
+        paddleStretchAnimationFrameRef.current = null;
+      }
+      if (paddleShrinkAnimationFrameRef.current) {
+        cancelAnimationFrame(paddleShrinkAnimationFrameRef.current);
+        paddleShrinkAnimationFrameRef.current = null;
+      }
+
       const startWidth = paddle.width;
       const endWidth = PADDLE_STRETCH_WIDTH;
       const startTime = Date.now();
-      const duration = 300;
+      const stretchDuration = ANIMATION_TIMINGS?.PADDLE_STRETCH_IN || 300;
 
       const animateStretch = () => {
         const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+        const progress = Math.min(elapsed / stretchDuration, 1);
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         paddle.width = startWidth + (endWidth - startWidth) * easeProgress;
 
         if (progress < 1) {
-          requestAnimationFrame(animateStretch);
+          paddleStretchAnimationFrameRef.current =
+            requestAnimationFrame(animateStretch);
+        } else {
+          paddleStretchAnimationFrameRef.current = null;
         }
       };
 
-      animateStretch();
+      paddleStretchAnimationFrameRef.current =
+        requestAnimationFrame(animateStretch);
 
+      // Clear existing timeout
       if (paddleStretchTimeoutRef.current) {
         clearTimeout(paddleStretchTimeoutRef.current);
       }
 
+      // Set timeout to shrink paddle back
       paddleStretchTimeoutRef.current = setTimeout(() => {
         const shrinkStartWidth = paddle.width;
         const shrinkEndWidth = PADDLE_BASE_WIDTH;
         const shrinkStartTime = Date.now();
-        const shrinkDuration = 300;
+        const shrinkDuration = ANIMATION_TIMINGS?.PADDLE_SHRINK_OUT || 300;
 
         const animateShrink = () => {
           const elapsed = Date.now() - shrinkStartTime;
@@ -374,11 +456,15 @@ export const useBrickrushGame = ({
             (shrinkEndWidth - shrinkStartWidth) * easeProgress;
 
           if (progress < 1) {
-            requestAnimationFrame(animateShrink);
+            paddleShrinkAnimationFrameRef.current =
+              requestAnimationFrame(animateShrink);
+          } else {
+            paddleShrinkAnimationFrameRef.current = null;
           }
         };
 
-        animateShrink();
+        paddleShrinkAnimationFrameRef.current =
+          requestAnimationFrame(animateShrink);
         paddleStretchTimeoutRef.current = null;
       }, PADDLE_STRETCH_DURATION);
     }
@@ -391,7 +477,7 @@ export const useBrickrushGame = ({
 
     paddle.x = Math.max(0, Math.min(targetX, GAME_WIDTH - paddle.width));
 
-    if (!ballLaunchedRef.current && ballsRef.current.length > 0) {
+    if (!gameValuesRef.current.ballLaunched && ballsRef.current.length > 0) {
       ballsRef.current[0] = {
         ...ballsRef.current[0],
         x: paddle.x + paddle.width / 2,
@@ -402,7 +488,9 @@ export const useBrickrushGame = ({
 
   // Update game state (called each frame)
   const updateGame = useCallback(() => {
-    if (gameStateRef.current !== GAME_STATES.PLAYING) return;
+    const values = gameValuesRef.current;
+
+    if (values.gameState !== GAME_STATES.PLAYING) return;
 
     // Filter invalid balls
     ballsRef.current = ballsRef.current.filter(
@@ -411,13 +499,13 @@ export const useBrickrushGame = ({
     );
 
     // Reset if no balls and not launched
-    if (ballsRef.current.length === 0 && !ballLaunchedRef.current) {
+    if (ballsRef.current.length === 0 && !values.ballLaunched) {
       resetPaddleAndBall();
     }
 
     // Update paddle from keyboard
     const paddle = paddleRef.current;
-    const currentKeys = keysRef.current;
+    const currentKeys = values.keys;
     if (currentKeys["ArrowLeft"] || currentKeys["a"] || currentKeys["A"]) {
       paddle.x = Math.max(0, paddle.x - PADDLE_SPEED);
     }
@@ -425,7 +513,7 @@ export const useBrickrushGame = ({
       paddle.x = Math.min(GAME_WIDTH - paddle.width, paddle.x + PADDLE_SPEED);
     }
 
-    if (!ballLaunchedRef.current && ballsRef.current.length > 0) {
+    if (!values.ballLaunched && ballsRef.current.length > 0) {
       ballsRef.current[0] = {
         ...ballsRef.current[0],
         x: paddle.x + paddle.width / 2,
@@ -434,7 +522,7 @@ export const useBrickrushGame = ({
     }
 
     // Move balls using physics helper
-    if (ballLaunchedRef.current) {
+    if (values.ballLaunched) {
       const moveResult = moveBallsPhysics(
         ballsRef.current,
         GAME_WIDTH,
@@ -444,7 +532,7 @@ export const useBrickrushGame = ({
 
       // Check if all balls are lost
       if (moveResult.lostBalls.length > 0 && ballsRef.current.length === 0) {
-        const newLives = livesRef.current - 1;
+        const newLives = values.lives - 1;
         onLivesChange(newLives);
 
         if (newLives <= 0) {
@@ -477,7 +565,7 @@ export const useBrickrushGame = ({
 
       // Handle hit bricks
       for (const hit of collisionResult.bricksHit) {
-        onScoreChange(scoreRef.current + 10 * currentLevelRef.current);
+        onScoreChange(values.score + 10 * values.currentLevel);
         spawnPowerUp(hit.originalBrick);
       }
 
@@ -547,8 +635,7 @@ export const useBrickrushGame = ({
     bricksRef,
     activePowerUpsRef,
     brickDropProgressRef,
-    gameStateRef,
-    ballLaunchedRef,
+    gameValuesRef,
   };
 };
 

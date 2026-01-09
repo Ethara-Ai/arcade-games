@@ -14,20 +14,28 @@ import {
   SNAKE_BONUS_FOOD_CHANCE as BONUS_FOOD_CHANCE,
 } from "../../constants";
 import { STORAGE_KEYS, debugLog } from "../../config";
+import { safeGetInt, safeSetItem } from "../../utils/safeStorage";
 
 /**
  * useSnakeGame - Custom hook for Snake game logic
  * Separates game state and logic from rendering concerns
+ *
+ * Refactored to use:
+ * - Safe storage utilities for localStorage access
+ * - Proper cleanup for game loop
+ * - Improved error handling
  */
 export const useSnakeGame = () => {
   // Game state
   const [gameState, setGameState] = useState(SNAKE_GAME_STATES.START);
   const [score, setScore] = useState(0);
   const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE.length);
+
+  // High score state - using safe storage for initialization
   const [highScore, setHighScore] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.SNAKE_HIGH_SCORE);
+    const saved = safeGetInt(STORAGE_KEYS.SNAKE_HIGH_SCORE, 0);
     debugLog("Loaded Snake high score:", saved);
-    return saved ? parseInt(saved, 10) : 0;
+    return saved;
   });
 
   // Game object refs
@@ -46,17 +54,23 @@ export const useSnakeGame = () => {
   const generateFood = useCallback((isBonus = false) => {
     const snake = snakeRef.current;
     let newFood;
+    let attempts = 0;
+    const maxAttempts = 100; // Prevent infinite loop
+
     do {
       newFood = {
         x: Math.floor(Math.random() * GRID_SIZE),
         y: Math.floor(Math.random() * GRID_SIZE),
         isBonus: isBonus,
       };
+      attempts++;
     } while (
       snake.some(
         (segment) => segment.x === newFood.x && segment.y === newFood.y,
-      )
+      ) &&
+      attempts < maxAttempts
     );
+
     return newFood;
   }, []);
 
@@ -163,18 +177,27 @@ export const useSnakeGame = () => {
     }
   }, []);
 
-  // Game over handler
+  // Game over handler - using safe storage for saving
   const handleGameOver = useCallback(() => {
     stopGameLoop();
     setGameState(SNAKE_GAME_STATES.GAME_OVER);
 
     if (scoreRef.current > highScore) {
       setHighScore(scoreRef.current);
-      localStorage.setItem(
+
+      const success = safeSetItem(
         STORAGE_KEYS.SNAKE_HIGH_SCORE,
         scoreRef.current.toString(),
       );
-      debugLog("Saved Snake high score:", scoreRef.current);
+
+      if (success) {
+        debugLog("Saved Snake high score:", scoreRef.current);
+      } else {
+        debugLog(
+          "Failed to save Snake high score to storage, updated state:",
+          scoreRef.current,
+        );
+      }
     }
   }, [highScore, stopGameLoop]);
 
@@ -292,6 +315,11 @@ export const useSnakeGame = () => {
     [],
   );
 
+  // Check if game can accept input
+  const canAcceptInput = useCallback(() => {
+    return gameState === SNAKE_GAME_STATES.PLAYING;
+  }, [gameState]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -330,6 +358,9 @@ export const useSnakeGame = () => {
     getGameSpeed,
     getGameObjects,
     stopGameLoop,
+
+    // Utilities
+    canAcceptInput,
 
     // State setters
     setGameState,

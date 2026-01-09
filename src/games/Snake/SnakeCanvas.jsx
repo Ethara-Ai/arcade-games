@@ -188,9 +188,12 @@ const SnakeCanvas = forwardRef(
 
     // Cleanup animation frame on unmount
     useEffect(() => {
+      // Copy ref value to a variable for cleanup (fixes React warning)
+      const frameId = animationFrameRef.current;
+
       return () => {
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
+        if (frameId) {
+          cancelAnimationFrame(frameId);
         }
       };
     }, []);
