@@ -45,10 +45,10 @@ const BrickrushDesktopControls = ({
         {isPaused ? 'Press P to Resume' : 'Press P to Pause'}
       </div>
 
-      {/* Action Buttons - Icon only */}
+      {/* Action Buttons - Icon only - Show when playing OR paused so user can resume */}
       <div
-        className={`desktop-action-buttons ${isPlaying ? 'show' : ''}`}
-        style={{ display: isPlaying ? 'flex' : 'none' }}
+        className={`desktop-action-buttons ${showControls ? 'show' : ''}`}
+        style={{ display: showControls ? 'flex' : 'none' }}
       >
         <button
           onClick={onPauseResume}
@@ -69,9 +69,9 @@ const BrickrushDesktopControls = ({
           <IoRefresh />
         </button>
         <button
-          onClick={onMainMenu}
+          onClick={onBack}
           className="desktop-action-btn glass-button text-gray-300 border-none w-12 h-10 text-lg cursor-pointer rounded-lg font-medium transition-all duration-200 flex items-center justify-center hover:brightness-110 active:brightness-90 focus:outline-none"
-          title="Main Menu"
+          title="Back to Game Selector"
         >
           <IoHome />
         </button>

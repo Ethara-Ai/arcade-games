@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { IoArrowBack, IoPause } from 'react-icons/io5';
+import { IoArrowBack, IoPause, IoPlay } from 'react-icons/io5';
 import { GAME_STATES } from '../../../constants';
 
 /**
@@ -29,17 +29,22 @@ const BrickrushMobileControls = ({
         <IoArrowBack />
       </button>
 
-      {/* Pause Button */}
+      {/* Pause/Resume Button - Show when playing OR paused so user can resume */}
       <button
         onClick={onPause}
-        className={`mobile-pause-btn aspect-square bg-gradient-to-br from-cyan-400 to-blue-500 border-none rounded-full text-white cursor-pointer shadow-lg shadow-cyan-400/40 transition-all duration-300 active:brightness-90 focus:outline-none flex-shrink-0 ${isPlaying ? 'show' : ''}`}
+        className={`mobile-pause-btn aspect-square border-none rounded-full text-white cursor-pointer shadow-lg transition-all duration-300 active:brightness-90 focus:outline-none flex-shrink-0 ${
+          isPaused
+            ? 'bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40'
+            : 'bg-gradient-to-br from-cyan-400 to-blue-500 shadow-cyan-400/40'
+        } ${showControls ? 'show' : ''}`}
         style={{
           bottom: 'clamp(16px, 4vh, 30px)',
           width: 'clamp(44px, 12vw, 56px)',
           fontSize: 'clamp(16px, 5vw, 22px)',
         }}
+        title={isPaused ? 'Resume' : 'Pause'}
       >
-        <IoPause />
+        {isPaused ? <IoPlay /> : <IoPause />}
       </button>
 
       {/* Touch Area / Launch Hint */}

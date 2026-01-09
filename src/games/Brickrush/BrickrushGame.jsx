@@ -198,13 +198,16 @@ const BrickrushGameContent = ({ onBack }) => {
     const handleKeyDown = (e) => {
       setKeys((prev) => ({ ...prev, [e.key]: true }));
 
-      // Handle pause
+      // Handle pause - stop propagation to prevent SharedPauseMenu from also handling
       if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
         if (gameState === GAME_STATES.PLAYING) {
           handlePause();
         } else if (gameState === GAME_STATES.PAUSED) {
           handleResume();
         }
+        return; // Exit early after handling pause
       }
 
       // Handle Enter key for menu navigation
@@ -228,11 +231,12 @@ const BrickrushGameContent = ({ onBack }) => {
       setKeys((prev) => ({ ...prev, [e.key]: false }));
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    // Use capture phase to ensure this handler fires before SharedPauseMenu's handler
+    document.addEventListener('keydown', handleKeyDown, true);
     document.addEventListener('keyup', handleKeyUp);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown, true);
       document.removeEventListener('keyup', handleKeyUp);
     };
   }, [gameState, ballLaunched, handlePause, handleResume, handleStart, handleRestart, launchBall]);
@@ -276,7 +280,7 @@ const BrickrushGameContent = ({ onBack }) => {
           gameState={gameState}
           ballLaunched={ballLaunched}
           hasBalls={hasBalls}
-          onPause={handlePause}
+          onPause={handlePauseResume}
           onBack={onBack}
           onLaunchBall={handleLaunchBall}
         />

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh } from 'react-icons/io5';
+import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome } from 'react-icons/io5';
 import { SNAKE_GAME_STATES } from '../../constants';
 import {
   StartMenu,
@@ -202,6 +202,14 @@ const SnakeGameContent = ({ onBack }) => {
               aria-label="Start New Game"
             >
               <IoRefresh />
+            </button>
+            <button
+              onClick={onBack}
+              className="w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] glass-button rounded-full text-gray-300 flex items-center justify-center hover:brightness-110 active:brightness-90 transition-all flex-shrink-0"
+              title="Back to Game Selector"
+              aria-label="Back to Game Selector"
+            >
+              <IoHome />
             </button>
           </div>
         </div>
