@@ -135,12 +135,4 @@ StartMenu.propTypes = {
   startButtonText: PropTypes.string,
 };
 
-StartMenu.defaultProps = {
-  accentColor: 'cyan',
-  instructions: [],
-  controls: [],
-  tips: [],
-  startButtonText: 'Start Game',
-};
-
 export default StartMenu;

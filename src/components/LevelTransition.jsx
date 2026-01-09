@@ -97,12 +97,4 @@ LevelTransition.propTypes = {
   transitionDuration: PropTypes.number,
 };
 
-LevelTransition.defaultProps = {
-  visible: false,
-  opacity: 0,
-  accentColor: 'cyan',
-  message: '',
-  transitionDuration: 500,
-};
-
 export default LevelTransition;

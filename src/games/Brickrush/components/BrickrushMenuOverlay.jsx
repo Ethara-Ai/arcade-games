@@ -31,8 +31,8 @@ const BrickrushMenuOverlay = ({
   gameState,
   score,
   highScore,
-  level,
-  isFadingOut,
+  level = 1,
+  isFadingOut = false,
   onStart,
   onResume,
   onRestart,
@@ -134,11 +134,6 @@ BrickrushMenuOverlay.propTypes = {
   onNextLevel: PropTypes.func.isRequired,
   /** Callback when back button is clicked */
   onBack: PropTypes.func.isRequired,
-};
-
-BrickrushMenuOverlay.defaultProps = {
-  level: 1,
-  isFadingOut: false,
 };
 
 export default BrickrushMenuOverlay;

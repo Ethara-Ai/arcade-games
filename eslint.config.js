@@ -5,16 +5,34 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 
 export default [
+  // Global ignores
   {
     ignores: [
       'dist/**',
+      'build/**',
       'node_modules/**',
+      'coverage/**',
       'vite.config.js',
       'postcss.config.js',
       'tailwind.config.js',
+      '*.config.js',
+      '*.config.cjs',
+      '*.config.mjs',
+      '.git/**',
+      '.vscode/**',
+      '.idea/**',
+      '**/*.min.js',
+      '**/*.d.ts',
     ],
   },
+  // Base recommended config
   js.configs.recommended,
+  // Linter options
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'warn',
+    },
+  },
   // Test files configuration
   {
     files: ['**/*.test.{js,jsx}', '**/*.spec.{js,jsx}', '**/test/**/*.{js,jsx}'],

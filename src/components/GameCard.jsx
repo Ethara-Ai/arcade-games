@@ -13,7 +13,15 @@ import { getColorConfig, getTagColorConfig } from '../utils/colorConfig';
  * @param {array} tags - Array of {label, color} for tag badges
  */
 const GameCard = memo(
-  ({ title, description, onClick, accentColor = 'cyan', shortcutKey, icon, tags = [] }) => {
+  ({
+    title,
+    description = '',
+    onClick,
+    accentColor = 'cyan',
+    shortcutKey = null,
+    icon = null,
+    tags = [],
+  }) => {
     // Get color configuration from shared utility
     const colors = getColorConfig(accentColor);
 
@@ -101,14 +109,6 @@ GameCard.propTypes = {
       color: PropTypes.oneOf(['cyan', 'amber', 'green', 'pink', 'yellow', 'red']),
     })
   ),
-};
-
-GameCard.defaultProps = {
-  description: '',
-  accentColor: 'cyan',
-  shortcutKey: null,
-  icon: null,
-  tags: [],
 };
 
 export default GameCard;

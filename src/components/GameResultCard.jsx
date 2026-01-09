@@ -125,12 +125,4 @@ GameResultCard.propTypes = {
   subtitle: PropTypes.string,
 };
 
-GameResultCard.defaultProps = {
-  accentColor: 'cyan',
-  stats: [],
-  buttons: [],
-  isNewHighScore: false,
-  subtitle: '',
-};
-
 export default GameResultCard;

@@ -160,13 +160,4 @@ PauseMenu.propTypes = {
   }),
 };
 
-PauseMenu.defaultProps = {
-  title: 'Paused',
-  accentColor: 'cyan',
-  resumeText: 'Resume (P)',
-  restartText: 'Restart',
-  mainMenuText: 'Main Menu',
-  speedControl: null,
-};
-
 export default PauseMenu;

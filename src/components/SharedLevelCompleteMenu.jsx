@@ -25,7 +25,7 @@ const LevelCompleteMenu = ({
   nextLevelText = 'Next Level',
   mainMenuText = 'Main Menu',
   stats = [],
-  icon,
+  icon = null,
 }) => {
   // Get color configuration from shared utility
   const colors = getColorConfig(accentColor, 'green');
@@ -141,17 +141,6 @@ LevelCompleteMenu.propTypes = {
   ),
   /** Custom icon component */
   icon: PropTypes.node,
-};
-
-LevelCompleteMenu.defaultProps = {
-  title: 'Level Complete!',
-  accentColor: 'green',
-  score: 0,
-  level: undefined,
-  nextLevelText: 'Next Level',
-  mainMenuText: 'Main Menu',
-  stats: [],
-  icon: null,
 };
 
 export default LevelCompleteMenu;

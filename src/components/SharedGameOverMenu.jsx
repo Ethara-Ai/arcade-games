@@ -138,14 +138,4 @@ GameOverMenu.propTypes = {
   ),
 };
 
-GameOverMenu.defaultProps = {
-  title: 'Game Over',
-  accentColor: 'red',
-  score: 0,
-  highScore: 0,
-  restartText: 'Play Again',
-  mainMenuText: 'Main Menu',
-  stats: [],
-};
-
 export default GameOverMenu;

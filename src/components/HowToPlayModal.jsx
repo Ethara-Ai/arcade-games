@@ -178,11 +178,4 @@ HowToPlayModal.propTypes = {
   tips: PropTypes.arrayOf(PropTypes.string),
 };
 
-HowToPlayModal.defaultProps = {
-  accentColor: 'cyan',
-  instructions: [],
-  controls: [],
-  tips: [],
-};
-
 export default HowToPlayModal;
