@@ -135,7 +135,7 @@ const GameSelector = ({ onSelectGame }) => {
           <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">1</kbd>
           <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">2</kbd>
           <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">3</kbd>
-          to quick start a game
+          to quick-start a game
         </p>
       </div>
     </div>

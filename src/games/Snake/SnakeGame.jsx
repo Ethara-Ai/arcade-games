@@ -29,7 +29,7 @@ const SNAKE_CONTROLS = [
 
 const SNAKE_TIPS = [
   'Plan your path to avoid trapping yourself',
-  "Use the edges carefully - don't get cornered",
+  "Use the edges carefully—don't get cornered",
   'Grab bonus food quickly for extra points',
   'Pause the game to adjust speed to your skill level',
 ];
@@ -151,7 +151,7 @@ const SnakeGameContent = ({ onBack }) => {
       {/* Header with controls - visible when game is active */}
       {isGameActive && (
         <div className="relative z-20 flex items-center justify-between w-full max-w-[min(90vw,400px)] mb-4">
-          {/* Back button - Step 3: Add responsive sizing w-9/h-9 for mobile, w-10/h-10 for larger screens 
+          {/* Back button - Step 3: Add responsive sizing w-9/h-9 for mobile, w-10/h-10 for larger screens
               to ensure circular shape is maintained */}
           <button
             onClick={onBack}
