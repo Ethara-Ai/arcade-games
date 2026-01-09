@@ -42,10 +42,11 @@ const StartMenu = ({ onStart, onBack }) => {
         {/* Glass panel container */}
         <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-md mx-3 sm:mx-4">
           {/* Header Row - Back Button + Title */}
+          {/* Fix: Add min-w/min-h to ensure circular shape on all mobile screens */}
           <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
             <button
               onClick={onBack}
-              className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all text-sm sm:text-lg flex-shrink-0"
+              className="w-8 h-8 sm:w-10 sm:h-10 min-w-[32px] min-h-[32px] bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all text-sm sm:text-lg flex-shrink-0"
               title="Back to Game Selector"
             >
               <IoArrowBack />

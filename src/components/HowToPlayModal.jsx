@@ -78,7 +78,7 @@ const HowToPlayModal = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full glass-button text-gray-400 hover:text-white hover:brightness-110 active:brightness-90 transition-all z-20"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 aspect-square flex items-center justify-center rounded-full glass-button text-gray-400 hover:text-white hover:brightness-110 active:brightness-90 transition-all z-20 flex-shrink-0"
         >
           <IoClose className="text-lg sm:text-xl" />
         </button>

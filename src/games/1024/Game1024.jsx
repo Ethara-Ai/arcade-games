@@ -114,10 +114,11 @@ const Game1024Content = ({ onBack }) => {
       {/* Header with controls - visible when game is active */}
       {isGameActive && (
         <div className="relative z-20 flex items-center justify-between w-full max-w-[min(90vw,400px)] mb-4">
-          {/* Back button */}
+          {/* Back button - Step 3: Add responsive sizing w-9/h-9 for mobile, w-10/h-10 for larger screens 
+              to ensure circular shape is maintained */}
           <button
             onClick={onBack}
-            className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all"
+            className="w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white flex items-center justify-center shadow-lg shadow-black/40 hover:brightness-110 hover:border-gray-500/50 active:brightness-90 transition-all flex-shrink-0"
             title="Back to Game Selector"
             aria-label="Back to Game Selector"
           >
@@ -135,11 +136,11 @@ const Game1024Content = ({ onBack }) => {
             1024
           </h1>
 
-          {/* Action buttons */}
+          {/* Action buttons - responsive sizing to maintain circular shape on mobile */}
           <div className="flex items-center gap-2">
             <button
               onClick={handleOpenHelp}
-              className="w-10 h-10 glass-button rounded-full text-amber-400 flex items-center justify-center hover:brightness-110 active:brightness-90 transition-all"
+              className="w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] glass-button rounded-full text-amber-400 flex items-center justify-center hover:brightness-110 active:brightness-90 transition-all flex-shrink-0"
               title="How to Play"
               aria-label="How to Play"
             >
@@ -147,7 +148,7 @@ const Game1024Content = ({ onBack }) => {
             </button>
             <button
               onClick={handlePauseToggle}
-              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:brightness-110 active:brightness-90 transition-all ${
+              className={`w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] rounded-full text-white flex items-center justify-center shadow-lg hover:brightness-110 active:brightness-90 transition-all flex-shrink-0 ${
                 isPaused
                   ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
                   : "bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-400/40"
@@ -159,7 +160,7 @@ const Game1024Content = ({ onBack }) => {
             </button>
             <button
               onClick={handleNewGame}
-              className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-amber-400/40 hover:brightness-110 active:brightness-90 transition-all"
+              className="w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] bg-gradient-to-br from-amber-400 to-orange-500 rounded-full text-white flex items-center justify-center shadow-lg shadow-amber-400/40 hover:brightness-110 active:brightness-90 transition-all flex-shrink-0"
               title="New Game"
               aria-label="Start New Game"
             >

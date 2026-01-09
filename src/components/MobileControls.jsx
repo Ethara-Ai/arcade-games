@@ -9,14 +9,12 @@ const MobileControls = ({ gameState, ballLaunched, hasBalls, onPause, onBack, on
   return (
     <div className="mobile-controls">
       {/* Back Button - Black color to match dark UI */}
+      {/* Step 1: Fix back button shape - Remove inline width style, use explicit w-9 h-9 sm:w-11 sm:h-11 
+          to ensure circular shape is maintained on all mobile screen sizes */}
       <button
         onClick={onBack}
-        className={`mobile-back-btn bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white text-sm sm:text-base cursor-pointer shadow-lg shadow-black/40 transition-all duration-300 active:brightness-90 hover:border-gray-500/50 focus:outline-none ${showControls ? "show" : ""}`}
+        className={`mobile-back-btn w-9 h-9 sm:w-11 sm:h-11 min-w-[36px] min-h-[36px] bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white text-sm sm:text-base cursor-pointer shadow-lg shadow-black/40 transition-all duration-300 active:brightness-90 hover:border-gray-500/50 focus:outline-none flex-shrink-0 flex items-center justify-center ${showControls ? "show" : ""}`}
         title="Back to Main Menu"
-        style={{
-          width: "clamp(36px, 10vw, 44px)",
-          height: "clamp(36px, 10vw, 44px)",
-        }}
       >
         <IoArrowBack />
       </button>
@@ -24,11 +22,10 @@ const MobileControls = ({ gameState, ballLaunched, hasBalls, onPause, onBack, on
       {/* Pause Button */}
       <button
         onClick={onPause}
-        className={`mobile-pause-btn bg-gradient-to-br from-cyan-400 to-blue-500 border-none rounded-full text-white cursor-pointer shadow-lg shadow-cyan-400/40 transition-all duration-300 active:brightness-90 focus:outline-none ${isPlaying ? "show" : ""}`}
+        className={`mobile-pause-btn aspect-square bg-gradient-to-br from-cyan-400 to-blue-500 border-none rounded-full text-white cursor-pointer shadow-lg shadow-cyan-400/40 transition-all duration-300 active:brightness-90 focus:outline-none flex-shrink-0 ${isPlaying ? "show" : ""}`}
         style={{
           bottom: "clamp(16px, 4vh, 30px)",
           width: "clamp(44px, 12vw, 56px)",
-          height: "clamp(44px, 12vw, 56px)",
           fontSize: "clamp(16px, 5vw, 22px)",
         }}
       >

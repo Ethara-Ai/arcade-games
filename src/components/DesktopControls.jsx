@@ -8,10 +8,10 @@ const DesktopControls = ({ gameState, ballLaunched, hasBalls, onPauseResume, onR
 
   return (
     <div className="desktop-controls">
-      {/* Back Button - Black color to match dark UI */}
+      {/* Back Button - Step 4: Add explicit w-12 h-12 to ensure circular shape is maintained */}
       <button
         onClick={onBack}
-        className={`desktop-back-btn bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white text-lg cursor-pointer shadow-lg shadow-black/40 transition-all duration-300 hover:brightness-110 hover:shadow-xl hover:shadow-black/60 hover:border-gray-500/50 active:brightness-90 focus:outline-none ${showControls ? "show" : ""}`}
+        className={`desktop-back-btn w-12 h-12 min-w-[48px] min-h-[48px] bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600/40 rounded-full text-white text-lg cursor-pointer shadow-lg shadow-black/40 transition-all duration-300 hover:brightness-110 hover:shadow-xl hover:shadow-black/60 hover:border-gray-500/50 active:brightness-90 focus:outline-none flex-shrink-0 flex items-center justify-center ${showControls ? "show" : ""}`}
         title="Back to Main Menu"
       >
         <IoArrowBack />
