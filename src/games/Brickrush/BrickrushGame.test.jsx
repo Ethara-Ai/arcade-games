@@ -98,8 +98,9 @@ describe('BrickrushGame', () => {
     const onBack = vi.fn();
     render(<BrickrushGame onBack={onBack} />);
 
-    const backButton = screen.getByTitle('Back to Game Selector');
-    fireEvent.click(backButton);
+    // There may be multiple back buttons (TopBar + desktop controls), get the first one
+    const backButtons = screen.getAllByTitle('Back to Game Selector');
+    fireEvent.click(backButtons[0]);
     expect(onBack).toHaveBeenCalledTimes(1);
   });
 
@@ -152,9 +153,9 @@ describe('BrickrushGame', () => {
 
     render(<BrickrushGame {...defaultProps} />);
 
-    // Desktop controls should be present
-    const backButton = screen.getByTitle('Back to Game Selector');
-    expect(backButton).toBeInTheDocument();
+    // Desktop controls should be present - there may be multiple back buttons
+    const backButtons = screen.getAllByTitle('Back to Game Selector');
+    expect(backButtons.length).toBeGreaterThan(0);
   });
 
   // Step 11: Test mobile controls are shown on mobile

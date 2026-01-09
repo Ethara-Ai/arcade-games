@@ -12,7 +12,7 @@ const BrickrushDesktopControls = ({
   hasBalls,
   onPauseResume,
   onRestart,
-  onMainMenu,
+  _onMainMenu,
   onBack,
 }) => {
   const isPlaying = gameState === GAME_STATES.PLAYING;
@@ -91,8 +91,8 @@ BrickrushDesktopControls.propTypes = {
   onPauseResume: PropTypes.func.isRequired,
   /** Callback for restart action */
   onRestart: PropTypes.func.isRequired,
-  /** Callback for main menu action */
-  onMainMenu: PropTypes.func.isRequired,
+  /** Callback for main menu action (currently unused, kept for API consistency) */
+  _onMainMenu: PropTypes.func,
   /** Callback for back action */
   onBack: PropTypes.func.isRequired,
 };

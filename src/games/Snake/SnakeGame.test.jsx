@@ -151,7 +151,8 @@ describe('SnakeGame', () => {
 
     render(<SnakeGame {...defaultProps} />);
 
-    expect(screen.getByTitle('Back to Game Selector')).toBeInTheDocument();
+    // There may be multiple back buttons (TopBar + desktop controls), so use getAllByTitle
+    expect(screen.getAllByTitle('Back to Game Selector').length).toBeGreaterThan(0);
     expect(screen.getByTitle('How to Play')).toBeInTheDocument();
     expect(screen.getByTitle('Pause')).toBeInTheDocument();
     expect(screen.getByTitle('New Game')).toBeInTheDocument();

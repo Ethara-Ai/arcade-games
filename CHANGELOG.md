@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2026-01-08
+## [1.0.0] - 2026-01-09
 
 ### Added
 
@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dark theme interface
 - Smooth animations and visual effects
 - Loading screen with animated elements
+- CI/CD pipeline with GitHub Actions
+- Automated deployment to production
 
 ### Technical
 
@@ -34,3 +36,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HTML5 Canvas for game rendering
 - Custom React hooks for game logic
 - Mobile-first responsive approach
+- ESLint and Prettier for code quality
+- Vitest for testing

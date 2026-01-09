@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# arcade-games
-=======
 # Arcade Games Collection
 
 A collection of classic arcade games built with React, featuring modern design, smooth animations, and responsive layouts for both desktop and mobile devices.
@@ -134,7 +131,7 @@ arcade-games/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml              # CI pipeline for PRs
-│       └── deploy.yml          # CD pipeline for S3 deployment
+│       └── deploy.yml          # CD pipeline for deployment
 ├── src/
 │   ├── components/
 │   │   ├── controls/
@@ -241,6 +238,13 @@ arcade-games/
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint issues |
+| `npm run format` | Format code with Prettier |
+| `npm run format:check` | Check code formatting |
+| `npm run test` | Run tests in watch mode |
+| `npm run test:run` | Run tests once |
+| `npm run test:coverage` | Run tests with coverage |
 
 ## Building for Production
 
@@ -260,63 +264,30 @@ This will serve the production build locally for testing.
 
 ## Deployment
 
-### AWS S3 Deployment
+This project includes a GitHub Actions CI/CD pipeline for automatic deployment.
 
-This project includes a GitHub Actions CI/CD pipeline for automatic deployment to AWS S3.
+### CI Pipeline
 
-#### Prerequisites
+The CI pipeline runs on all pull requests and pushes:
+- Installs dependencies
+- Builds the application
+- Uploads build artifacts for pull requests
 
-1. An AWS account with S3 access
-2. An S3 bucket configured for static website hosting
-3. IAM user with S3 permissions
+### CD Pipeline
 
-#### S3 Bucket Setup
+The deployment pipeline triggers on:
+- Push to `main` branch
+- Manual workflow dispatch
 
-1. Create an S3 bucket in AWS Console
-2. Enable static website hosting:
-   - Go to bucket Properties > Static website hosting
-   - Enable it and set index document to `index.html`
-   - Set error document to `index.html` (for SPA routing)
-3. Set bucket policy for public access:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "PublicReadGetObject",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-    }
-  ]
-}
-```
-
-#### GitHub Secrets Configuration
+### GitHub Secrets Configuration
 
 Add the following secrets to your GitHub repository (Settings > Secrets and variables > Actions):
 
 | Secret | Description |
 |--------|-------------|
-| `AWS_ACCESS_KEY_ID` | AWS access key with S3 permissions |
-| `AWS_SECRET_ACCESS_KEY` | AWS secret access key |
-| `AWS_S3_BUCKET` | Name of your S3 bucket |
-| `AWS_REGION` | AWS region (e.g., us-east-1) |
-| `AWS_CLOUDFRONT_DISTRIBUTION_ID` | (Optional) CloudFront distribution ID |
-
-#### Deployment Triggers
-
-- **Automatic**: Push to `main` branch
-- **Manual**: Go to Actions > Deploy to AWS S3 > Run workflow
-
-#### Website URL
-
-After deployment, your site will be available at:
-```
-http://YOUR_BUCKET_NAME.s3-website-REGION.amazonaws.com
-```
+| `SSH_HOST` | Server hostname or IP address |
+| `SSH_USER` | SSH username |
+| `SSH_PRIVATE_KEY` | SSH private key for authentication |
 
 ## Browser Support
 
