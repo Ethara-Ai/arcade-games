@@ -1,4 +1,86 @@
 import { useEffect } from "react";
+import { GameCard } from "./shared";
+
+// Icon components for each game
+const BrickrushIcon = () => (
+  <svg
+    className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <rect x="2" y="4" width="4" height="2" rx="0.5" />
+    <rect x="7" y="4" width="4" height="2" rx="0.5" />
+    <rect x="12" y="4" width="4" height="2" rx="0.5" />
+    <rect x="17" y="4" width="4" height="2" rx="0.5" />
+    <rect x="2" y="7" width="4" height="2" rx="0.5" />
+    <rect x="7" y="7" width="4" height="2" rx="0.5" />
+    <rect x="12" y="7" width="4" height="2" rx="0.5" />
+    <rect x="17" y="7" width="4" height="2" rx="0.5" />
+    <circle cx="12" cy="15" r="1.5" />
+    <rect x="8" y="20" width="8" height="2" rx="1" />
+  </svg>
+);
+
+const Game1024Icon = () => (
+  <span
+    className="text-white font-black text-sm sm:text-base md:text-xl"
+    style={{ fontFamily: '"Raleway", sans-serif' }}
+  >
+    1024
+  </span>
+);
+
+const SnakeIcon = () => (
+  <svg
+    className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path d="M20 12c0 1.1-.9 2-2 2h-1v1c0 1.1-.9 2-2 2h-1v1c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-1H5c-1.1 0-2-.9-2-2v-2c0-1.1.9-2 2-2h1V9c0-1.1.9-2 2-2h1V6c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v1h1c1.1 0 2 .9 2 2v3z" />
+    <circle cx="10" cy="8" r="1" />
+    <circle cx="14" cy="8" r="1" />
+  </svg>
+);
+
+// Game configuration data
+const GAMES = [
+  {
+    id: "brickrush",
+    title: "Brickrush",
+    description: "Classic brick breaker with power-ups and multiple levels",
+    accentColor: "cyan",
+    shortcutKey: "1",
+    icon: <BrickrushIcon />,
+    tags: [
+      { label: "Arcade", color: "cyan" },
+      { label: "Action", color: "pink" },
+    ],
+  },
+  {
+    id: "1024",
+    title: "1024",
+    description: "Slide and merge tiles to reach 1024",
+    accentColor: "amber",
+    shortcutKey: "2",
+    icon: <Game1024Icon />,
+    tags: [
+      { label: "Puzzle", color: "amber" },
+      { label: "Strategy", color: "cyan" },
+    ],
+  },
+  {
+    id: "snake",
+    title: "Snake",
+    description: "Classic snake game - eat, grow, survive!",
+    accentColor: "green",
+    shortcutKey: "3",
+    icon: <SnakeIcon />,
+    tags: [
+      { label: "Classic", color: "green" },
+      { label: "Arcade", color: "pink" },
+    ],
+  },
+];
 
 const GameSelector = ({ onSelectGame }) => {
   // Keyboard shortcuts to select games
@@ -63,166 +145,38 @@ const GameSelector = ({ onSelectGame }) => {
         >
           Arcade Games
         </h1>
-        <p className="text-gray-400 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-10">Choose your game</p>
+        <p className="text-gray-400 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-10">
+          Choose your game
+        </p>
 
         {/* Game Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-4xl mx-auto px-2 sm:px-4">
-          {/* Brickrush Card */}
-          <button
-            onClick={() => onSelectGame("brickrush")}
-            className="game-card glass-card group relative rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-cyan-500/30 transition-all duration-300 active:scale-95 sm:hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20 text-left overflow-hidden"
-          >
-            {/* Glass gradient shine */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/[0.02] rounded-xl sm:rounded-2xl"></div>
-
-            {/* Keyboard shortcut badge */}
-            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 hidden sm:flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-md glass-stat text-cyan-400 text-xs font-bold border-cyan-500/30">
-              1
-            </div>
-
-            <div className="relative z-10 flex sm:block items-center gap-4 sm:gap-0">
-              {/* Icon */}
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg sm:rounded-xl flex items-center justify-center sm:mb-4 shadow-lg shadow-cyan-500/40 flex-shrink-0">
-                <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <rect x="2" y="4" width="4" height="2" rx="0.5" />
-                  <rect x="7" y="4" width="4" height="2" rx="0.5" />
-                  <rect x="12" y="4" width="4" height="2" rx="0.5" />
-                  <rect x="17" y="4" width="4" height="2" rx="0.5" />
-                  <rect x="2" y="7" width="4" height="2" rx="0.5" />
-                  <rect x="7" y="7" width="4" height="2" rx="0.5" />
-                  <rect x="12" y="7" width="4" height="2" rx="0.5" />
-                  <rect x="17" y="7" width="4" height="2" rx="0.5" />
-                  <circle cx="12" cy="15" r="1.5" />
-                  <rect x="8" y="20" width="8" height="2" rx="1" />
-                </svg>
-              </div>
-
-              <div className="flex-1 sm:flex-none">
-                <h2
-                  className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2"
-                  style={{ fontFamily: '"Raleway", sans-serif' }}
-                >
-                  Brickrush
-                </h2>
-                <p className="text-gray-400 text-xs sm:text-sm hidden sm:block">
-                  Classic brick breaker with power-ups and multiple levels
-                </p>
-
-                {/* Tags */}
-                <div className="flex gap-1.5 sm:gap-2 mt-2 sm:mt-4">
-                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 glass-stat text-cyan-400 text-[10px] sm:text-xs rounded-full border-cyan-500/20">
-                    Arcade
-                  </span>
-                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 glass-stat text-pink-400 text-[10px] sm:text-xs rounded-full border-pink-500/20">
-                    Action
-                  </span>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          {/* 1024 Card */}
-          <button
-            onClick={() => onSelectGame("1024")}
-            className="game-card glass-card group relative rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-amber-500/30 transition-all duration-300 active:scale-95 sm:hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/20 text-left overflow-hidden"
-          >
-            {/* Glass gradient shine */}
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/[0.02] rounded-xl sm:rounded-2xl"></div>
-
-            {/* Keyboard shortcut badge */}
-            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 hidden sm:flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-md glass-stat text-amber-400 text-xs font-bold border-amber-500/30">
-              2
-            </div>
-
-            <div className="relative z-10 flex sm:block items-center gap-4 sm:gap-0">
-              {/* Icon */}
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg sm:rounded-xl flex items-center justify-center sm:mb-4 shadow-lg shadow-amber-500/40 flex-shrink-0">
-                <span
-                  className="text-white font-black text-sm sm:text-base md:text-xl"
-                  style={{ fontFamily: '"Raleway", sans-serif' }}
-                >
-                  1024
-                </span>
-              </div>
-
-              <div className="flex-1 sm:flex-none">
-                <h2
-                  className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2"
-                  style={{ fontFamily: '"Raleway", sans-serif' }}
-                >
-                  1024
-                </h2>
-                <p className="text-gray-400 text-xs sm:text-sm hidden sm:block">Slide and merge tiles to reach 1024</p>
-
-                {/* Tags */}
-                <div className="flex gap-1.5 sm:gap-2 mt-2 sm:mt-4">
-                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 glass-stat text-amber-400 text-[10px] sm:text-xs rounded-full border-amber-500/20">
-                    Puzzle
-                  </span>
-                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 glass-stat text-cyan-400 text-[10px] sm:text-xs rounded-full border-cyan-500/20">
-                    Strategy
-                  </span>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          {/* Snake Card */}
-          <button
-            onClick={() => onSelectGame("snake")}
-            className="game-card glass-card group relative rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-green-500/30 transition-all duration-300 active:scale-95 sm:hover:scale-105 hover:shadow-2xl hover:shadow-green-500/20 text-left overflow-hidden"
-          >
-            {/* Glass gradient shine */}
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/[0.02] rounded-xl sm:rounded-2xl"></div>
-
-            {/* Keyboard shortcut badge */}
-            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 hidden sm:flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-md glass-stat text-green-400 text-xs font-bold border-green-500/30">
-              3
-            </div>
-
-            <div className="relative z-10 flex sm:block items-center gap-4 sm:gap-0">
-              {/* Icon */}
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg sm:rounded-xl flex items-center justify-center sm:mb-4 shadow-lg shadow-green-500/40 flex-shrink-0">
-                <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20 12c0 1.1-.9 2-2 2h-1v1c0 1.1-.9 2-2 2h-1v1c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-1H5c-1.1 0-2-.9-2-2v-2c0-1.1.9-2 2-2h1V9c0-1.1.9-2 2-2h1V6c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v1h1c1.1 0 2 .9 2 2v3z" />
-                  <circle cx="10" cy="8" r="1" />
-                  <circle cx="14" cy="8" r="1" />
-                </svg>
-              </div>
-
-              <div className="flex-1 sm:flex-none">
-                <h2
-                  className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2"
-                  style={{ fontFamily: '"Raleway", sans-serif' }}
-                >
-                  Snake
-                </h2>
-                <p className="text-gray-400 text-xs sm:text-sm hidden sm:block">
-                  Classic snake game - eat, grow, survive!
-                </p>
-
-                {/* Tags */}
-                <div className="flex gap-1.5 sm:gap-2 mt-2 sm:mt-4">
-                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 glass-stat text-green-400 text-[10px] sm:text-xs rounded-full border-green-500/20">
-                    Classic
-                  </span>
-                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 glass-stat text-pink-400 text-[10px] sm:text-xs rounded-full border-pink-500/20">
-                    Arcade
-                  </span>
-                </div>
-              </div>
-            </div>
-          </button>
+          {GAMES.map((game) => (
+            <GameCard
+              key={game.id}
+              title={game.title}
+              description={game.description}
+              onClick={() => onSelectGame(game.id)}
+              accentColor={game.accentColor}
+              shortcutKey={game.shortcutKey}
+              icon={game.icon}
+              tags={game.tags}
+            />
+          ))}
         </div>
 
         {/* Keyboard shortcut hint */}
         <p className="text-gray-500 text-[10px] sm:text-xs mt-4 sm:mt-6 md:mt-8 hidden sm:block">
-          Press <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">1</kbd>
-          <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">2</kbd>
-          <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">3</kbd>
+          Press{" "}
+          <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">
+            1
+          </kbd>
+          <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">
+            2
+          </kbd>
+          <kbd className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-800 text-gray-400 font-mono">
+            3
+          </kbd>
           to quick start a game
         </p>
       </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { IoHelpCircle, IoArrowBack } from "react-icons/io5";
-import { HowToPlayModal } from "./";
+import { HowToPlayModal } from "./shared";
 
 const BRICKRUSH_INSTRUCTIONS = [
   "Break all the bricks to complete each level",
@@ -50,12 +50,15 @@ const StartMenu = ({ onStart, onBack }) => {
             >
               <IoArrowBack />
             </button>
-            <h1 className="game-title text-2xl sm:text-3xl md:text-4xl">Brickrush</h1>
+            <h1 className="game-title text-2xl sm:text-3xl md:text-4xl">
+              Brickrush
+            </h1>
           </div>
 
           {/* Description */}
           <div className="glass-stat rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 text-gray-300 text-xs sm:text-sm md:text-base leading-relaxed mb-3 sm:mb-4 md:mb-6 border-cyan-500/10">
-            Break bricks, collect power-ups, and survive! Use keyboard or mouse to control the paddle.
+            Break bricks, collect power-ups, and survive! Use keyboard or mouse
+            to control the paddle.
           </div>
 
           {/* Action Buttons */}

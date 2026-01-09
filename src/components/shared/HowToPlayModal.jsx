@@ -33,12 +33,33 @@ const HowToPlayModal = ({
       buttonShadow: "shadow-green-400/30",
       glow: "bg-green-500/20",
     },
+    amber: {
+      titleColor: "text-amber-400",
+      accent: "text-amber-400",
+      bgAccent: "bg-amber-500/10",
+      borderAccent: "border-amber-500/20",
+      buttonGradient: "from-amber-400 to-orange-500",
+      buttonShadow: "shadow-amber-400/30",
+      glow: "bg-amber-500/20",
+    },
+    pink: {
+      titleColor: "text-pink-400",
+      accent: "text-pink-400",
+      bgAccent: "bg-pink-500/10",
+      borderAccent: "border-pink-500/20",
+      buttonGradient: "from-pink-400 to-rose-500",
+      buttonShadow: "shadow-pink-400/30",
+      glow: "bg-pink-500/20",
+    },
   };
 
   const colors = colorConfig[accentColor] || colorConfig.cyan;
 
   return (
-    <div className="fixed inset-0 glass-overlay flex items-center justify-center z-[100] p-3 sm:p-4" onClick={onClose}>
+    <div
+      className="fixed inset-0 glass-overlay flex items-center justify-center z-[100] p-3 sm:p-4"
+      onClick={onClose}
+    >
       {/* Background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -68,7 +89,9 @@ const HowToPlayModal = ({
             <div
               className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl ${colors.bgAccent} flex items-center justify-center border ${colors.borderAccent}`}
             >
-              <IoGameController className={`text-xl sm:text-2xl ${colors.accent}`} />
+              <IoGameController
+                className={`text-xl sm:text-2xl ${colors.accent}`}
+              />
             </div>
             <div>
               <h2
@@ -84,12 +107,17 @@ const HowToPlayModal = ({
           {/* Instructions */}
           {instructions.length > 0 && (
             <div className="mb-3 sm:mb-5">
-              <h3 className={`text-xs sm:text-sm font-semibold ${colors.accent} uppercase tracking-wider mb-2 sm:mb-3`}>
+              <h3
+                className={`text-xs sm:text-sm font-semibold ${colors.accent} uppercase tracking-wider mb-2 sm:mb-3`}
+              >
                 Objective
               </h3>
               <ul className="space-y-1.5 sm:space-y-2">
                 {instructions.map((instruction, index) => (
-                  <li key={index} className="flex items-start gap-1.5 sm:gap-2 text-gray-300 text-xs sm:text-sm">
+                  <li
+                    key={index}
+                    className="flex items-start gap-1.5 sm:gap-2 text-gray-300 text-xs sm:text-sm"
+                  >
                     <span className={`${colors.accent} mt-0.5 sm:mt-1`}>•</span>
                     <span>{instruction}</span>
                   </li>
@@ -101,7 +129,9 @@ const HowToPlayModal = ({
           {/* Controls */}
           {controls.length > 0 && (
             <div className="mb-3 sm:mb-5">
-              <h3 className={`text-xs sm:text-sm font-semibold ${colors.accent} uppercase tracking-wider mb-2 sm:mb-3`}>
+              <h3
+                className={`text-xs sm:text-sm font-semibold ${colors.accent} uppercase tracking-wider mb-2 sm:mb-3`}
+              >
                 Controls
               </h3>
               <div className="grid gap-1.5 sm:gap-2">
@@ -110,7 +140,9 @@ const HowToPlayModal = ({
                     key={index}
                     className={`flex items-center justify-between glass-stat rounded-md sm:rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 ${colors.borderAccent}`}
                   >
-                    <span className="text-gray-400 text-xs sm:text-sm">{control.action}</span>
+                    <span className="text-gray-400 text-xs sm:text-sm">
+                      {control.action}
+                    </span>
                     <kbd
                       className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded ${colors.bgAccent} ${colors.accent} text-[10px] sm:text-xs font-mono border ${colors.borderAccent}`}
                     >
@@ -125,12 +157,17 @@ const HowToPlayModal = ({
           {/* Tips */}
           {tips.length > 0 && (
             <div className="mb-3 sm:mb-5">
-              <h3 className={`text-xs sm:text-sm font-semibold ${colors.accent} uppercase tracking-wider mb-2 sm:mb-3`}>
+              <h3
+                className={`text-xs sm:text-sm font-semibold ${colors.accent} uppercase tracking-wider mb-2 sm:mb-3`}
+              >
                 Tips
               </h3>
               <ul className="space-y-1.5 sm:space-y-2">
                 {tips.map((tip, index) => (
-                  <li key={index} className="flex items-start gap-1.5 sm:gap-2 text-gray-400 text-xs sm:text-sm">
+                  <li
+                    key={index}
+                    className="flex items-start gap-1.5 sm:gap-2 text-gray-400 text-xs sm:text-sm"
+                  >
                     <span className="text-yellow-400 mt-0 sm:mt-0.5">💡</span>
                     <span>{tip}</span>
                   </li>
