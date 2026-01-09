@@ -6,14 +6,14 @@
  */
 
 // Application Settings
-export const APP_NAME = import.meta.env.VITE_APP_NAME || "Arcade Games";
-export const APP_VERSION = import.meta.env.VITE_APP_VERSION || "1.0.0";
+export const APP_NAME = import.meta.env.VITE_APP_NAME || 'Arcade Games';
+export const APP_VERSION = import.meta.env.VITE_APP_VERSION || '1.0.0';
 
 // Storage Settings
-export const STORAGE_PREFIX = import.meta.env.VITE_STORAGE_PREFIX || "arcade_";
+export const STORAGE_PREFIX = import.meta.env.VITE_STORAGE_PREFIX || 'arcade_';
 
 // Development Settings
-export const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === "true";
+export const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === 'true';
 
 /**
  * Get a localStorage key with the configured prefix
@@ -28,7 +28,7 @@ export const getStorageKey = (key) => `${STORAGE_PREFIX}${key}`;
  */
 export const debugLog = (...args) => {
   if (DEBUG_MODE) {
-    console.log("[DEBUG]", ...args);
+    console.log('[DEBUG]', ...args);
   }
 };
 
@@ -38,7 +38,7 @@ export const debugLog = (...args) => {
  */
 export const debugWarn = (...args) => {
   if (DEBUG_MODE) {
-    console.warn("[DEBUG]", ...args);
+    console.warn('[DEBUG]', ...args);
   }
 };
 
@@ -48,7 +48,7 @@ export const debugWarn = (...args) => {
  */
 export const debugError = (...args) => {
   if (DEBUG_MODE) {
-    console.error("[DEBUG]", ...args);
+    console.error('[DEBUG]', ...args);
   }
 };
 
@@ -57,13 +57,13 @@ export const debugError = (...args) => {
  * All keys are prefixed with STORAGE_PREFIX for namespacing
  */
 export const STORAGE_KEYS = {
-  BRICKRUSH_HIGH_SCORE: getStorageKey("brickrushHighScore"),
-  GAME_1024_BEST_SCORE: getStorageKey("game1024BestScore"),
-  SNAKE_HIGH_SCORE: getStorageKey("snakeHighScore"),
+  BRICKRUSH_HIGH_SCORE: getStorageKey('brickrushHighScore'),
+  GAME_1024_BEST_SCORE: getStorageKey('game1024BestScore'),
+  SNAKE_HIGH_SCORE: getStorageKey('snakeHighScore'),
   // Settings keys (for future use)
-  SETTINGS_SOUND_ENABLED: getStorageKey("soundEnabled"),
-  SETTINGS_MUSIC_ENABLED: getStorageKey("musicEnabled"),
-  SETTINGS_REDUCED_MOTION: getStorageKey("reducedMotion"),
+  SETTINGS_SOUND_ENABLED: getStorageKey('soundEnabled'),
+  SETTINGS_MUSIC_ENABLED: getStorageKey('musicEnabled'),
+  SETTINGS_REDUCED_MOTION: getStorageKey('reducedMotion'),
 };
 
 /**
@@ -78,7 +78,7 @@ export {
   safeGetJSON,
   safeSetJSON,
   isStorageAvailable,
-} from "../utils/safeStorage";
+} from '../utils/safeStorage';
 
 // Export all config as default object
 export default {

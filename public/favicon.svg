@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Main gradient for the arcade cabinet/controller body -->
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1e1e"/>
+      <stop offset="100%" style="stop-color:#2a2a2a"/>
+    </linearGradient>
+    
+    <!-- Cyan accent gradient -->
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d1ff"/>
+      <stop offset="100%" style="stop-color:#0096c8"/>
+    </linearGradient>
+    
+    <!-- Pink/Magenta accent gradient -->
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff4081"/>
+      <stop offset="100%" style="stop-color:#e91e63"/>
+    </linearGradient>
+    
+    <!-- Amber/Orange accent gradient -->
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+    
+    <!-- Green accent gradient -->
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ade80"/>
+      <stop offset="100%" style="stop-color:#22c55e"/>
+    </linearGradient>
+    
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#bodyGrad)" stroke="#00d1ff" stroke-width="2" opacity="0.9"/>
+  
+  <!-- Inner glow ring -->
+  <circle cx="32" cy="32" r="26" fill="none" stroke="url(#cyanGrad)" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Game controller/joystick base -->
+  <rect x="18" y="34" width="28" height="14" rx="4" fill="#333" stroke="#444" stroke-width="1"/>
+  
+  <!-- Joystick stick -->
+  <rect x="29" y="22" width="6" height="16" rx="2" fill="#555" stroke="#666" stroke-width="0.5"/>
+  
+  <!-- Joystick ball top with gradient -->
+  <circle cx="32" cy="18" r="7" fill="url(#cyanGrad)" filter="url(#glow)"/>
+  <circle cx="30" cy="16" r="2" fill="white" opacity="0.4"/>
+  
+  <!-- Action buttons on the base -->
+  <!-- Pink button (left) -->
+  <circle cx="24" cy="41" r="4" fill="url(#pinkGrad)" filter="url(#glow)"/>
+  <circle cx="23" cy="40" r="1" fill="white" opacity="0.3"/>
+  
+  <!-- Amber button (center) -->
+  <circle cx="32" cy="41" r="4" fill="url(#amberGrad)" filter="url(#glow)"/>
+  <circle cx="31" cy="40" r="1" fill="white" opacity="0.3"/>
+  
+  <!-- Green button (right) -->
+  <circle cx="40" cy="41" r="4" fill="url(#greenGrad)" filter="url(#glow)"/>
+  <circle cx="39" cy="40" r="1" fill="white" opacity="0.3"/>
+  
+  <!-- Decorative dots/stars -->
+  <circle cx="12" cy="12" r="1.5" fill="#00d1ff" opacity="0.6"/>
+  <circle cx="52" cy="12" r="1.5" fill="#ff4081" opacity="0.6"/>
+  <circle cx="12" cy="52" r="1.5" fill="#fbbf24" opacity="0.6"/>
+  <circle cx="52" cy="52" r="1.5" fill="#4ade80" opacity="0.6"/>
+</svg>

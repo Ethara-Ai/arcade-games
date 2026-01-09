@@ -4,13 +4,13 @@
 // - Custom hooks (game logic)
 
 // Brickrush game
-export { BrickrushGame } from "./Brickrush";
+export { BrickrushGame } from './Brickrush';
 
 // 1024 game (refactored)
-export { Game1024 } from "./1024";
+export { Game1024 } from './1024';
 
 // Snake game (refactored)
-export { SnakeGame } from "./Snake";
+export { SnakeGame } from './Snake';
 
 // Shared game components
-export { default as Tile } from "./Tile";
+export { default as Tile } from './Tile';

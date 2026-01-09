@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   SNAKE_GRID_SIZE as GRID_SIZE,
   SNAKE_GAME_STATES,
@@ -12,9 +12,9 @@ import {
   SNAKE_FOOD_POINTS as FOOD_POINTS,
   SNAKE_BONUS_FOOD_POINTS as BONUS_FOOD_POINTS,
   SNAKE_BONUS_FOOD_CHANCE as BONUS_FOOD_CHANCE,
-} from "../../constants";
-import { STORAGE_KEYS, debugLog } from "../../config";
-import { safeGetInt, safeSetItem } from "../../utils/safeStorage";
+} from '../../constants';
+import { STORAGE_KEYS, debugLog } from '../../config';
+import { safeGetInt, safeSetItem } from '../../utils/safeStorage';
 
 /**
  * useSnakeGame - Custom hook for Snake game logic
@@ -35,14 +35,14 @@ export const useSnakeGame = () => {
   // High score state - using safe storage for initialization
   const [highScore, setHighScore] = useState(() => {
     const saved = safeGetInt(STORAGE_KEYS.SNAKE_HIGH_SCORE, 0);
-    debugLog("Loaded Snake high score:", saved);
+    debugLog('Loaded Snake high score:', saved);
     return saved;
   });
 
   // Game object refs
   const snakeRef = useRef([...INITIAL_SNAKE]);
-  const directionRef = useRef("RIGHT");
-  const nextDirectionRef = useRef("RIGHT");
+  const directionRef = useRef('RIGHT');
+  const nextDirectionRef = useRef('RIGHT');
   const foodRef = useRef({ x: 5, y: 5, isBonus: false });
   const bonusFoodRef = useRef(null);
   const scoreRef = useRef(0);
@@ -66,9 +66,7 @@ export const useSnakeGame = () => {
       };
       attempts++;
     } while (
-      snake.some(
-        (segment) => segment.x === newFood.x && segment.y === newFood.y,
-      ) &&
+      snake.some((segment) => segment.x === newFood.x && segment.y === newFood.y) &&
       attempts < maxAttempts
     );
 
@@ -78,8 +76,8 @@ export const useSnakeGame = () => {
   // Initialize game
   const initGame = useCallback(() => {
     snakeRef.current = [...INITIAL_SNAKE.map((s) => ({ ...s }))];
-    directionRef.current = "RIGHT";
-    nextDirectionRef.current = "RIGHT";
+    directionRef.current = 'RIGHT';
+    nextDirectionRef.current = 'RIGHT';
     foodRef.current = generateFood(false);
     bonusFoodRef.current = null;
     scoreRef.current = 0;
@@ -89,17 +87,16 @@ export const useSnakeGame = () => {
 
   // Speed level multipliers (1 = slowest, 5 = fastest)
   const SPEED_MULTIPLIERS = {
-    1: 1.5,   // 50% slower
-    2: 1.25,  // 25% slower
-    3: 1.0,   // Normal speed
-    4: 0.75,  // 25% faster
-    5: 0.5,   // 50% faster
+    1: 1.5, // 50% slower
+    2: 1.25, // 25% slower
+    3: 1.0, // Normal speed
+    4: 0.75, // 25% faster
+    5: 0.5, // 50% faster
   };
 
   // Get game speed based on score and speed level
   const getGameSpeed = useCallback(() => {
-    const speedReduction =
-      Math.floor(scoreRef.current / FOOD_POINTS) * SPEED_INCREASE_PER_FOOD;
+    const speedReduction = Math.floor(scoreRef.current / FOOD_POINTS) * SPEED_INCREASE_PER_FOOD;
     const baseSpeed = Math.max(MIN_SPEED, BASE_SPEED - speedReduction);
     const multiplier = SPEED_MULTIPLIERS[speedLevel] || 1.0;
     return Math.max(MIN_SPEED * 0.5, baseSpeed * multiplier);
@@ -127,21 +124,12 @@ export const useSnakeGame = () => {
     };
 
     // Check wall collision
-    if (
-      newHead.x < 0 ||
-      newHead.x >= GRID_SIZE ||
-      newHead.y < 0 ||
-      newHead.y >= GRID_SIZE
-    ) {
+    if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
       return false;
     }
 
     // Check self collision
-    if (
-      snake.some(
-        (segment) => segment.x === newHead.x && segment.y === newHead.y,
-      )
-    ) {
+    if (snake.some((segment) => segment.x === newHead.x && segment.y === newHead.y)) {
       return false;
     }
 
@@ -161,11 +149,7 @@ export const useSnakeGame = () => {
       if (!bonusFood && Math.random() < BONUS_FOOD_CHANCE) {
         bonusFoodRef.current = generateFood(true);
       }
-    } else if (
-      bonusFood &&
-      newHead.x === bonusFood.x &&
-      newHead.y === bonusFood.y
-    ) {
+    } else if (bonusFood && newHead.x === bonusFood.x && newHead.y === bonusFood.y) {
       scoreRef.current += BONUS_FOOD_POINTS;
       setScore(scoreRef.current);
       setSnakeLength(snake.length);
@@ -207,18 +191,12 @@ export const useSnakeGame = () => {
     if (scoreRef.current > highScore) {
       setHighScore(scoreRef.current);
 
-      const success = safeSetItem(
-        STORAGE_KEYS.SNAKE_HIGH_SCORE,
-        scoreRef.current.toString(),
-      );
+      const success = safeSetItem(STORAGE_KEYS.SNAKE_HIGH_SCORE, scoreRef.current.toString());
 
       if (success) {
-        debugLog("Saved Snake high score:", scoreRef.current);
+        debugLog('Saved Snake high score:', scoreRef.current);
       } else {
-        debugLog(
-          "Failed to save Snake high score to storage, updated state:",
-          scoreRef.current,
-        );
+        debugLog('Failed to save Snake high score to storage, updated state:', scoreRef.current);
       }
     }
   }, [highScore, stopGameLoop]);
@@ -265,35 +243,26 @@ export const useSnakeGame = () => {
   const handleKeyDown = useCallback(
     (e, showHelp = false) => {
       // Enter key to start game from start menu
-      if (
-        e.key === "Enter" &&
-        gameState === SNAKE_GAME_STATES.START &&
-        !showHelp
-      ) {
+      if (e.key === 'Enter' && gameState === SNAKE_GAME_STATES.START && !showHelp) {
         e.preventDefault();
         handleStartGame();
         return true;
       }
 
       // Handle pause with P, Space, or Escape
-      if (
-        e.key === "p" ||
-        e.key === "P" ||
-        e.key === " " ||
-        e.key === "Escape"
-      ) {
+      if (e.key === 'p' || e.key === 'P' || e.key === ' ' || e.key === 'Escape') {
         e.preventDefault();
         handlePauseToggle();
         return true;
       }
 
       // Handle speed control with +/- keys
-      if (e.key === "+" || e.key === "=" || e.key === "]") {
+      if (e.key === '+' || e.key === '=' || e.key === ']') {
         e.preventDefault();
         increaseSpeed();
         return true;
       }
-      if (e.key === "-" || e.key === "_" || e.key === "[") {
+      if (e.key === '-' || e.key === '_' || e.key === '[') {
         e.preventDefault();
         decreaseSpeed();
         return true;
@@ -309,7 +278,7 @@ export const useSnakeGame = () => {
 
       return false;
     },
-    [gameState, handleStartGame, handlePauseToggle, changeDirection, increaseSpeed, decreaseSpeed],
+    [gameState, handleStartGame, handlePauseToggle, changeDirection, increaseSpeed, decreaseSpeed]
   );
 
   // Handle touch start
@@ -328,15 +297,15 @@ export const useSnakeGame = () => {
 
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         if (Math.abs(deltaX) > minSwipe) {
-          changeDirection(deltaX > 0 ? "RIGHT" : "LEFT");
+          changeDirection(deltaX > 0 ? 'RIGHT' : 'LEFT');
         }
       } else {
         if (Math.abs(deltaY) > minSwipe) {
-          changeDirection(deltaY > 0 ? "DOWN" : "UP");
+          changeDirection(deltaY > 0 ? 'DOWN' : 'UP');
         }
       }
     },
-    [changeDirection],
+    [changeDirection]
   );
 
   // Get current game objects for rendering
@@ -346,7 +315,7 @@ export const useSnakeGame = () => {
       food: foodRef.current,
       bonusFood: bonusFoodRef.current,
     }),
-    [],
+    []
   );
 
   // Check if game can accept input

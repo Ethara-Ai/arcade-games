@@ -1,5 +1,6 @@
-import { useEffect, useRef, useCallback, useState } from "react";
-import { TRANSITION_TIMINGS, getAccessibleTiming } from "../constants/timing";
+import { useEffect, useRef, useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
+import { TRANSITION_TIMINGS, getAccessibleTiming } from '../constants/timing';
 
 /**
  * LevelTransition - A purely presentational transition overlay component
@@ -17,31 +18,31 @@ import { TRANSITION_TIMINGS, getAccessibleTiming } from "../constants/timing";
 const LevelTransition = ({
   visible = false,
   opacity = 0,
-  accentColor = "cyan",
-  message = "",
+  accentColor = 'cyan',
+  message = '',
   transitionDuration = 500,
 }) => {
   // Color configurations
   const colorConfig = {
     cyan: {
-      bg: "bg-cyan-900/95",
-      glow: "bg-cyan-500/30",
-      text: "text-cyan-400",
+      bg: 'bg-cyan-900/95',
+      glow: 'bg-cyan-500/30',
+      text: 'text-cyan-400',
     },
     green: {
-      bg: "bg-emerald-900/95",
-      glow: "bg-green-500/30",
-      text: "text-green-400",
+      bg: 'bg-emerald-900/95',
+      glow: 'bg-green-500/30',
+      text: 'text-green-400',
     },
     amber: {
-      bg: "bg-amber-900/95",
-      glow: "bg-amber-500/30",
-      text: "text-amber-400",
+      bg: 'bg-amber-900/95',
+      glow: 'bg-amber-500/30',
+      text: 'text-amber-400',
     },
     pink: {
-      bg: "bg-pink-900/95",
-      glow: "bg-pink-500/30",
-      text: "text-pink-400",
+      bg: 'bg-pink-900/95',
+      glow: 'bg-pink-500/30',
+      text: 'text-pink-400',
     },
   };
 
@@ -74,7 +75,7 @@ const LevelTransition = ({
             className={`text-2xl sm:text-3xl font-bold ${colors.text}`}
             style={{
               fontFamily: '"Raleway", sans-serif',
-              textShadow: "0 0 20px currentColor",
+              textShadow: '0 0 20px currentColor',
             }}
           >
             {message}
@@ -83,6 +84,27 @@ const LevelTransition = ({
       )}
     </div>
   );
+};
+
+LevelTransition.propTypes = {
+  /** Whether the overlay is visible */
+  visible: PropTypes.bool,
+  /** Current opacity (0-1) */
+  opacity: PropTypes.number,
+  /** Color theme */
+  accentColor: PropTypes.oneOf(['cyan', 'green', 'amber', 'pink']),
+  /** Optional message to display */
+  message: PropTypes.string,
+  /** CSS transition duration in ms */
+  transitionDuration: PropTypes.number,
+};
+
+LevelTransition.defaultProps = {
+  visible: false,
+  opacity: 0,
+  accentColor: 'cyan',
+  message: '',
+  transitionDuration: 500,
 };
 
 /**
@@ -111,7 +133,7 @@ export const useLevelTransition = (options = {}) => {
   // State for controlling the transition
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [opacity, setOpacity] = useState(0);
-  const [currentPhase, setCurrentPhase] = useState("idle");
+  const [currentPhase, setCurrentPhase] = useState('idle');
 
   // Timer refs for cleanup
   const timersRef = useRef([]);
@@ -151,7 +173,7 @@ export const useLevelTransition = (options = {}) => {
 
     // Start transition
     setIsTransitioning(true);
-    setCurrentPhase("fading-in");
+    setCurrentPhase('fading-in');
     setOpacity(0);
 
     // After a tiny delay, start fading in
@@ -160,7 +182,7 @@ export const useLevelTransition = (options = {}) => {
 
       // After fade-in completes, enter holding phase
       addTimer(() => {
-        setCurrentPhase("holding");
+        setCurrentPhase('holding');
 
         // Call midpoint callback
         if (onMidpointRef.current) {
@@ -169,12 +191,12 @@ export const useLevelTransition = (options = {}) => {
 
         // After hold, start fading out
         addTimer(() => {
-          setCurrentPhase("fading-out");
+          setCurrentPhase('fading-out');
           setOpacity(0);
 
           // After fade-out, complete the transition
           addTimer(() => {
-            setCurrentPhase("idle");
+            setCurrentPhase('idle');
             setIsTransitioning(false);
 
             // Call completion callback
@@ -185,20 +207,14 @@ export const useLevelTransition = (options = {}) => {
         }, accessibleHold);
       }, accessibleFadeIn);
     }, 10);
-  }, [
-    clearTimers,
-    addTimer,
-    accessibleFadeIn,
-    accessibleFadeOut,
-    accessibleHold,
-  ]);
+  }, [clearTimers, addTimer, accessibleFadeIn, accessibleFadeOut, accessibleHold]);
 
   // Reset the transition (cancel and hide immediately)
   const resetTransition = useCallback(() => {
     clearTimers();
     setIsTransitioning(false);
     setOpacity(0);
-    setCurrentPhase("idle");
+    setCurrentPhase('idle');
   }, [clearTimers]);
 
   // Cleanup on unmount
@@ -209,8 +225,7 @@ export const useLevelTransition = (options = {}) => {
   }, [clearTimers]);
 
   // Determine transition duration for CSS
-  const transitionDuration =
-    currentPhase === "fading-in" ? accessibleFadeIn : accessibleFadeOut;
+  const transitionDuration = currentPhase === 'fading-in' ? accessibleFadeIn : accessibleFadeOut;
 
   return {
     // Props to spread onto LevelTransition component

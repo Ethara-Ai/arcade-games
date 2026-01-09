@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import Tile from "../Tile";
+import { useRef } from 'react';
+import Tile from '../Tile';
 
 /**
  * Game1024Board - Presentation component for the 1024 game board
@@ -19,29 +19,29 @@ const Game1024Board = ({
   highestTile,
   onTouchStart,
   onTouchEnd,
-  accentColor = "amber",
+  accentColor = 'amber',
 }) => {
   const boardRef = useRef(null);
 
   // Color configurations
   const colorConfig = {
     amber: {
-      titleColor: "text-amber-400",
-      statText: "text-amber-400",
-      statBorder: "border-amber-500/20",
-      tileHighlight: "text-amber-400",
+      titleColor: 'text-amber-400',
+      statText: 'text-amber-400',
+      statBorder: 'border-amber-500/20',
+      tileHighlight: 'text-amber-400',
     },
     cyan: {
-      titleColor: "text-cyan-400",
-      statText: "text-cyan-400",
-      statBorder: "border-cyan-500/20",
-      tileHighlight: "text-cyan-400",
+      titleColor: 'text-cyan-400',
+      statText: 'text-cyan-400',
+      statBorder: 'border-cyan-500/20',
+      tileHighlight: 'text-cyan-400',
     },
     green: {
-      titleColor: "text-green-400",
-      statText: "text-green-400",
-      statBorder: "border-green-500/20",
-      tileHighlight: "text-green-400",
+      titleColor: 'text-green-400',
+      statText: 'text-green-400',
+      statBorder: 'border-green-500/20',
+      tileHighlight: 'text-green-400',
     },
   };
 
@@ -51,39 +51,23 @@ const Game1024Board = ({
     <div className="flex flex-col items-center gap-3 sm:gap-4">
       {/* Score Display */}
       <div className="flex items-center justify-center gap-3 sm:gap-4 w-full max-w-[min(90vw,400px)]">
-        <div
-          className={`glass-stat ${colors.statBorder} rounded-lg px-4 py-2 text-center flex-1`}
-        >
-          <div
-            className={`text-[10px] ${colors.statText} font-semibold uppercase tracking-wider`}
-          >
+        <div className={`glass-stat ${colors.statBorder} rounded-lg px-4 py-2 text-center flex-1`}>
+          <div className={`text-[10px] ${colors.statText} font-semibold uppercase tracking-wider`}>
             Score
           </div>
           <div className="text-lg sm:text-xl font-bold text-white">{score}</div>
         </div>
-        <div
-          className={`glass-stat ${colors.statBorder} rounded-lg px-4 py-2 text-center flex-1`}
-        >
-          <div
-            className={`text-[10px] ${colors.statText} font-semibold uppercase tracking-wider`}
-          >
+        <div className={`glass-stat ${colors.statBorder} rounded-lg px-4 py-2 text-center flex-1`}>
+          <div className={`text-[10px] ${colors.statText} font-semibold uppercase tracking-wider`}>
             Best
           </div>
-          <div className="text-lg sm:text-xl font-bold text-white">
-            {bestScore}
-          </div>
+          <div className="text-lg sm:text-xl font-bold text-white">{bestScore}</div>
         </div>
-        <div
-          className={`glass-stat ${colors.statBorder} rounded-lg px-4 py-2 text-center flex-1`}
-        >
-          <div
-            className={`text-[10px] ${colors.statText} font-semibold uppercase tracking-wider`}
-          >
+        <div className={`glass-stat ${colors.statBorder} rounded-lg px-4 py-2 text-center flex-1`}>
+          <div className={`text-[10px] ${colors.statText} font-semibold uppercase tracking-wider`}>
             Top Tile
           </div>
-          <div
-            className={`text-lg sm:text-xl font-bold ${colors.tileHighlight}`}
-          >
+          <div className={`text-lg sm:text-xl font-bold ${colors.tileHighlight}`}>
             {highestTile}
           </div>
         </div>
@@ -94,8 +78,8 @@ const Game1024Board = ({
         ref={boardRef}
         className="game-1024-board relative bg-[#1a1a2e] rounded-lg sm:rounded-xl p-1.5 sm:p-2 shadow-2xl"
         style={{
-          width: "min(90vw, 400px)",
-          height: "min(90vw, 400px)",
+          width: 'min(90vw, 400px)',
+          height: 'min(90vw, 400px)',
         }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
@@ -105,10 +89,7 @@ const Game1024Board = ({
           {Array(16)
             .fill(null)
             .map((_, index) => (
-              <div
-                key={index}
-                className="bg-[#252540] rounded-md sm:rounded-lg"
-              />
+              <div key={index} className="bg-[#252540] rounded-md sm:rounded-lg" />
             ))}
         </div>
 
@@ -116,21 +97,14 @@ const Game1024Board = ({
         <div className="absolute inset-1.5 sm:inset-2">
           {grid.map((row, rowIndex) =>
             row.map((value, colIndex) => (
-              <Tile
-                key={`${rowIndex}-${colIndex}`}
-                value={value}
-                row={rowIndex}
-                col={colIndex}
-              />
-            )),
+              <Tile key={`${rowIndex}-${colIndex}`} value={value} row={rowIndex} col={colIndex} />
+            ))
           )}
         </div>
       </div>
 
       {/* Mobile Instructions */}
-      <p className="text-gray-500 text-xs text-center sm:hidden">
-        Swipe to move tiles
-      </p>
+      <p className="text-gray-500 text-xs text-center sm:hidden">Swipe to move tiles</p>
 
       {/* Desktop Instructions */}
       <p className="text-gray-500 text-xs text-center hidden sm:block">

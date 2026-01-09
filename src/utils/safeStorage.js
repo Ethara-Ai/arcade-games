@@ -49,10 +49,7 @@ export const safeRemoveItem = (key) => {
     localStorage.removeItem(key);
     return true;
   } catch (error) {
-    console.warn(
-      `[SafeStorage] Failed to remove item "${key}":`,
-      error.message,
-    );
+    console.warn(`[SafeStorage] Failed to remove item "${key}":`, error.message);
     return false;
   }
 };
@@ -84,10 +81,7 @@ export const safeGetJSON = (key, defaultValue = null) => {
   try {
     return JSON.parse(value);
   } catch (error) {
-    console.warn(
-      `[SafeStorage] Failed to parse JSON for "${key}":`,
-      error.message,
-    );
+    console.warn(`[SafeStorage] Failed to parse JSON for "${key}":`, error.message);
     return defaultValue;
   }
 };
@@ -103,10 +97,7 @@ export const safeSetJSON = (key, value) => {
     const stringified = JSON.stringify(value);
     return safeSetItem(key, stringified);
   } catch (error) {
-    console.warn(
-      `[SafeStorage] Failed to stringify JSON for "${key}":`,
-      error.message,
-    );
+    console.warn(`[SafeStorage] Failed to stringify JSON for "${key}":`, error.message);
     return false;
   }
 };
@@ -117,7 +108,7 @@ export const safeSetJSON = (key, value) => {
  */
 export const isStorageAvailable = () => {
   try {
-    const testKey = "__storage_test__";
+    const testKey = '__storage_test__';
     localStorage.setItem(testKey, testKey);
     localStorage.removeItem(testKey);
     return true;

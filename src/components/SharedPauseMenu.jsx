@@ -1,5 +1,7 @@
-import { useEffect } from "react";
-import { IoRemove, IoAdd } from "react-icons/io5";
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { IoRemove, IoAdd } from 'react-icons/io5';
+import { getColorConfig } from '../utils/colorConfig';
 
 /**
  * PauseMenu - Generic pause menu component for all games
@@ -14,68 +16,36 @@ import { IoRemove, IoAdd } from "react-icons/io5";
  * @param {object} speedControl - Optional speed control config { speedLevel, minSpeed, maxSpeed, onIncrease, onDecrease, label }
  */
 const PauseMenu = ({
-  title = "Paused",
-  accentColor = "cyan",
+  title = 'Paused',
+  accentColor = 'cyan',
   onResume,
   onRestart,
   onMainMenu,
-  resumeText = "Resume (P)",
-  restartText = "Restart",
-  mainMenuText = "Main Menu",
+  resumeText = 'Resume (P)',
+  restartText = 'Restart',
+  mainMenuText = 'Main Menu',
   speedControl = null,
 }) => {
-  // Color configurations
-  const colorConfig = {
-    cyan: {
-      titleColor: "text-cyan-400",
-      titleShadow: "0 0 30px rgba(0, 209, 255, 0.5)",
-      primaryGradient: "from-cyan-400 to-blue-500",
-      primaryShadow: "shadow-cyan-400/30",
-      primaryHoverShadow: "hover:shadow-cyan-400/50",
-      speedBorder: "border-cyan-500/20",
-    },
-    green: {
-      titleColor: "text-green-400",
-      titleShadow: "0 0 30px rgba(74, 222, 128, 0.5)",
-      primaryGradient: "from-green-400 to-emerald-500",
-      primaryShadow: "shadow-green-400/30",
-      primaryHoverShadow: "hover:shadow-green-400/50",
-      speedBorder: "border-green-500/20",
-    },
-    amber: {
-      titleColor: "text-amber-400",
-      titleShadow: "0 0 30px rgba(251, 191, 36, 0.5)",
-      primaryGradient: "from-amber-400 to-orange-500",
-      primaryShadow: "shadow-amber-400/30",
-      primaryHoverShadow: "hover:shadow-amber-400/50",
-      speedBorder: "border-amber-500/20",
-    },
-    pink: {
-      titleColor: "text-pink-400",
-      titleShadow: "0 0 30px rgba(236, 72, 153, 0.5)",
-      primaryGradient: "from-pink-400 to-rose-500",
-      primaryShadow: "shadow-pink-400/30",
-      primaryHoverShadow: "hover:shadow-pink-400/50",
-      speedBorder: "border-pink-500/20",
-    },
-  };
-
-  const colors = colorConfig[accentColor] || colorConfig.cyan;
+  // Get color configuration from shared utility
+  const colors = getColorConfig(accentColor);
 
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+      if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
         e.preventDefault();
         onResume?.();
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onResume]);
 
   return (
-    <div id="pauseMenu" className="fixed inset-0 z-50 flex items-center justify-center glass-overlay">
+    <div
+      id="pauseMenu"
+      className="fixed inset-0 z-50 flex items-center justify-center glass-overlay"
+    >
       <div className="menu-content">
         {/* Glass panel container */}
         <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-sm mx-3 sm:mx-4">
@@ -92,13 +62,15 @@ const PauseMenu = ({
           {/* Speed Control Section - Only shown if speedControl prop is provided */}
           {speedControl && (
             <div className="mb-4 sm:mb-6">
-              <div className={`glass-stat ${colors.speedBorder} rounded-xl p-3 sm:p-4 flex items-center justify-between gap-4`}>
+              <div
+                className={`glass-stat ${colors.speedBorder} rounded-xl p-3 sm:p-4 flex items-center justify-between gap-4`}
+              >
                 <button
                   onClick={speedControl.onDecrease}
                   disabled={speedControl.speedLevel <= speedControl.minSpeed}
                   className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-full flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
                     speedControl.speedLevel <= speedControl.minSpeed
-                      ? "bg-gray-700/50 text-gray-500 cursor-not-allowed"
+                      ? 'bg-gray-700/50 text-gray-500 cursor-not-allowed'
                       : `bg-gradient-to-br ${colors.primaryGradient} text-white hover:brightness-110 active:brightness-90`
                   }`}
                   title="Decrease Speed"
@@ -107,8 +79,10 @@ const PauseMenu = ({
                   <IoRemove className="text-xl" />
                 </button>
                 <div className="text-center flex-1">
-                  <div className={`text-xs ${colors.titleColor} font-semibold uppercase tracking-wider mb-1`}>
-                    {speedControl.label || "Speed"}
+                  <div
+                    className={`text-xs ${colors.titleColor} font-semibold uppercase tracking-wider mb-1`}
+                  >
+                    {speedControl.label || 'Speed'}
                   </div>
                   <div className="text-2xl sm:text-3xl font-bold text-white flex items-center justify-center gap-1">
                     {speedControl.speedLevel}
@@ -120,7 +94,7 @@ const PauseMenu = ({
                   disabled={speedControl.speedLevel >= speedControl.maxSpeed}
                   className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-full flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
                     speedControl.speedLevel >= speedControl.maxSpeed
-                      ? "bg-gray-700/50 text-gray-500 cursor-not-allowed"
+                      ? 'bg-gray-700/50 text-gray-500 cursor-not-allowed'
                       : `bg-gradient-to-br ${colors.primaryGradient} text-white hover:brightness-110 active:brightness-90`
                   }`}
                   title="Increase Speed"
@@ -156,6 +130,43 @@ const PauseMenu = ({
       </div>
     </div>
   );
+};
+
+PauseMenu.propTypes = {
+  /** Menu title */
+  title: PropTypes.string,
+  /** Accent color theme */
+  accentColor: PropTypes.oneOf(['cyan', 'green', 'amber', 'pink', 'red', 'yellow']),
+  /** Callback when resume button is clicked */
+  onResume: PropTypes.func.isRequired,
+  /** Callback when restart button is clicked */
+  onRestart: PropTypes.func.isRequired,
+  /** Callback when main menu button is clicked */
+  onMainMenu: PropTypes.func.isRequired,
+  /** Custom text for resume button */
+  resumeText: PropTypes.string,
+  /** Custom text for restart button */
+  restartText: PropTypes.string,
+  /** Custom text for main menu button */
+  mainMenuText: PropTypes.string,
+  /** Optional speed control configuration */
+  speedControl: PropTypes.shape({
+    speedLevel: PropTypes.number.isRequired,
+    minSpeed: PropTypes.number.isRequired,
+    maxSpeed: PropTypes.number.isRequired,
+    onIncrease: PropTypes.func.isRequired,
+    onDecrease: PropTypes.func.isRequired,
+    label: PropTypes.string,
+  }),
+};
+
+PauseMenu.defaultProps = {
+  title: 'Paused',
+  accentColor: 'cyan',
+  resumeText: 'Resume (P)',
+  restartText: 'Restart',
+  mainMenuText: 'Main Menu',
+  speedControl: null,
 };
 
 export default PauseMenu;

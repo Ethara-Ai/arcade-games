@@ -25,11 +25,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 209, 255, 0.5) 0%,
-    rgba(0, 150, 200, 0.4) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 209, 255, 0.5) 0%, rgba(0, 150, 200, 0.4) 100%);
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: padding-box;
@@ -37,20 +33,12 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 209, 255, 0.7) 0%,
-    rgba(0, 150, 200, 0.6) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 209, 255, 0.7) 0%, rgba(0, 150, 200, 0.6) 100%);
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 209, 255, 0.9) 0%,
-    rgba(0, 150, 200, 0.8) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 209, 255, 0.9) 0%, rgba(0, 150, 200, 0.8) 100%);
   background-clip: padding-box;
 }
 
@@ -61,20 +49,12 @@
 /* Green scrollbar variant for Snake game */
 .snake-game-container::-webkit-scrollbar-thumb,
 .snake-game-container *::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(74, 222, 128, 0.5) 0%,
-    rgba(52, 211, 153, 0.4) 100%
-  );
+  background: linear-gradient(180deg, rgba(74, 222, 128, 0.5) 0%, rgba(52, 211, 153, 0.4) 100%);
 }
 
 .snake-game-container::-webkit-scrollbar-thumb:hover,
 .snake-game-container *::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(74, 222, 128, 0.7) 0%,
-    rgba(52, 211, 153, 0.6) 100%
-  );
+  background: linear-gradient(180deg, rgba(74, 222, 128, 0.7) 0%, rgba(52, 211, 153, 0.6) 100%);
 }
 
 .snake-game-container,
@@ -97,11 +77,7 @@
 
 .glass-panel::-webkit-scrollbar-thumb,
 .modal-content::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 209, 255, 0.4) 0%,
-    rgba(0, 150, 200, 0.3) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 209, 255, 0.4) 0%, rgba(0, 150, 200, 0.3) 100%);
   border-radius: 8px;
 }
 
@@ -156,7 +132,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
@@ -167,7 +143,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 209, 255, 0.15);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 209, 255, 0.1),
     0 0 60px rgba(0, 209, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -179,7 +155,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(74, 222, 128, 0.15);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(74, 222, 128, 0.1),
     0 0 60px rgba(74, 222, 128, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -191,7 +167,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(251, 191, 36, 0.15);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(251, 191, 36, 0.1),
     0 0 60px rgba(251, 191, 36, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -199,11 +175,7 @@
 
 /* Glass card - for game selector */
 .glass-card {
-  background: linear-gradient(
-    135deg,
-    rgba(30, 30, 30, 0.8) 0%,
-    rgba(40, 40, 40, 0.6) 100%
-  );
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.8) 0%, rgba(40, 40, 40, 0.6) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -212,19 +184,15 @@
 }
 
 .glass-card:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(35, 35, 35, 0.85) 0%,
-    rgba(45, 45, 45, 0.65) 100%
-  );
+  background: linear-gradient(135deg, rgba(35, 35, 35, 0.85) 0%, rgba(45, 45, 45, 0.65) 100%);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 
+  box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .glass-card:active {
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -238,15 +206,11 @@
 
 /* Glass panel - for menus and dialogs */
 .glass-panel {
-  background: linear-gradient(
-    145deg,
-    rgba(30, 30, 30, 0.9) 0%,
-    rgba(25, 25, 25, 0.8) 100%
-  );
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.9) 0%, rgba(25, 25, 25, 0.8) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
+  box-shadow:
     0 16px 48px rgba(0, 0, 0, 0.4),
     0 0 80px rgba(0, 209, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -259,7 +223,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
@@ -298,7 +262,7 @@ body {
   align-items: center;
   min-height: 100vh;
   min-height: 100dvh;
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-touch-callout: none;
@@ -414,18 +378,10 @@ body {
 
 /* Game Title */
 .game-title {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(1.2rem, 6vw, 2.8rem);
   margin: 0 0 clamp(0.3rem, 1vh, 0.5rem) 0;
-  background: linear-gradient(
-    270deg,
-    #00d1ff,
-    #ff4081,
-    #f9a825,
-    #29b6f6,
-    #66bb6a,
-    #00d1ff
-  );
+  background: linear-gradient(270deg, #00d1ff, #ff4081, #f9a825, #29b6f6, #66bb6a, #00d1ff);
   background-size: 1400% 1400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -450,7 +406,7 @@ body {
 
 /* Game Description */
 .game-desc {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(0.8rem, 3vw, 1.1rem);
   color: #d0d0d0;
   margin: 0;
@@ -462,14 +418,14 @@ body {
   border-radius: clamp(16px, 2vw, 20px);
   padding: clamp(1em, 2.5vh, 1.3em) clamp(1.2em, 3vw, 1.5em);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 /* Pause Headline */
 .pause-headline {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(1.2rem, 6vw, 2.8rem);
   font-weight: 900;
   color: #00d1ff;
@@ -483,7 +439,7 @@ body {
 
 /* Game Over Headline */
 .game-over-headline {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(1.2rem, 6vw, 3.2rem);
   font-weight: 900;
   color: #ff1744;
@@ -497,7 +453,7 @@ body {
 
 /* Game Over Score */
 .game-over-score {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(0.9rem, 3.2vw, 1.4rem);
   color: #e0e0e0;
   background: rgba(18, 18, 18, 0.8);
@@ -507,7 +463,7 @@ body {
   padding: clamp(0.7em, 2vh, 0.8em) clamp(1em, 3vw, 1.3em);
   margin: 0;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   max-width: min(350px, 80vw);
@@ -554,7 +510,7 @@ body {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
@@ -578,7 +534,7 @@ body {
 .top-bar-center {
   flex: 1;
   text-align: center;
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(14px, 3vw, 20px);
   color: #9e9e9e;
   font-weight: 500;
@@ -586,7 +542,7 @@ body {
 }
 
 .top-bar-side {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(14px, 3vw, 20px);
   color: #e0e0e0;
   font-weight: 500;
@@ -626,7 +582,7 @@ body {
   right: 20px;
   color: #00d1ff;
   font-size: 14px;
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   background: rgba(0, 209, 255, 0.1);
   border: 1px solid rgba(0, 209, 255, 0.3);
   padding: 8px 12px;
@@ -644,7 +600,7 @@ body {
   color: #00d1ff;
   font-size: 16px;
   font-weight: 600;
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   background: rgba(0, 209, 255, 0.15);
   border: 2px solid rgba(0, 209, 255, 0.5);
   padding: 12px 20px;
@@ -755,7 +711,7 @@ body {
   color: #00d1ff;
   font-size: clamp(12px, 3.5vw, 16px);
   font-weight: 600;
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   background: rgba(0, 209, 255, 0.15);
   border: 2px solid rgba(0, 209, 255, 0.5);
   padding: clamp(8px, 2vw, 12px) clamp(14px, 4vw, 20px);
@@ -810,11 +766,7 @@ body {
   text-align: center;
   max-width: min(600px, 85vw);
   padding: clamp(40px, 6vh, 60px);
-  background: linear-gradient(
-    145deg,
-    rgba(30, 30, 30, 0.9) 0%,
-    rgba(25, 25, 25, 0.8) 100%
-  );
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.9) 0%, rgba(25, 25, 25, 0.8) 100%);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-radius: 28px;
@@ -827,18 +779,10 @@ body {
 }
 
 .loading-title {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(2.2rem, 8vw, 4.5rem);
   font-weight: 900;
-  background: linear-gradient(
-    270deg,
-    #00d1ff,
-    #ff4081,
-    #f9a825,
-    #29b6f6,
-    #66bb6a,
-    #00d1ff
-  );
+  background: linear-gradient(270deg, #00d1ff, #ff4081, #f9a825, #29b6f6, #66bb6a, #00d1ff);
   background-size: 1400% 1400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -862,7 +806,7 @@ body {
 }
 
 .loading-subtitle {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   font-size: clamp(1.1rem, 3.5vw, 1.6rem);
   color: #ffffff;
   font-weight: 600;
@@ -902,7 +846,7 @@ body {
 }
 
 .loading-spinner::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -4px;
   left: -4px;
@@ -962,18 +906,13 @@ body {
 }
 
 .loading-progress-bar::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
@@ -1077,7 +1016,7 @@ body {
 /* ==================== */
 
 .game-1024-container {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: 'Raleway', Arial, sans-serif;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
@@ -1172,7 +1111,7 @@ body {
   .game-1024-board {
     border-radius: 8px;
   }
-  
+
   .game-1024-board .tile {
     border-radius: 4px;
   }
@@ -1180,7 +1119,8 @@ body {
 
 /* Swipe hint animation */
 @keyframes swipeHint {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.5;
     transform: translateX(0);
   }
@@ -1203,27 +1143,27 @@ body {
   body {
     font-size: 14px;
   }
-  
+
   .glass-panel {
     padding: 1rem;
     border-radius: 1rem;
   }
-  
+
   .glass-stat {
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
   }
-  
+
   .game-title {
     font-size: clamp(1.5rem, 8vw, 2rem);
     letter-spacing: 1px;
   }
-  
+
   .menu-content {
     padding: clamp(16px, 3vh, 24px);
     gap: clamp(0.6rem, 2vh, 1rem);
   }
-  
+
   /* Smaller touch targets */
   button {
     min-height: 40px;
@@ -1237,11 +1177,11 @@ body {
     padding: 1.25rem;
     border-radius: 1.25rem;
   }
-  
+
   .game-title {
     font-size: clamp(1.8rem, 6vw, 2.5rem);
   }
-  
+
   .menu-content {
     padding: clamp(24px, 4vh, 32px);
   }
@@ -1253,17 +1193,17 @@ body {
   button {
     min-height: 44px;
   }
-  
+
   /* Remove hover effects that don't work well on touch */
   .glass-card:hover {
     transform: none;
   }
-  
+
   /* Active states for touch feedback */
   .glass-card:active {
     transform: scale(0.98);
   }
-  
+
   button:active {
     transform: scale(0.95);
   }
@@ -1275,12 +1215,12 @@ body {
   .snake-game-container {
     padding: 0.5rem;
   }
-  
+
   .menu-content {
     padding: 0.5rem;
     gap: 0.5rem;
   }
-  
+
   .glass-panel {
     padding: 0.75rem;
     max-height: 95vh;
@@ -1318,7 +1258,9 @@ body {
 
 /* Fix for iOS input zoom */
 @media (max-width: 768px) {
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     font-size: 16px !important;
   }
 }

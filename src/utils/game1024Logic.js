@@ -1,4 +1,4 @@
-import { GAME_1024_GRID_SIZE as GRID_SIZE, WINNING_TILE, GAME_1024_STATES } from "../constants";
+import { GAME_1024_GRID_SIZE as GRID_SIZE, WINNING_TILE, GAME_1024_STATES } from '../constants';
 
 // Create empty grid
 export const createEmptyGrid = () => {
@@ -83,16 +83,16 @@ export const move = (grid, direction) => {
 
   // Rotate grid so we always slide left
   switch (direction) {
-    case "UP":
+    case 'UP':
       rotations = 3; // 270° clockwise = 90° counter-clockwise
       break;
-    case "RIGHT":
+    case 'RIGHT':
       rotations = 2; // 180°
       break;
-    case "DOWN":
+    case 'DOWN':
       rotations = 1; // 90° clockwise
       break;
-    case "LEFT":
+    case 'LEFT':
     default:
       rotations = 0; // No rotation needed
   }

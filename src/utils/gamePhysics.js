@@ -48,14 +48,20 @@ export function handleBallPaddleCollision(balls, paddle) {
  * @param {number} ballInitialSpeed - Initial ball speed for max speed calculation
  * @returns {Object} - { balls, bricks, bricksHit: [{brick, col, row}], allCleared }
  */
-export function handleBallBrickCollision(balls, bricks, brickRowCount, brickColumnCount, ballInitialSpeed) {
+export function handleBallBrickCollision(
+  balls,
+  bricks,
+  brickRowCount,
+  brickColumnCount,
+  ballInitialSpeed
+) {
   const newBricks = bricks.map((col) => col.map((brick) => (brick ? { ...brick } : null)));
   const bricksHit = [];
   let allBricksCleared = true;
 
   const newBalls = balls.map((ball) => {
     let updatedBall = { ...ball };
-    
+
     // Skip if ball is in collision cooldown
     if (updatedBall.collisionCooldown && updatedBall.collisionCooldown > 0) {
       return { ...updatedBall, collisionCooldown: updatedBall.collisionCooldown - 1 };
@@ -81,7 +87,7 @@ export function handleBallBrickCollision(balls, bricks, brickRowCount, brickColu
           const ballCenterY = updatedBall.y;
           const brickCenterX = brick.x + brick.width / 2;
           const brickCenterY = brick.y + brick.height / 2;
-          
+
           const overlapX =
             updatedBall.radius + brick.width / 2 - Math.abs(ballCenterX - brickCenterX);
           const overlapY =
@@ -126,23 +132,23 @@ export function handleBallBrickCollision(balls, bricks, brickRowCount, brickColu
               newDy = (newDy / currentMagnitude) * newSpeed;
             }
 
-            updatedBall = { 
-              ...updatedBall, 
+            updatedBall = {
+              ...updatedBall,
               x: newX,
               y: newY,
-              dx: newDx, 
-              dy: newDy, 
+              dx: newDx,
+              dy: newDy,
               speed: newSpeed,
-              collisionCooldown: 3  // Cooldown frames to prevent multiple hits
+              collisionCooldown: 3, // Cooldown frames to prevent multiple hits
             };
           } else {
-            updatedBall = { 
-              ...updatedBall, 
+            updatedBall = {
+              ...updatedBall,
               x: newX,
               y: newY,
-              dx: newDx, 
+              dx: newDx,
               dy: newDy,
-              collisionCooldown: 3
+              collisionCooldown: 3,
             };
           }
 

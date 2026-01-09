@@ -1,15 +1,15 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { useGameLoop } from "./useGameLoop";
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { useGameLoop } from './useGameLoop';
 
-describe("useGameLoop", () => {
+describe('useGameLoop', () => {
   let requestAnimationFrameSpy;
   let cancelAnimationFrameSpy;
 
   beforeEach(() => {
     vi.useFakeTimers();
-    requestAnimationFrameSpy = vi.spyOn(window, "requestAnimationFrame");
-    cancelAnimationFrameSpy = vi.spyOn(window, "cancelAnimationFrame");
+    requestAnimationFrameSpy = vi.spyOn(window, 'requestAnimationFrame');
+    cancelAnimationFrameSpy = vi.spyOn(window, 'cancelAnimationFrame');
   });
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe("useGameLoop", () => {
     cancelAnimationFrameSpy.mockRestore();
   });
 
-  it("should call requestAnimationFrame when running", () => {
+  it('should call requestAnimationFrame when running', () => {
     const callback = vi.fn();
 
     renderHook(() => useGameLoop(callback, true));
@@ -27,7 +27,7 @@ describe("useGameLoop", () => {
     expect(requestAnimationFrameSpy).toHaveBeenCalled();
   });
 
-  it("should not call requestAnimationFrame when not running", () => {
+  it('should not call requestAnimationFrame when not running', () => {
     const callback = vi.fn();
     requestAnimationFrameSpy.mockClear();
 
@@ -36,7 +36,7 @@ describe("useGameLoop", () => {
     expect(requestAnimationFrameSpy).not.toHaveBeenCalled();
   });
 
-  it("should call callback with deltaTime on animation frame", async () => {
+  it('should call callback with deltaTime on animation frame', async () => {
     const callback = vi.fn();
 
     renderHook(() => useGameLoop(callback, true));
@@ -55,7 +55,7 @@ describe("useGameLoop", () => {
     expect(callback).toHaveBeenCalled();
   });
 
-  it("should cancel animation frame on unmount", () => {
+  it('should cancel animation frame on unmount', () => {
     const callback = vi.fn();
 
     const { unmount } = renderHook(() => useGameLoop(callback, true));
@@ -65,13 +65,12 @@ describe("useGameLoop", () => {
     expect(cancelAnimationFrameSpy).toHaveBeenCalled();
   });
 
-  it("should cancel animation frame when isRunning changes to false", () => {
+  it('should cancel animation frame when isRunning changes to false', () => {
     const callback = vi.fn();
 
-    const { rerender } = renderHook(
-      ({ isRunning }) => useGameLoop(callback, isRunning),
-      { initialProps: { isRunning: true } },
-    );
+    const { rerender } = renderHook(({ isRunning }) => useGameLoop(callback, isRunning), {
+      initialProps: { isRunning: true },
+    });
 
     cancelAnimationFrameSpy.mockClear();
 
@@ -80,14 +79,13 @@ describe("useGameLoop", () => {
     expect(cancelAnimationFrameSpy).toHaveBeenCalled();
   });
 
-  it("should update callback reference when callback changes", () => {
+  it('should update callback reference when callback changes', () => {
     const callback1 = vi.fn();
     const callback2 = vi.fn();
 
-    const { rerender } = renderHook(
-      ({ callback }) => useGameLoop(callback, true),
-      { initialProps: { callback: callback1 } },
-    );
+    const { rerender } = renderHook(({ callback }) => useGameLoop(callback, true), {
+      initialProps: { callback: callback1 },
+    });
 
     rerender({ callback: callback2 });
 
@@ -100,13 +98,12 @@ describe("useGameLoop", () => {
     expect(callback2).toHaveBeenCalled();
   });
 
-  it("should restart animation frame when isRunning changes from false to true", () => {
+  it('should restart animation frame when isRunning changes from false to true', () => {
     const callback = vi.fn();
 
-    const { rerender } = renderHook(
-      ({ isRunning }) => useGameLoop(callback, isRunning),
-      { initialProps: { isRunning: false } },
-    );
+    const { rerender } = renderHook(({ isRunning }) => useGameLoop(callback, isRunning), {
+      initialProps: { isRunning: false },
+    });
 
     requestAnimationFrameSpy.mockClear();
 
@@ -115,7 +112,7 @@ describe("useGameLoop", () => {
     expect(requestAnimationFrameSpy).toHaveBeenCalled();
   });
 
-  it("should default isRunning to true when not provided", () => {
+  it('should default isRunning to true when not provided', () => {
     const callback = vi.fn();
     requestAnimationFrameSpy.mockClear();
 

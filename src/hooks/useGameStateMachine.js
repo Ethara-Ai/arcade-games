@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from "react";
+import { useState, useCallback, useMemo, useRef } from 'react';
 
 /**
  * useGameStateMachine - Unified state machine hook for all games
@@ -12,12 +12,12 @@ import { useState, useCallback, useMemo, useRef } from "react";
 
 // Default game states used across all games
 export const GAME_STATES = {
-  START: "START",
-  PLAYING: "PLAYING",
-  PAUSED: "PAUSED",
-  GAME_OVER: "GAME_OVER",
-  WON: "WON",
-  LEVEL_COMPLETE: "LEVEL_COMPLETE",
+  START: 'START',
+  PLAYING: 'PLAYING',
+  PAUSED: 'PAUSED',
+  GAME_OVER: 'GAME_OVER',
+  WON: 'WON',
+  LEVEL_COMPLETE: 'LEVEL_COMPLETE',
 };
 
 // Default transitions map
@@ -110,7 +110,7 @@ export const useGameStateMachine = (options = {}) => {
    * Update context (for use in guards)
    */
   const setContext = useCallback((newContext) => {
-    if (typeof newContext === "function") {
+    if (typeof newContext === 'function') {
       contextRef.current = newContext(contextRef.current);
     } else {
       contextRef.current = { ...contextRef.current, ...newContext };
@@ -134,13 +134,13 @@ export const useGameStateMachine = (options = {}) => {
 
       // Check guard if exists
       const guard = guards[event];
-      if (guard && typeof guard === "function") {
+      if (guard && typeof guard === 'function') {
         return guard(contextRef.current, state);
       }
 
       return true;
     },
-    [state, transitions, guards],
+    [state, transitions, guards]
   );
 
   /**
@@ -160,35 +160,29 @@ export const useGameStateMachine = (options = {}) => {
       const stateTransitions = transitions[state];
 
       if (!stateTransitions) {
-        console.warn(
-          `[GameStateMachine] No transitions defined for state: ${state}`,
-        );
+        console.warn(`[GameStateMachine] No transitions defined for state: ${state}`);
         return false;
       }
 
       const nextState = stateTransitions[event];
 
       if (!nextState) {
-        console.warn(
-          `[GameStateMachine] Invalid event "${event}" for state "${state}"`,
-        );
+        console.warn(`[GameStateMachine] Invalid event "${event}" for state "${state}"`);
         return false;
       }
 
       // Check guard
       const guard = guards[event];
-      if (guard && typeof guard === "function") {
+      if (guard && typeof guard === 'function') {
         if (!guard(contextRef.current, state, payload)) {
-          console.debug(
-            `[GameStateMachine] Guard prevented transition: ${event}`,
-          );
+          console.debug(`[GameStateMachine] Guard prevented transition: ${event}`);
           return false;
         }
       }
 
       // Call onExit for current state
       const exitCallback = onExit[state];
-      if (exitCallback && typeof exitCallback === "function") {
+      if (exitCallback && typeof exitCallback === 'function') {
         exitCallback(nextState, event, payload);
       }
 
@@ -211,27 +205,18 @@ export const useGameStateMachine = (options = {}) => {
 
       // Call onEnter for new state
       const enterCallback = onEnter[nextState];
-      if (enterCallback && typeof enterCallback === "function") {
+      if (enterCallback && typeof enterCallback === 'function') {
         enterCallback(state, event, payload);
       }
 
       // Call global onTransition
-      if (onTransition && typeof onTransition === "function") {
+      if (onTransition && typeof onTransition === 'function') {
         onTransition(state, nextState, event, payload);
       }
 
       return true;
     },
-    [
-      state,
-      transitions,
-      guards,
-      onExit,
-      onEnter,
-      onTransition,
-      trackHistory,
-      maxHistoryLength,
-    ],
+    [state, transitions, guards, onExit, onEnter, onTransition, trackHistory, maxHistoryLength]
   );
 
   /**
@@ -240,14 +225,12 @@ export const useGameStateMachine = (options = {}) => {
   const forceState = useCallback(
     (newState) => {
       if (!transitions[newState]) {
-        console.warn(
-          `[GameStateMachine] Unknown state: ${newState}. Forcing anyway.`,
-        );
+        console.warn(`[GameStateMachine] Unknown state: ${newState}. Forcing anyway.`);
       }
       setPrevState(state);
       setState(newState);
     },
-    [state, transitions],
+    [state, transitions]
   );
 
   /**
@@ -269,10 +252,7 @@ export const useGameStateMachine = (options = {}) => {
   /**
    * Check if in any of the provided states
    */
-  const isAnyState = useCallback(
-    (...states) => states.includes(state),
-    [state],
-  );
+  const isAnyState = useCallback((...states) => states.includes(state), [state]);
 
   // Computed state checks
   const isPlaying = state === GAME_STATES.PLAYING;
@@ -285,28 +265,16 @@ export const useGameStateMachine = (options = {}) => {
   const isEnded = isGameOver || isWon;
 
   // Convenience action methods
-  const startGame = useCallback(
-    (payload) => send("START_GAME", payload),
-    [send],
-  );
-  const pause = useCallback((payload) => send("PAUSE", payload), [send]);
-  const resume = useCallback((payload) => send("RESUME", payload), [send]);
-  const restart = useCallback((payload) => send("RESTART", payload), [send]);
-  const quit = useCallback((payload) => send("QUIT", payload), [send]);
-  const gameOver = useCallback((payload) => send("GAME_OVER", payload), [send]);
-  const win = useCallback((payload) => send("WIN", payload), [send]);
-  const nextLevel = useCallback(
-    (payload) => send("NEXT_LEVEL", payload),
-    [send],
-  );
-  const continueGame = useCallback(
-    (payload) => send("CONTINUE", payload),
-    [send],
-  );
-  const levelComplete = useCallback(
-    (payload) => send("LEVEL_COMPLETE", payload),
-    [send],
-  );
+  const startGame = useCallback((payload) => send('START_GAME', payload), [send]);
+  const pause = useCallback((payload) => send('PAUSE', payload), [send]);
+  const resume = useCallback((payload) => send('RESUME', payload), [send]);
+  const restart = useCallback((payload) => send('RESTART', payload), [send]);
+  const quit = useCallback((payload) => send('QUIT', payload), [send]);
+  const gameOver = useCallback((payload) => send('GAME_OVER', payload), [send]);
+  const win = useCallback((payload) => send('WIN', payload), [send]);
+  const nextLevel = useCallback((payload) => send('NEXT_LEVEL', payload), [send]);
+  const continueGame = useCallback((payload) => send('CONTINUE', payload), [send]);
+  const levelComplete = useCallback((payload) => send('LEVEL_COMPLETE', payload), [send]);
 
   /**
    * Toggle pause/resume

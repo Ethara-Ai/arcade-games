@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
-import { IoArrowBack } from "react-icons/io5";
-import HowToPlayModal from "./HowToPlayModal";
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { IoArrowBack } from 'react-icons/io5';
+import HowToPlayModal from './HowToPlayModal';
+import { getColorConfig } from '../utils/colorConfig';
 
 /**
  * StartMenu - Generic start menu component for all games
@@ -17,76 +19,39 @@ import HowToPlayModal from "./HowToPlayModal";
 const StartMenu = ({
   title,
   description,
-  accentColor = "cyan",
+  accentColor = 'cyan',
   onStart,
   onBack,
   instructions = [],
   controls = [],
   tips = [],
-  startButtonText = "Start Game",
+  startButtonText = 'Start Game',
 }) => {
   const [showHelp, setShowHelp] = useState(false);
 
-  // Color configurations
-  const colorConfig = {
-    cyan: {
-      gradient: "from-cyan-400 to-blue-500",
-      hoverShadow: "hover:shadow-xl hover:shadow-cyan-400/60",
-      activeShadow: "active:shadow-lg active:shadow-cyan-400/40",
-      titleColor: "text-cyan-400",
-      border: "border-cyan-500/10",
-      helpBorder: "border-cyan-400/30",
-      helpHoverBorder: "hover:border-cyan-400/50",
-    },
-    green: {
-      gradient: "from-green-400 to-emerald-500",
-      hoverShadow: "hover:shadow-xl hover:shadow-green-400/60",
-      activeShadow: "active:shadow-lg active:shadow-green-400/40",
-      titleColor: "text-green-400",
-      border: "border-green-500/10",
-      helpBorder: "border-green-400/30",
-      helpHoverBorder: "hover:border-green-400/50",
-    },
-    amber: {
-      gradient: "from-amber-400 to-orange-500",
-      hoverShadow: "hover:shadow-xl hover:shadow-amber-400/60",
-      activeShadow: "active:shadow-lg active:shadow-amber-400/40",
-      titleColor: "text-amber-400",
-      border: "border-amber-500/10",
-      helpBorder: "border-amber-400/30",
-      helpHoverBorder: "hover:border-amber-400/50",
-    },
-    pink: {
-      gradient: "from-pink-400 to-rose-500",
-      hoverShadow: "hover:shadow-xl hover:shadow-pink-400/60",
-      activeShadow: "active:shadow-lg active:shadow-pink-400/40",
-      titleColor: "text-pink-400",
-      border: "border-pink-500/10",
-      helpBorder: "border-pink-400/30",
-      helpHoverBorder: "hover:border-pink-400/50",
-    },
-  };
-
-  const colors = colorConfig[accentColor] || colorConfig.cyan;
+  // Get color configuration from shared utility
+  const colors = getColorConfig(accentColor);
 
   // Enter key to start game
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Enter" && !showHelp) {
+      if (e.key === 'Enter' && !showHelp) {
         onStart();
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onStart, showHelp]);
 
   return (
-    <div id="startMenu" className="fixed inset-0 z-50 flex items-center justify-center glass-overlay">
+    <div
+      id="startMenu"
+      className="fixed inset-0 z-50 flex items-center justify-center glass-overlay"
+    >
       <div className="menu-content">
         {/* Glass panel container */}
         <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-md mx-3 sm:mx-4">
           {/* Header Row - Back Button + Title */}
-          {/* Step 2: Fix back button - Add min-w/min-h to ensure circular shape on all mobile screens */}
           <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
             <button
               onClick={onBack}
@@ -118,16 +83,14 @@ const StartMenu = ({
             >
               {startButtonText}
             </button>
-            {(instructions.length > 0 ||
-              controls.length > 0 ||
-              tips.length > 0) && (
-                <button
-                  onClick={() => setShowHelp(true)}
-                  className={`w-full sm:flex-1 flex items-center justify-center glass-button ${colors.titleColor} font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 active:brightness-90 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg ${colors.helpBorder} ${colors.helpHoverBorder}`}
-                >
-                  How to Play
-                </button>
-              )}
+            {(instructions.length > 0 || controls.length > 0 || tips.length > 0) && (
+              <button
+                onClick={() => setShowHelp(true)}
+                className={`w-full sm:flex-1 flex items-center justify-center glass-button ${colors.titleColor} font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 active:brightness-90 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg ${colors.helpBorder} ${colors.helpHoverBorder}`}
+              >
+                How to Play
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -144,6 +107,40 @@ const StartMenu = ({
       />
     </div>
   );
+};
+
+StartMenu.propTypes = {
+  /** Game title displayed in the header */
+  title: PropTypes.string.isRequired,
+  /** Game description text */
+  description: PropTypes.string.isRequired,
+  /** Accent color theme */
+  accentColor: PropTypes.oneOf(['cyan', 'green', 'amber', 'pink', 'red', 'yellow']),
+  /** Callback when start button is clicked */
+  onStart: PropTypes.func.isRequired,
+  /** Callback when back button is clicked */
+  onBack: PropTypes.func.isRequired,
+  /** Array of instruction strings for HowToPlayModal */
+  instructions: PropTypes.arrayOf(PropTypes.string),
+  /** Array of control objects for HowToPlayModal */
+  controls: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      action: PropTypes.string.isRequired,
+    })
+  ),
+  /** Array of tip strings for HowToPlayModal */
+  tips: PropTypes.arrayOf(PropTypes.string),
+  /** Custom text for start button */
+  startButtonText: PropTypes.string,
+};
+
+StartMenu.defaultProps = {
+  accentColor: 'cyan',
+  instructions: [],
+  controls: [],
+  tips: [],
+  startButtonText: 'Start Game',
 };
 
 export default StartMenu;

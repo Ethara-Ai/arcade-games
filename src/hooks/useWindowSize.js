@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { DELAY_TIMINGS } from "../constants/timing";
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { DELAY_TIMINGS } from '../constants/timing';
 
 /**
  * useWindowSize - Hook for tracking window dimensions with SSR compatibility
@@ -28,7 +28,7 @@ export const useWindowSize = (options = {}) => {
 
   // Safe way to get initial dimensions (SSR-compatible)
   const getWindowDimensions = useCallback(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       // Server-side: return default values
       return {
         width: 0,
@@ -60,7 +60,7 @@ export const useWindowSize = (options = {}) => {
       setWindowSize(newSize);
 
       // Call optional resize callback
-      if (onResize && typeof onResize === "function") {
+      if (onResize && typeof onResize === 'function') {
         onResize(newSize);
       }
     }, debounceDelay);
@@ -75,15 +75,15 @@ export const useWindowSize = (options = {}) => {
     setWindowSize(getWindowDimensions());
 
     // Add resize listener
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Also listen for orientation change on mobile devices
-    window.addEventListener("orientationchange", handleResize);
+    window.addEventListener('orientationchange', handleResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("orientationchange", handleResize);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
 
       // Clear any pending timeout
       if (timeoutRef.current) {
@@ -99,8 +99,7 @@ export const useWindowSize = (options = {}) => {
   const isPortrait = windowSize.height >= windowSize.width;
 
   // Calculate aspect ratio
-  const aspectRatio =
-    windowSize.height > 0 ? windowSize.width / windowSize.height : 1;
+  const aspectRatio = windowSize.height > 0 ? windowSize.width / windowSize.height : 1;
 
   return {
     ...windowSize,
@@ -122,12 +121,12 @@ export const useWindowSize = (options = {}) => {
 export const useMediaQuery = (query) => {
   // SSR-safe initial value with lazy initialization
   const [matches, setMatches] = useState(() => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === 'undefined') return false;
     return window.matchMedia(query).matches;
   });
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
 
     const mediaQuery = window.matchMedia(query);
 
@@ -138,8 +137,8 @@ export const useMediaQuery = (query) => {
 
     // Modern browsers
     if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener("change", handleChange);
-      return () => mediaQuery.removeEventListener("change", handleChange);
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
     } else {
       // Legacy browsers
       mediaQuery.addListener(handleChange);
@@ -156,7 +155,7 @@ export const useMediaQuery = (query) => {
  * @returns {boolean} - Whether user prefers reduced motion
  */
 export const usePrefersReducedMotion = () => {
-  return useMediaQuery("(prefers-reduced-motion: reduce)");
+  return useMediaQuery('(prefers-reduced-motion: reduce)');
 };
 
 /**
@@ -165,7 +164,7 @@ export const usePrefersReducedMotion = () => {
  * @returns {boolean} - Whether user prefers dark mode
  */
 export const usePrefersDarkMode = () => {
-  return useMediaQuery("(prefers-color-scheme: dark)");
+  return useMediaQuery('(prefers-color-scheme: dark)');
 };
 
 /**
@@ -176,12 +175,10 @@ export const usePrefersDarkMode = () => {
 export const useIsTouchDevice = () => {
   // Use lazy initialization to detect touch capability (SSR-safe)
   const [isTouch] = useState(() => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === 'undefined') return false;
 
     return (
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      navigator.msMaxTouchPoints > 0
+      'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
     );
   });
 

@@ -1,43 +1,37 @@
-import { useEffect, useState, useCallback, useRef } from "react";
-import {
-  IoArrowBack,
-  IoHelpCircle,
-  IoPause,
-  IoPlay,
-  IoRefresh,
-} from "react-icons/io5";
-import { SNAKE_GAME_STATES } from "../../constants";
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh } from 'react-icons/io5';
+import { SNAKE_GAME_STATES } from '../../constants';
 import {
   StartMenu,
   PauseMenu,
   GameOverMenu,
   HowToPlayModal,
   GameErrorBoundary,
-} from "../../components";
-import { useSnakeGame } from "./useSnakeGame";
-import SnakeCanvas from "./SnakeCanvas";
+} from '../../components';
+import { useSnakeGame } from './useSnakeGame';
+import SnakeCanvas from './SnakeCanvas';
 
 // Game-specific content for menus
 const SNAKE_INSTRUCTIONS = [
-  "Guide the snake to eat food and grow longer",
-  "Pink food gives 10 points, golden food gives 50 points",
-  "Avoid hitting the walls or your own tail",
-  "The snake speeds up as you eat more food",
+  'Guide the snake to eat food and grow longer',
+  'Pink food gives 10 points, golden food gives 50 points',
+  'Avoid hitting the walls or your own tail',
+  'The snake speeds up as you eat more food',
 ];
 
 const SNAKE_CONTROLS = [
-  { key: "↑ ↓ ← →", action: "Change direction" },
-  { key: "W A S D", action: "Change direction (alternative)" },
-  { key: "Swipe", action: "Change direction (touch)" },
-  { key: "P / Space", action: "Pause game" },
-  { key: "Pause Menu", action: "Adjust speed" },
+  { key: '↑ ↓ ← →', action: 'Change direction' },
+  { key: 'W A S D', action: 'Change direction (alternative)' },
+  { key: 'Swipe', action: 'Change direction (touch)' },
+  { key: 'P / Space', action: 'Pause game' },
+  { key: 'Pause Menu', action: 'Adjust speed' },
 ];
 
 const SNAKE_TIPS = [
-  "Plan your path to avoid trapping yourself",
+  'Plan your path to avoid trapping yourself',
   "Use the edges carefully - don't get cornered",
-  "Grab bonus food quickly for extra points",
-  "Pause the game to adjust speed to your skill level",
+  'Grab bonus food quickly for extra points',
+  'Pause the game to adjust speed to your skill level',
 ];
 
 /**
@@ -82,8 +76,8 @@ const SnakeGameContent = ({ onBack }) => {
       handleKeyDown(e, showHelp);
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleKeyDown, showHelp]);
 
   // Touch handlers for game area
@@ -100,23 +94,22 @@ const SnakeGameContent = ({ onBack }) => {
       }
     };
 
-    document.addEventListener("touchstart", handleTouchStartWrapper, {
+    document.addEventListener('touchstart', handleTouchStartWrapper, {
       passive: true,
     });
-    document.addEventListener("touchend", handleTouchEndWrapper, {
+    document.addEventListener('touchend', handleTouchEndWrapper, {
       passive: true,
     });
 
     return () => {
-      document.removeEventListener("touchstart", handleTouchStartWrapper);
-      document.removeEventListener("touchend", handleTouchEndWrapper);
+      document.removeEventListener('touchstart', handleTouchStartWrapper);
+      document.removeEventListener('touchend', handleTouchEndWrapper);
     };
   }, [gameState, handleTouchStart, handleTouchEnd]);
 
   // Check if game is active (playing or paused)
   const isGameActive =
-    gameState === SNAKE_GAME_STATES.PLAYING ||
-    gameState === SNAKE_GAME_STATES.PAUSED;
+    gameState === SNAKE_GAME_STATES.PLAYING || gameState === SNAKE_GAME_STATES.PAUSED;
 
   const isPaused = gameState === SNAKE_GAME_STATES.PAUSED;
 
@@ -139,19 +132,19 @@ const SnakeGameContent = ({ onBack }) => {
     <div
       className="snake-game-container flex flex-col items-center justify-center min-h-screen overflow-hidden p-4 bg-[#0a0a0a]"
       style={{
-        touchAction: "none",
-        overscrollBehavior: "none",
+        touchAction: 'none',
+        overscrollBehavior: 'none',
       }}
     >
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-500/10 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: "0s" }}
+          style={{ animationDelay: '0s' }}
         />
         <div
           className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: "1s" }}
+          style={{ animationDelay: '1s' }}
         />
       </div>
 
@@ -174,7 +167,7 @@ const SnakeGameContent = ({ onBack }) => {
             className="text-2xl sm:text-3xl font-black text-green-400"
             style={{
               fontFamily: '"Raleway", sans-serif',
-              textShadow: "0 0 30px rgba(74, 222, 128, 0.5)",
+              textShadow: '0 0 30px rgba(74, 222, 128, 0.5)',
             }}
           >
             Snake
@@ -194,11 +187,11 @@ const SnakeGameContent = ({ onBack }) => {
               onClick={handlePauseToggle}
               className={`w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] rounded-full text-white flex items-center justify-center shadow-lg hover:brightness-110 active:brightness-90 transition-all flex-shrink-0 ${
                 isPaused
-                  ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
-                  : "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
+                  ? 'bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40'
+                  : 'bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40'
               }`}
-              title={isPaused ? "Resume" : "Pause"}
-              aria-label={isPaused ? "Resume Game" : "Pause Game"}
+              title={isPaused ? 'Resume' : 'Pause'}
+              aria-label={isPaused ? 'Resume Game' : 'Pause Game'}
             >
               {isPaused ? <IoPlay /> : <IoPause />}
             </button>
@@ -221,25 +214,19 @@ const SnakeGameContent = ({ onBack }) => {
             <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
               Score
             </div>
-            <div className="text-lg sm:text-xl font-bold text-white">
-              {score}
-            </div>
+            <div className="text-lg sm:text-xl font-bold text-white">{score}</div>
           </div>
           <div className="glass-stat border-green-500/20 rounded-lg px-3 py-2 text-center flex-1">
             <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
               Best
             </div>
-            <div className="text-lg sm:text-xl font-bold text-white">
-              {highScore}
-            </div>
+            <div className="text-lg sm:text-xl font-bold text-white">{highScore}</div>
           </div>
           <div className="glass-stat border-green-500/20 rounded-lg px-3 py-2 text-center flex-1">
             <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
               Length
             </div>
-            <div className="text-lg sm:text-xl font-bold text-green-400">
-              {snakeLength}
-            </div>
+            <div className="text-lg sm:text-xl font-bold text-green-400">{snakeLength}</div>
           </div>
         </div>
       )}
@@ -297,7 +284,7 @@ const SnakeGameContent = ({ onBack }) => {
             maxSpeed: 5,
             onIncrease: increaseSpeed,
             onDecrease: decreaseSpeed,
-            label: "Speed",
+            label: 'Speed',
           }}
         />
       )}
@@ -312,9 +299,9 @@ const SnakeGameContent = ({ onBack }) => {
           onRestart={handleNewGame}
           onMainMenu={handleMainMenu}
           stats={[
-            { label: "Score", value: score },
-            { label: "Best", value: highScore },
-            { label: "Length", value: snakeLength },
+            { label: 'Score', value: score },
+            { label: 'Best', value: highScore },
+            { label: 'Length', value: snakeLength },
           ]}
         />
       )}

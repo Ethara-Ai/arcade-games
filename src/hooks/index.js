@@ -1,16 +1,16 @@
 // ============================================
 // Core Game Hooks
 // ============================================
-export { default as useGameLoop } from "./useGameLoop";
-export { default as useHighScore } from "./useHighScore";
-export { default as useKeyboard } from "./useKeyboard";
+export { default as useGameLoop } from './useGameLoop';
+export { default as useHighScore } from './useHighScore';
+export { default as useKeyboard } from './useKeyboard';
 export {
   default as useWindowSize,
   useMediaQuery,
   usePrefersReducedMotion,
   usePrefersDarkMode,
   useIsTouchDevice,
-} from "./useWindowSize";
+} from './useWindowSize';
 
 // ============================================
 // State Management Hooks
@@ -20,7 +20,7 @@ export {
   useGameStateMachine as useStateMachine,
   createGameStateMachine,
   GAME_STATES,
-} from "./useGameStateMachine";
+} from './useGameStateMachine';
 
 // ============================================
 // Control Hooks
@@ -35,13 +35,9 @@ export {
   DEFAULT_PAUSE_KEYS,
   DEFAULT_START_KEYS,
   DEFAULT_ACTION_KEYS,
-} from "./useGameControls";
+} from './useGameControls';
 
 // ============================================
 // Animation Hooks
 // ============================================
-export {
-  default as useAnimationFrame,
-  useAnimationLoop,
-  useInterval,
-} from "./useAnimationFrame";
+export { default as useAnimationFrame, useAnimationLoop, useInterval } from './useAnimationFrame';

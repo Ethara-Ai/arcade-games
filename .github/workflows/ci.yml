@@ -12,7 +12,7 @@ on:
   pull_request:
     branches:
       - main
-  
+
   # Trigger on push to any branch
   push:
     branches:
@@ -36,7 +36,7 @@ jobs:
   build:
     name: Build and Test
     runs-on: ubuntu-latest
-    
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Repository

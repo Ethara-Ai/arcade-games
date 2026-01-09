@@ -1,13 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        raleway: ["Raleway", "Arial", "sans-serif"],
+        raleway: ['Raleway', 'Arial', 'sans-serif'],
       },
       colors: {
         'game-bg': '#121212',
@@ -27,7 +24,7 @@ export default {
         'spinner-glow': 'spinnerGlow 2s ease-in-out infinite alternate',
         'progress-load': 'progressLoad 2.8s ease-out forwards',
         'progress-glow': 'progressGlow 1s ease-in-out infinite alternate',
-        'shimmer': 'shimmer 1.5s ease-in-out infinite',
+        shimmer: 'shimmer 1.5s ease-in-out infinite',
         'game-start': 'gameStart 0.8s ease-out forwards',
       },
       keyframes: {
@@ -70,4 +67,4 @@ export default {
     },
   },
   plugins: [],
-}
+};

@@ -21,9 +21,12 @@ export const useKeyboard = () => {
     };
   }, [handleKeyDown, handleKeyUp]);
 
-  const isKeyPressed = useCallback((key) => {
-    return keys[key] || false;
-  }, [keys]);
+  const isKeyPressed = useCallback(
+    (key) => {
+      return keys[key] || false;
+    },
+    [keys]
+  );
 
   const isLeftPressed = useCallback(() => {
     return keys['ArrowLeft'] || keys['a'] || keys['A'];

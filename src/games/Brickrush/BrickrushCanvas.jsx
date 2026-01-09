@@ -1,10 +1,4 @@
-import {
-  useRef,
-  useEffect,
-  useCallback,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import { useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react';
 import {
   GAME_WIDTH,
   TARGET_ASPECT_RATIO,
@@ -13,7 +7,7 @@ import {
   BRICK_COLUMN_COUNT,
   POWERUP_TYPES,
   GAME_STATES,
-} from "../../constants";
+} from '../../constants';
 
 /**
  * BrickrushCanvas - Pure rendering component for the Brickrush game
@@ -30,7 +24,7 @@ const BrickrushCanvas = forwardRef(
       updatePaddlePosition,
       launchBall,
     },
-    ref,
+    ref
   ) => {
     const canvasRef = useRef(null);
     const gameScaleRef = useRef(1);
@@ -77,16 +71,16 @@ const BrickrushCanvas = forwardRef(
 
             // Steel brick special styling
             if (brick.isSteel) {
-              ctx.strokeStyle = "#a0a0a0";
+              ctx.strokeStyle = '#a0a0a0';
               ctx.lineWidth = 2;
               ctx.strokeRect(brick.x, dropY, brick.width, brick.height);
-              ctx.fillStyle = "#e0e0e0";
+              ctx.fillStyle = '#e0e0e0';
               ctx.fillRect(brick.x + 2, dropY + 2, brick.width - 4, 2);
             }
 
             // Power-up indicator
             if (brick.powerUp) {
-              ctx.fillStyle = "#fff";
+              ctx.fillStyle = '#fff';
               if (brick.powerUp === POWERUP_TYPES.MULTIBALL) {
                 ctx.beginPath();
                 ctx.arc(
@@ -94,7 +88,7 @@ const BrickrushCanvas = forwardRef(
                   dropY + brick.height / 2,
                   Math.min(brick.width, brick.height) / 4,
                   0,
-                  Math.PI * 2,
+                  Math.PI * 2
                 );
                 ctx.fill();
               } else if (brick.powerUp === POWERUP_TYPES.STRETCH_PADDLE) {
@@ -103,13 +97,13 @@ const BrickrushCanvas = forwardRef(
                   brick.x + brick.width / 2 - size / 2,
                   dropY + brick.height / 2 - size / 2,
                   size,
-                  size / 4,
+                  size / 4
                 );
                 ctx.fillRect(
                   brick.x + brick.width / 2 - size / 4,
                   dropY + brick.height / 2 - size / 2,
                   size / 4,
-                  size,
+                  size
                 );
               }
             }
@@ -124,13 +118,13 @@ const BrickrushCanvas = forwardRef(
       for (const pu of powerUps) {
         ctx.fillStyle = pu.color;
         ctx.fillRect(pu.x, pu.y, pu.size, pu.size);
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = '#fff';
         ctx.font = `${pu.size * 0.8}px Arial`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        let letter = "?";
-        if (pu.type === POWERUP_TYPES.MULTIBALL) letter = "M";
-        if (pu.type === POWERUP_TYPES.STRETCH_PADDLE) letter = "S";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        let letter = '?';
+        if (pu.type === POWERUP_TYPES.MULTIBALL) letter = 'M';
+        if (pu.type === POWERUP_TYPES.STRETCH_PADDLE) letter = 'S';
         ctx.fillText(letter, pu.x + pu.size / 2, pu.y + pu.size / 2);
       }
     }, []);
@@ -143,10 +137,7 @@ const BrickrushCanvas = forwardRef(
         ctx.save();
         ctx.scale(gameScaleRef.current, gameScaleRef.current);
 
-        if (
-          gameState === GAME_STATES.PLAYING ||
-          gameState === GAME_STATES.PAUSED
-        ) {
+        if (gameState === GAME_STATES.PLAYING || gameState === GAME_STATES.PAUSED) {
           drawPaddle(ctx, gameObjects.paddle);
           for (const ball of gameObjects.balls) {
             drawBall(ctx, ball);
@@ -157,7 +148,7 @@ const BrickrushCanvas = forwardRef(
 
         ctx.restore();
       },
-      [gameState, drawPaddle, drawBall, drawBricks, drawPowerUps],
+      [gameState, drawPaddle, drawBall, drawBricks, drawPowerUps]
     );
 
     // Game loop effect
@@ -165,7 +156,7 @@ const BrickrushCanvas = forwardRef(
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
 
       const gameLoop = () => {
         // Update game state
@@ -241,8 +232,8 @@ const BrickrushCanvas = forwardRef(
     // Handle resize
     useEffect(() => {
       resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
-      return () => window.removeEventListener("resize", resizeCanvas);
+      window.addEventListener('resize', resizeCanvas);
+      return () => window.removeEventListener('resize', resizeCanvas);
     }, [resizeCanvas]);
 
     // Handle mouse move for paddle
@@ -251,17 +242,13 @@ const BrickrushCanvas = forwardRef(
         if (window.innerWidth >= 768) {
           const canvas = canvasRef.current;
           if (canvas) {
-            updatePaddlePosition(
-              e.clientX,
-              canvas.getBoundingClientRect(),
-              gameScaleRef.current,
-            );
+            updatePaddlePosition(e.clientX, canvas.getBoundingClientRect(), gameScaleRef.current);
           }
         }
       };
 
-      document.addEventListener("mousemove", handleMouseMove);
-      return () => document.removeEventListener("mousemove", handleMouseMove);
+      document.addEventListener('mousemove', handleMouseMove);
+      return () => document.removeEventListener('mousemove', handleMouseMove);
     }, [updatePaddlePosition]);
 
     // Handle touch move for paddle
@@ -275,17 +262,17 @@ const BrickrushCanvas = forwardRef(
               updatePaddlePosition(
                 e.touches[0].clientX,
                 canvas.getBoundingClientRect(),
-                gameScaleRef.current,
+                gameScaleRef.current
               );
             }
           }
         }
       };
 
-      document.addEventListener("touchmove", handleTouchMove, {
+      document.addEventListener('touchmove', handleTouchMove, {
         passive: false,
       });
-      return () => document.removeEventListener("touchmove", handleTouchMove);
+      return () => document.removeEventListener('touchmove', handleTouchMove);
     }, [updatePaddlePosition]);
 
     // Handle click for launching ball (mouse only)
@@ -307,22 +294,22 @@ const BrickrushCanvas = forwardRef(
         }
       };
 
-      canvas.addEventListener("touchstart", handleTouchStart, {
+      canvas.addEventListener('touchstart', handleTouchStart, {
         passive: false,
       });
-      return () => canvas.removeEventListener("touchstart", handleTouchStart);
+      return () => canvas.removeEventListener('touchstart', handleTouchStart);
     }, [gameState, ballLaunched, launchBall]);
 
     return (
       <canvas
         ref={canvasRef}
-        className={`game-canvas ${fadeIn ? "fade-in" : ""}`}
+        className={`game-canvas ${fadeIn ? 'fade-in' : ''}`}
         onClick={handleCanvasClick}
       />
     );
-  },
+  }
 );
 
-BrickrushCanvas.displayName = "BrickrushCanvas";
+BrickrushCanvas.displayName = 'BrickrushCanvas';
 
 export default BrickrushCanvas;

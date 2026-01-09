@@ -1,13 +1,13 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
 import {
   useWindowSize,
   useMediaQuery,
   usePrefersReducedMotion,
   useIsTouchDevice,
-} from "./useWindowSize";
+} from './useWindowSize';
 
-describe("useWindowSize", () => {
+describe('useWindowSize', () => {
   const originalInnerWidth = window.innerWidth;
   const originalInnerHeight = window.innerHeight;
 
@@ -16,12 +16,12 @@ describe("useWindowSize", () => {
     vi.useFakeTimers();
 
     // Reset window size before each test
-    Object.defineProperty(window, "innerWidth", {
+    Object.defineProperty(window, 'innerWidth', {
       writable: true,
       configurable: true,
       value: 1024,
     });
-    Object.defineProperty(window, "innerHeight", {
+    Object.defineProperty(window, 'innerHeight', {
       writable: true,
       configurable: true,
       value: 768,
@@ -32,27 +32,27 @@ describe("useWindowSize", () => {
     vi.useRealTimers();
 
     // Restore original window size
-    Object.defineProperty(window, "innerWidth", {
+    Object.defineProperty(window, 'innerWidth', {
       writable: true,
       configurable: true,
       value: originalInnerWidth,
     });
-    Object.defineProperty(window, "innerHeight", {
+    Object.defineProperty(window, 'innerHeight', {
       writable: true,
       configurable: true,
       value: originalInnerHeight,
     });
   });
 
-  it("should return initial window dimensions", () => {
+  it('should return initial window dimensions', () => {
     const { result } = renderHook(() => useWindowSize());
 
     expect(result.current.width).toBe(1024);
     expect(result.current.height).toBe(768);
   });
 
-  it("should return isDesktop true when width >= 768", () => {
-    Object.defineProperty(window, "innerWidth", {
+  it('should return isDesktop true when width >= 768', () => {
+    Object.defineProperty(window, 'innerWidth', {
       value: 1024,
       writable: true,
     });
@@ -63,8 +63,8 @@ describe("useWindowSize", () => {
     expect(result.current.isMobile).toBe(false);
   });
 
-  it("should return isMobile true when width < 768", () => {
-    Object.defineProperty(window, "innerWidth", { value: 500, writable: true });
+  it('should return isMobile true when width < 768', () => {
+    Object.defineProperty(window, 'innerWidth', { value: 500, writable: true });
 
     const { result } = renderHook(() => useWindowSize());
 
@@ -72,7 +72,7 @@ describe("useWindowSize", () => {
     expect(result.current.isDesktop).toBe(false);
   });
 
-  it("should update dimensions on window resize after debounce delay", async () => {
+  it('should update dimensions on window resize after debounce delay', async () => {
     const { result } = renderHook(() => useWindowSize({ debounceDelay: 100 }));
 
     expect(result.current.width).toBe(1024);
@@ -80,15 +80,15 @@ describe("useWindowSize", () => {
 
     // Trigger resize
     act(() => {
-      Object.defineProperty(window, "innerWidth", {
+      Object.defineProperty(window, 'innerWidth', {
         value: 500,
         writable: true,
       });
-      Object.defineProperty(window, "innerHeight", {
+      Object.defineProperty(window, 'innerHeight', {
         value: 400,
         writable: true,
       });
-      window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new Event('resize'));
     });
 
     // Values should not have changed yet (debounced)
@@ -105,8 +105,8 @@ describe("useWindowSize", () => {
     expect(result.current.isDesktop).toBe(false);
   });
 
-  it("should update isMobile/isDesktop when crossing breakpoint", async () => {
-    Object.defineProperty(window, "innerWidth", {
+  it('should update isMobile/isDesktop when crossing breakpoint', async () => {
+    Object.defineProperty(window, 'innerWidth', {
       value: 1024,
       writable: true,
     });
@@ -118,11 +118,11 @@ describe("useWindowSize", () => {
 
     // Resize to mobile
     act(() => {
-      Object.defineProperty(window, "innerWidth", {
+      Object.defineProperty(window, 'innerWidth', {
         value: 767,
         writable: true,
       });
-      window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new Event('resize'));
     });
 
     // Fast-forward past debounce
@@ -135,11 +135,11 @@ describe("useWindowSize", () => {
 
     // Resize back to desktop
     act(() => {
-      Object.defineProperty(window, "innerWidth", {
+      Object.defineProperty(window, 'innerWidth', {
         value: 768,
         writable: true,
       });
-      window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new Event('resize'));
     });
 
     // Fast-forward past debounce
@@ -151,22 +151,19 @@ describe("useWindowSize", () => {
     expect(result.current.isMobile).toBe(false);
   });
 
-  it("should remove event listener on unmount", () => {
-    const removeEventListenerSpy = vi.spyOn(window, "removeEventListener");
+  it('should remove event listener on unmount', () => {
+    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
 
     const { unmount } = renderHook(() => useWindowSize());
     unmount();
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith(
-      "resize",
-      expect.any(Function),
-    );
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function));
 
     removeEventListenerSpy.mockRestore();
   });
 
-  it("should handle exact breakpoint value of 768", () => {
-    Object.defineProperty(window, "innerWidth", { value: 768, writable: true });
+  it('should handle exact breakpoint value of 768', () => {
+    Object.defineProperty(window, 'innerWidth', { value: 768, writable: true });
 
     const { result } = renderHook(() => useWindowSize());
 
@@ -174,12 +171,12 @@ describe("useWindowSize", () => {
     expect(result.current.isMobile).toBe(false);
   });
 
-  it("should calculate aspect ratio correctly", () => {
-    Object.defineProperty(window, "innerWidth", {
+  it('should calculate aspect ratio correctly', () => {
+    Object.defineProperty(window, 'innerWidth', {
       value: 1920,
       writable: true,
     });
-    Object.defineProperty(window, "innerHeight", {
+    Object.defineProperty(window, 'innerHeight', {
       value: 1080,
       writable: true,
     });
@@ -189,12 +186,12 @@ describe("useWindowSize", () => {
     expect(result.current.aspectRatio).toBeCloseTo(1.778, 2);
   });
 
-  it("should detect landscape orientation", () => {
-    Object.defineProperty(window, "innerWidth", {
+  it('should detect landscape orientation', () => {
+    Object.defineProperty(window, 'innerWidth', {
       value: 1024,
       writable: true,
     });
-    Object.defineProperty(window, "innerHeight", {
+    Object.defineProperty(window, 'innerHeight', {
       value: 768,
       writable: true,
     });
@@ -205,9 +202,9 @@ describe("useWindowSize", () => {
     expect(result.current.isPortrait).toBe(false);
   });
 
-  it("should detect portrait orientation", () => {
-    Object.defineProperty(window, "innerWidth", { value: 768, writable: true });
-    Object.defineProperty(window, "innerHeight", {
+  it('should detect portrait orientation', () => {
+    Object.defineProperty(window, 'innerWidth', { value: 768, writable: true });
+    Object.defineProperty(window, 'innerHeight', {
       value: 1024,
       writable: true,
     });
@@ -218,19 +215,17 @@ describe("useWindowSize", () => {
     expect(result.current.isPortrait).toBe(true);
   });
 
-  it("should call onResize callback when window resizes", async () => {
+  it('should call onResize callback when window resizes', async () => {
     const onResizeMock = vi.fn();
 
-    renderHook(() =>
-      useWindowSize({ onResize: onResizeMock, debounceDelay: 100 }),
-    );
+    renderHook(() => useWindowSize({ onResize: onResizeMock, debounceDelay: 100 }));
 
     act(() => {
-      Object.defineProperty(window, "innerWidth", {
+      Object.defineProperty(window, 'innerWidth', {
         value: 500,
         writable: true,
       });
-      window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new Event('resize'));
     });
 
     // Fast-forward past debounce
@@ -244,21 +239,19 @@ describe("useWindowSize", () => {
     });
   });
 
-  it("should debounce rapid resize events", async () => {
+  it('should debounce rapid resize events', async () => {
     const onResizeMock = vi.fn();
 
-    renderHook(() =>
-      useWindowSize({ onResize: onResizeMock, debounceDelay: 100 }),
-    );
+    renderHook(() => useWindowSize({ onResize: onResizeMock, debounceDelay: 100 }));
 
     // Trigger multiple resize events rapidly
     for (let i = 0; i < 5; i++) {
       act(() => {
-        Object.defineProperty(window, "innerWidth", {
+        Object.defineProperty(window, 'innerWidth', {
           value: 500 + i * 100,
           writable: true,
         });
-        window.dispatchEvent(new Event("resize"));
+        window.dispatchEvent(new Event('resize'));
       });
 
       await act(async () => {
@@ -282,22 +275,20 @@ describe("useWindowSize", () => {
     });
   });
 
-  it("should support custom mobile breakpoint", () => {
-    Object.defineProperty(window, "innerWidth", {
+  it('should support custom mobile breakpoint', () => {
+    Object.defineProperty(window, 'innerWidth', {
       value: 1024,
       writable: true,
     });
 
-    const { result } = renderHook(() =>
-      useWindowSize({ mobileBreakpoint: 1200 }),
-    );
+    const { result } = renderHook(() => useWindowSize({ mobileBreakpoint: 1200 }));
 
     expect(result.current.isMobile).toBe(true);
     expect(result.current.isDesktop).toBe(false);
   });
 });
 
-describe("useMediaQuery", () => {
+describe('useMediaQuery', () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -306,22 +297,22 @@ describe("useMediaQuery", () => {
     vi.useRealTimers();
   });
 
-  it("should return initial match state", () => {
+  it('should return initial match state', () => {
     // Mock matchMedia
     const mockMatchMedia = vi.fn().mockImplementation((query) => ({
-      matches: query === "(min-width: 768px)",
+      matches: query === '(min-width: 768px)',
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
     }));
     window.matchMedia = mockMatchMedia;
 
-    const { result } = renderHook(() => useMediaQuery("(min-width: 768px)"));
+    const { result } = renderHook(() => useMediaQuery('(min-width: 768px)'));
 
     expect(result.current).toBe(true);
   });
 
-  it("should return false for non-matching query", () => {
+  it('should return false for non-matching query', () => {
     const mockMatchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
@@ -330,14 +321,14 @@ describe("useMediaQuery", () => {
     }));
     window.matchMedia = mockMatchMedia;
 
-    const { result } = renderHook(() => useMediaQuery("(max-width: 500px)"));
+    const { result } = renderHook(() => useMediaQuery('(max-width: 500px)'));
 
     expect(result.current).toBe(false);
   });
 });
 
-describe("usePrefersReducedMotion", () => {
-  it("should return true when reduced motion is preferred", () => {
+describe('usePrefersReducedMotion', () => {
+  it('should return true when reduced motion is preferred', () => {
     const mockMatchMedia = vi.fn().mockImplementation(() => ({
       matches: true,
       addEventListener: vi.fn(),
@@ -350,7 +341,7 @@ describe("usePrefersReducedMotion", () => {
     expect(result.current).toBe(true);
   });
 
-  it("should return false when reduced motion is not preferred", () => {
+  it('should return false when reduced motion is not preferred', () => {
     const mockMatchMedia = vi.fn().mockImplementation(() => ({
       matches: false,
       addEventListener: vi.fn(),
@@ -364,9 +355,9 @@ describe("usePrefersReducedMotion", () => {
   });
 });
 
-describe("useIsTouchDevice", () => {
-  it("should return true for touch-enabled devices", () => {
-    Object.defineProperty(navigator, "maxTouchPoints", {
+describe('useIsTouchDevice', () => {
+  it('should return true for touch-enabled devices', () => {
+    Object.defineProperty(navigator, 'maxTouchPoints', {
       value: 1,
       writable: true,
       configurable: true,
@@ -377,8 +368,8 @@ describe("useIsTouchDevice", () => {
     expect(result.current).toBe(true);
   });
 
-  it("should return false for non-touch devices", () => {
-    Object.defineProperty(navigator, "maxTouchPoints", {
+  it('should return false for non-touch devices', () => {
+    Object.defineProperty(navigator, 'maxTouchPoints', {
       value: 0,
       writable: true,
       configurable: true,

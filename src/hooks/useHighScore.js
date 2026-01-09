@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
-import { STORAGE_KEYS, debugLog } from "../config";
-import { safeGetInt, safeSetItem, safeRemoveItem } from "../utils/safeStorage";
+import { useState, useCallback } from 'react';
+import { STORAGE_KEYS, debugLog } from '../config';
+import { safeGetInt, safeSetItem, safeRemoveItem } from '../utils/safeStorage';
 
 /**
  * useHighScore - Generic hook for managing high scores across games
@@ -14,10 +14,7 @@ import { safeGetInt, safeSetItem, safeRemoveItem } from "../utils/safeStorage";
  * @param {string} gameName - Optional game name for debug logging
  * @returns {Object} - { highScore, updateHighScore, loadHighScore, resetHighScore }
  */
-export const useHighScore = (
-  storageKey = STORAGE_KEYS.BRICKRUSH_HIGH_SCORE,
-  gameName = "Game",
-) => {
+export const useHighScore = (storageKey = STORAGE_KEYS.BRICKRUSH_HIGH_SCORE, gameName = 'Game') => {
   // Use lazy initialization to load high score from localStorage safely
   const [highScore, setHighScore] = useState(() => {
     const savedHighScore = safeGetInt(storageKey, 0);
@@ -35,14 +32,11 @@ export const useHighScore = (
       } else {
         // Still update state even if storage failed
         setHighScore(score);
-        debugLog(
-          `Failed to save ${gameName} high score to storage, but updated state:`,
-          score,
-        );
+        debugLog(`Failed to save ${gameName} high score to storage, but updated state:`, score);
       }
       return success;
     },
-    [storageKey, gameName],
+    [storageKey, gameName]
   );
 
   // Update high score if current score is higher
@@ -54,7 +48,7 @@ export const useHighScore = (
       }
       return false;
     },
-    [highScore, saveHighScore],
+    [highScore, saveHighScore]
   );
 
   // loadHighScore - refresh from localStorage
@@ -71,7 +65,7 @@ export const useHighScore = (
     setHighScore(0);
     debugLog(
       `Reset ${gameName} high score`,
-      success ? "(storage cleared)" : "(storage clear failed)",
+      success ? '(storage cleared)' : '(storage clear failed)'
     );
     return success;
   }, [storageKey, gameName]);
@@ -80,10 +74,7 @@ export const useHighScore = (
   const isNewHighScore = useCallback((score) => score > highScore, [highScore]);
 
   // Get the difference between a score and the high score
-  const getScoreDifference = useCallback(
-    (score) => score - highScore,
-    [highScore],
-  );
+  const getScoreDifference = useCallback((score) => score - highScore, [highScore]);
 
   return {
     highScore,

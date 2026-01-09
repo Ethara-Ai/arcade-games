@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from 'react';
 
 /**
  * useAnimationFrame - Hook for managing requestAnimationFrame with proper cleanup
@@ -37,17 +37,15 @@ export const useAnimationFrame = (callback, options = {}) => {
 
   // Check for reduced motion preference
   const prefersReducedMotion = useCallback(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
   // Start the animation loop
   const start = useCallback(() => {
     // Check reduced motion preference
     if (respectReducedMotion && prefersReducedMotion()) {
-      console.debug(
-        "[useAnimationFrame] Animation disabled due to reduced motion preference",
-      );
+      console.debug('[useAnimationFrame] Animation disabled due to reduced motion preference');
       return;
     }
 
@@ -143,8 +141,7 @@ export const useAnimationFrame = (callback, options = {}) => {
       previousTimeRef.current = currentTime;
 
       // Calculate total elapsed time (from original start)
-      const totalTime =
-        startTimeRef.current !== null ? currentTime - startTimeRef.current : 0;
+      const totalTime = startTimeRef.current !== null ? currentTime - startTimeRef.current : 0;
 
       // Update FPS counter
       frameCountRef.current++;
@@ -201,21 +198,19 @@ export const useAnimationFrame = (callback, options = {}) => {
 
   // Listen for reduced motion preference changes
   useEffect(() => {
-    if (!respectReducedMotion || typeof window === "undefined") return;
+    if (!respectReducedMotion || typeof window === 'undefined') return;
 
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     const handleChange = (e) => {
       if (e.matches && isRunningRef.current) {
         stop();
-        console.debug(
-          "[useAnimationFrame] Stopped due to reduced motion preference change",
-        );
+        console.debug('[useAnimationFrame] Stopped due to reduced motion preference change');
       }
     };
 
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, [respectReducedMotion, stop]);
 
   return {

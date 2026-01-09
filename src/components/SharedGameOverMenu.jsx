@@ -1,4 +1,6 @@
-import { IoTrophy } from "react-icons/io5";
+import { IoTrophy } from 'react-icons/io5';
+import PropTypes from 'prop-types';
+import { getColorConfig } from '../utils/colorConfig';
 
 /**
  * GameOverMenu - Generic game over menu component for all games
@@ -11,79 +13,30 @@ import { IoTrophy } from "react-icons/io5";
  * @param {string} restartText - Custom text for restart button (default: "Play Again")
  * @param {string} mainMenuText - Custom text for main menu button (default: "Main Menu")
  * @param {array} stats - Optional additional stats to display [{label, value}]
- * @param {string} glowColor - Custom glow color for background (default based on accentColor)
  */
 const GameOverMenu = ({
-  title = "Game Over",
-  accentColor = "red",
+  title = 'Game Over',
+  accentColor = 'red',
   score = 0,
   highScore = 0,
   onRestart,
   onMainMenu,
-  restartText = "Play Again",
-  mainMenuText = "Main Menu",
+  restartText = 'Play Again',
+  mainMenuText = 'Main Menu',
   stats = [],
 }) => {
   const isNewHighScore = score >= highScore && score > 0;
 
-  // Color configurations
-  const colorConfig = {
-    cyan: {
-      titleColor: "text-cyan-400",
-      titleShadow: "0 0 30px rgba(0, 209, 255, 0.5)",
-      glowBg: "bg-cyan-500/20",
-      primaryGradient: "from-cyan-400 to-blue-500",
-      primaryShadow: "shadow-cyan-400/30",
-      statBorder: "border-cyan-500/20",
-      statText: "text-cyan-400",
-    },
-    green: {
-      titleColor: "text-green-400",
-      titleShadow: "0 0 30px rgba(74, 222, 128, 0.5)",
-      glowBg: "bg-green-500/20",
-      primaryGradient: "from-green-400 to-emerald-500",
-      primaryShadow: "shadow-green-400/30",
-      statBorder: "border-green-500/20",
-      statText: "text-green-400",
-    },
-    amber: {
-      titleColor: "text-amber-400",
-      titleShadow: "0 0 30px rgba(251, 191, 36, 0.5)",
-      glowBg: "bg-amber-500/20",
-      primaryGradient: "from-amber-400 to-orange-500",
-      primaryShadow: "shadow-amber-400/30",
-      statBorder: "border-amber-500/20",
-      statText: "text-amber-400",
-    },
-    red: {
-      titleColor: "text-red-500",
-      titleShadow: "0 0 30px rgba(255, 23, 68, 0.5)",
-      glowBg: "bg-red-500/20",
-      primaryGradient: "from-cyan-400 to-blue-500",
-      primaryShadow: "shadow-cyan-400/30",
-      statBorder: "border-cyan-500/20",
-      statText: "text-cyan-400",
-    },
-    pink: {
-      titleColor: "text-pink-400",
-      titleShadow: "0 0 30px rgba(236, 72, 153, 0.5)",
-      glowBg: "bg-pink-500/20",
-      primaryGradient: "from-pink-400 to-rose-500",
-      primaryShadow: "shadow-pink-400/30",
-      statBorder: "border-pink-500/20",
-      statText: "text-pink-400",
-    },
-  };
-
-  const colors = colorConfig[accentColor] || colorConfig.red;
+  // Get color configuration from shared utility
+  const colors = getColorConfig(accentColor, 'red');
 
   // Default stats if none provided
   const displayStats =
     stats.length > 0
       ? stats
       : [
-          { label: "Score", value: score },
-          { label: "Best", value: highScore },
+          { label: 'Score', value: score },
+          { label: 'Best', value: highScore },
         ];
 
   return (
@@ -133,9 +86,7 @@ const GameOverMenu = ({
                 >
                   {stat.label}
                 </div>
-                <div className="text-xl sm:text-2xl font-bold text-white">
-                  {stat.value}
-                </div>
+                <div className="text-xl sm:text-2xl font-bold text-white">{stat.value}</div>
               </div>
             ))}
           </div>
@@ -159,6 +110,42 @@ const GameOverMenu = ({
       </div>
     </div>
   );
+};
+
+GameOverMenu.propTypes = {
+  /** Menu title */
+  title: PropTypes.string,
+  /** Accent color theme */
+  accentColor: PropTypes.oneOf(['cyan', 'green', 'amber', 'pink', 'red', 'yellow']),
+  /** Current score */
+  score: PropTypes.number,
+  /** High score */
+  highScore: PropTypes.number,
+  /** Callback when restart/play again button is clicked */
+  onRestart: PropTypes.func.isRequired,
+  /** Callback when main menu button is clicked */
+  onMainMenu: PropTypes.func.isRequired,
+  /** Custom text for restart button */
+  restartText: PropTypes.string,
+  /** Custom text for main menu button */
+  mainMenuText: PropTypes.string,
+  /** Optional additional stats to display */
+  stats: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    })
+  ),
+};
+
+GameOverMenu.defaultProps = {
+  title: 'Game Over',
+  accentColor: 'red',
+  score: 0,
+  highScore: 0,
+  restartText: 'Play Again',
+  mainMenuText: 'Main Menu',
+  stats: [],
 };
 
 export default GameOverMenu;

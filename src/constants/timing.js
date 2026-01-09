@@ -100,12 +100,12 @@ export const GAME_TIMINGS = {
 // ============================================
 
 export const CSS_TRANSITIONS = {
-  FAST: "all 0.15s ease",
-  NORMAL: "all 0.3s ease",
-  SLOW: "all 0.5s ease",
-  MENU: "opacity 0.6s ease, transform 0.6s ease",
-  TRANSFORM: "transform 0.3s ease",
-  OPACITY: "opacity 0.3s ease",
+  FAST: 'all 0.15s ease',
+  NORMAL: 'all 0.3s ease',
+  SLOW: 'all 0.5s ease',
+  MENU: 'opacity 0.6s ease, transform 0.6s ease',
+  TRANSFORM: 'transform 0.3s ease',
+  OPACITY: 'opacity 0.3s ease',
 };
 
 // ============================================
@@ -126,11 +126,9 @@ export const REDUCED_MOTION_TIMINGS = {
  * @returns {number} - Appropriate timing value
  */
 export const getAccessibleTiming = (normalTiming, reducedTiming = 0) => {
-  if (typeof window === "undefined") return normalTiming;
+  if (typeof window === 'undefined') return normalTiming;
 
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return prefersReducedMotion ? reducedTiming : normalTiming;
 };
@@ -140,8 +138,8 @@ export const getAccessibleTiming = (normalTiming, reducedTiming = 0) => {
  * @returns {boolean}
  */
 export const prefersReducedMotion = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
 export default {

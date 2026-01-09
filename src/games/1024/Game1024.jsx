@@ -1,40 +1,34 @@
-import { useEffect, useState, useCallback } from "react";
-import {
-  IoArrowBack,
-  IoHelpCircle,
-  IoPause,
-  IoPlay,
-  IoRefresh,
-} from "react-icons/io5";
-import { GAME_1024_STATES } from "../../constants";
+import { useEffect, useState, useCallback } from 'react';
+import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh } from 'react-icons/io5';
+import { GAME_1024_STATES } from '../../constants';
 import {
   StartMenu,
   PauseMenu,
   GameOverMenu,
   HowToPlayModal,
   GameErrorBoundary,
-} from "../../components";
-import { useGame1024 } from "./useGame1024";
-import Game1024Board from "./Game1024Board";
+} from '../../components';
+import { useGame1024 } from './useGame1024';
+import Game1024Board from './Game1024Board';
 
 // Game-specific content for menus
 const GAME_1024_INSTRUCTIONS = [
-  "Slide tiles in any direction using arrow keys or swipe",
-  "When two tiles with the same number collide, they merge",
-  "Create a tile with the number 1024 to win",
-  "The game ends when no more moves are possible",
+  'Slide tiles in any direction using arrow keys or swipe',
+  'When two tiles with the same number collide, they merge',
+  'Create a tile with the number 1024 to win',
+  'The game ends when no more moves are possible',
 ];
 
 const GAME_1024_CONTROLS = [
-  { key: "↑ ↓ ← →", action: "Move tiles" },
-  { key: "W A S D", action: "Move tiles (alternative)" },
-  { key: "Swipe", action: "Move tiles (touch)" },
+  { key: '↑ ↓ ← →', action: 'Move tiles' },
+  { key: 'W A S D', action: 'Move tiles (alternative)' },
+  { key: 'Swipe', action: 'Move tiles (touch)' },
 ];
 
 const GAME_1024_TIPS = [
-  "Keep your highest tile in a corner",
-  "Build a chain of decreasing numbers",
-  "Plan several moves ahead",
+  'Keep your highest tile in a corner',
+  'Build a chain of decreasing numbers',
+  'Plan several moves ahead',
   "Don't chase small merges randomly",
 ];
 
@@ -71,14 +65,13 @@ const Game1024Content = ({ onBack }) => {
       handleKeyDown(e, showHelp);
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleKeyDown, showHelp]);
 
   // Check if game is active (playing or paused)
   const isGameActive =
-    gameState === GAME_1024_STATES.PLAYING ||
-    gameState === GAME_1024_STATES.PAUSED;
+    gameState === GAME_1024_STATES.PLAYING || gameState === GAME_1024_STATES.PAUSED;
 
   const isPaused = gameState === GAME_1024_STATES.PAUSED;
 
@@ -103,11 +96,11 @@ const Game1024Content = ({ onBack }) => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-500/10 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: "0s" }}
+          style={{ animationDelay: '0s' }}
         />
         <div
           className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-500/10 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: "1s" }}
+          style={{ animationDelay: '1s' }}
         />
       </div>
 
@@ -130,7 +123,7 @@ const Game1024Content = ({ onBack }) => {
             className="text-2xl sm:text-3xl font-black text-amber-400"
             style={{
               fontFamily: '"Raleway", sans-serif',
-              textShadow: "0 0 30px rgba(251, 191, 36, 0.5)",
+              textShadow: '0 0 30px rgba(251, 191, 36, 0.5)',
             }}
           >
             1024
@@ -150,11 +143,11 @@ const Game1024Content = ({ onBack }) => {
               onClick={handlePauseToggle}
               className={`w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] rounded-full text-white flex items-center justify-center shadow-lg hover:brightness-110 active:brightness-90 transition-all flex-shrink-0 ${
                 isPaused
-                  ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
-                  : "bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-400/40"
+                  ? 'bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40'
+                  : 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-400/40'
               }`}
-              title={isPaused ? "Resume" : "Pause"}
-              aria-label={isPaused ? "Resume Game" : "Pause Game"}
+              title={isPaused ? 'Resume' : 'Pause'}
+              aria-label={isPaused ? 'Resume Game' : 'Pause Game'}
             >
               {isPaused ? <IoPlay /> : <IoPause />}
             </button>
@@ -220,9 +213,9 @@ const Game1024Content = ({ onBack }) => {
           onRestart={handleNewGame}
           onMainMenu={handleMainMenu}
           stats={[
-            { label: "Score", value: score },
-            { label: "Best", value: bestScore },
-            { label: "Top Tile", value: highestTile },
+            { label: 'Score', value: score },
+            { label: 'Best', value: bestScore },
+            { label: 'Top Tile', value: highestTile },
           ]}
         />
       )}
@@ -246,14 +239,12 @@ const Game1024Content = ({ onBack }) => {
                 className="text-4xl font-black text-amber-400 text-center"
                 style={{
                   fontFamily: '"Raleway", sans-serif',
-                  textShadow: "0 0 30px rgba(251, 191, 36, 0.5)",
+                  textShadow: '0 0 30px rgba(251, 191, 36, 0.5)',
                 }}
               >
                 🎉 You Win! 🎉
               </h2>
-              <p className="text-gray-300 text-center">
-                Congratulations! You reached 1024!
-              </p>
+              <p className="text-gray-300 text-center">Congratulations! You reached 1024!</p>
 
               <div className="flex gap-4 my-2">
                 <div className="glass-stat border-amber-500/20 rounded-xl px-6 py-3 text-center">

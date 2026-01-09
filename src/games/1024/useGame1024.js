@@ -1,18 +1,18 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   GAME_1024_KEY_MAPPINGS as KEY_MAPPINGS,
   GAME_1024_STATES,
   ANIMATION_TIMINGS,
-} from "../../constants";
-import { STORAGE_KEYS, debugLog } from "../../config";
-import { safeGetInt, safeSetItem } from "../../utils/safeStorage";
+} from '../../constants';
+import { STORAGE_KEYS, debugLog } from '../../config';
+import { safeGetInt, safeSetItem } from '../../utils/safeStorage';
 import {
   initializeGrid,
   move,
   addRandomTile,
   getGameState,
   getHighestTile,
-} from "../../utils/game1024Logic";
+} from '../../utils/game1024Logic';
 
 /**
  * useGame1024 - Custom hook for 1024 game logic
@@ -31,7 +31,7 @@ export const useGame1024 = () => {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(() => {
     const saved = safeGetInt(STORAGE_KEYS.GAME_1024_BEST_SCORE, 0);
-    debugLog("Loaded 1024 best score:", saved);
+    debugLog('Loaded 1024 best score:', saved);
     return saved;
   });
 
@@ -57,19 +57,16 @@ export const useGame1024 = () => {
   const saveBestScore = useCallback(
     (newScore) => {
       if (newScore > bestScore) {
-        const success = safeSetItem(
-          STORAGE_KEYS.GAME_1024_BEST_SCORE,
-          newScore.toString(),
-        );
+        const success = safeSetItem(STORAGE_KEYS.GAME_1024_BEST_SCORE, newScore.toString());
         if (success) {
-          debugLog("Saved 1024 best score:", newScore);
+          debugLog('Saved 1024 best score:', newScore);
         } else {
-          debugLog("Failed to save 1024 best score to storage:", newScore);
+          debugLog('Failed to save 1024 best score to storage:', newScore);
         }
         setBestScore(newScore);
       }
     },
-    [bestScore],
+    [bestScore]
   );
 
   // Cleanup animation timeout on unmount
@@ -134,7 +131,7 @@ export const useGame1024 = () => {
       score,
       bestScore,
       saveBestScore,
-    ],
+    ]
   );
 
   // Handle resume
@@ -185,18 +182,14 @@ export const useGame1024 = () => {
   const handleKeyDown = useCallback(
     (e, showHelp = false) => {
       // Enter key to start game from start menu
-      if (
-        e.key === "Enter" &&
-        gameState === GAME_1024_STATES.START &&
-        !showHelp
-      ) {
+      if (e.key === 'Enter' && gameState === GAME_1024_STATES.START && !showHelp) {
         e.preventDefault();
         setGameState(GAME_1024_STATES.PLAYING);
         return true;
       }
 
       // Handle pause with P or Escape
-      if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+      if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
         e.preventDefault();
         handlePauseToggle();
         return true;
@@ -211,7 +204,7 @@ export const useGame1024 = () => {
 
       return false;
     },
-    [handleMove, handlePauseToggle, gameState],
+    [handleMove, handlePauseToggle, gameState]
   );
 
   // Handle touch start
@@ -230,15 +223,15 @@ export const useGame1024 = () => {
 
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         if (Math.abs(deltaX) > minSwipe) {
-          handleMove(deltaX > 0 ? "RIGHT" : "LEFT");
+          handleMove(deltaX > 0 ? 'RIGHT' : 'LEFT');
         }
       } else {
         if (Math.abs(deltaY) > minSwipe) {
-          handleMove(deltaY > 0 ? "DOWN" : "UP");
+          handleMove(deltaY > 0 ? 'DOWN' : 'UP');
         }
       }
     },
-    [handleMove],
+    [handleMove]
   );
 
   // Check if game can accept moves

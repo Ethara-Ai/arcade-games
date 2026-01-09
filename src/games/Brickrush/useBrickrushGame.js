@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback, useEffect } from 'react';
 import {
   GAME_WIDTH,
   GAME_HEIGHT,
@@ -28,13 +28,13 @@ import {
   BRICK_PATTERNS,
   STEEL_BRICK_PATTERNS,
   ANIMATION_TIMINGS,
-} from "../../constants";
+} from '../../constants';
 import {
   handleBallPaddleCollision,
   handleBallBrickCollision,
   moveBalls as moveBallsPhysics,
   updatePowerUps as updatePowerUpsPhysics,
-} from "../../utils/gamePhysics";
+} from '../../utils/gamePhysics';
 
 /**
  * Custom hook for Brickrush game state and logic
@@ -147,8 +147,7 @@ export const useBrickrushGame = ({
           continue;
         }
 
-        const brickX =
-          c * (BRICK_BASE_WIDTH + BRICK_PADDING) + BRICK_OFFSET_LEFT;
+        const brickX = c * (BRICK_BASE_WIDTH + BRICK_PADDING) + BRICK_OFFSET_LEFT;
         const brickY = r * (BRICK_HEIGHT + BRICK_PADDING) + BRICK_OFFSET_TOP;
         let powerUpType = null;
 
@@ -163,10 +162,7 @@ export const useBrickrushGame = ({
         }
 
         // Check if steel brick
-        const steelPatternIndex = Math.min(
-          level - 1,
-          STEEL_BRICK_PATTERNS.length - 1,
-        );
+        const steelPatternIndex = Math.min(level - 1, STEEL_BRICK_PATTERNS.length - 1);
         const isSteel =
           level >= 2 &&
           STEEL_BRICK_PATTERNS[steelPatternIndex] &&
@@ -175,9 +171,7 @@ export const useBrickrushGame = ({
 
         if (!isSteel && Math.random() < powerUpChance) {
           powerUpType =
-            Math.random() < 0.5
-              ? POWERUP_TYPES.MULTIBALL
-              : POWERUP_TYPES.STRETCH_PADDLE;
+            Math.random() < 0.5 ? POWERUP_TYPES.MULTIBALL : POWERUP_TYPES.STRETCH_PADDLE;
         }
 
         bricks[c][r] = {
@@ -185,9 +179,7 @@ export const useBrickrushGame = ({
           y: brickY,
           width: BRICK_BASE_WIDTH,
           height: BRICK_HEIGHT,
-          color: isSteel
-            ? STEEL_BRICK_COLOR
-            : BRICK_COLORS[r % BRICK_COLORS.length],
+          color: isSteel ? STEEL_BRICK_COLOR : BRICK_COLORS[r % BRICK_COLORS.length],
           status: 1,
           powerUp: powerUpType,
           isSteel: isSteel,
@@ -352,13 +344,7 @@ export const useBrickrushGame = ({
         levelTransitioningRef.current = false;
       });
     }
-  }, [
-    onLevelChange,
-    onBallLaunchedChange,
-    createBricks,
-    startBrickDropAnimation,
-    onLevelComplete,
-  ]);
+  }, [onLevelChange, onBallLaunchedChange, createBricks, startBrickDropAnimation, onLevelComplete]);
 
   // Spawn power-up from brick
   const spawnPowerUp = useCallback((brick) => {
@@ -379,10 +365,7 @@ export const useBrickrushGame = ({
     const paddle = paddleRef.current;
 
     if (powerUp.type === POWERUP_TYPES.MULTIBALL) {
-      if (
-        ballsRef.current.length === 0 ||
-        gameValuesRef.current.gameState !== GAME_STATES.PLAYING
-      )
+      if (ballsRef.current.length === 0 || gameValuesRef.current.gameState !== GAME_STATES.PLAYING)
         return;
 
       const originalBall = ballsRef.current[0];
@@ -425,15 +408,13 @@ export const useBrickrushGame = ({
         paddle.width = startWidth + (endWidth - startWidth) * easeProgress;
 
         if (progress < 1) {
-          paddleStretchAnimationFrameRef.current =
-            requestAnimationFrame(animateStretch);
+          paddleStretchAnimationFrameRef.current = requestAnimationFrame(animateStretch);
         } else {
           paddleStretchAnimationFrameRef.current = null;
         }
       };
 
-      paddleStretchAnimationFrameRef.current =
-        requestAnimationFrame(animateStretch);
+      paddleStretchAnimationFrameRef.current = requestAnimationFrame(animateStretch);
 
       // Clear existing timeout
       if (paddleStretchTimeoutRef.current) {
@@ -451,20 +432,16 @@ export const useBrickrushGame = ({
           const elapsed = Date.now() - shrinkStartTime;
           const progress = Math.min(elapsed / shrinkDuration, 1);
           const easeProgress = progress * progress * progress;
-          paddle.width =
-            shrinkStartWidth +
-            (shrinkEndWidth - shrinkStartWidth) * easeProgress;
+          paddle.width = shrinkStartWidth + (shrinkEndWidth - shrinkStartWidth) * easeProgress;
 
           if (progress < 1) {
-            paddleShrinkAnimationFrameRef.current =
-              requestAnimationFrame(animateShrink);
+            paddleShrinkAnimationFrameRef.current = requestAnimationFrame(animateShrink);
           } else {
             paddleShrinkAnimationFrameRef.current = null;
           }
         };
 
-        paddleShrinkAnimationFrameRef.current =
-          requestAnimationFrame(animateShrink);
+        paddleShrinkAnimationFrameRef.current = requestAnimationFrame(animateShrink);
         paddleStretchTimeoutRef.current = null;
       }, PADDLE_STRETCH_DURATION);
     }
@@ -494,8 +471,7 @@ export const useBrickrushGame = ({
 
     // Filter invalid balls
     ballsRef.current = ballsRef.current.filter(
-      (ball) =>
-        ball && typeof ball.x === "number" && typeof ball.y === "number",
+      (ball) => ball && typeof ball.x === 'number' && typeof ball.y === 'number'
     );
 
     // Reset if no balls and not launched
@@ -506,10 +482,10 @@ export const useBrickrushGame = ({
     // Update paddle from keyboard
     const paddle = paddleRef.current;
     const currentKeys = values.keys;
-    if (currentKeys["ArrowLeft"] || currentKeys["a"] || currentKeys["A"]) {
+    if (currentKeys['ArrowLeft'] || currentKeys['a'] || currentKeys['A']) {
       paddle.x = Math.max(0, paddle.x - PADDLE_SPEED);
     }
-    if (currentKeys["ArrowRight"] || currentKeys["d"] || currentKeys["D"]) {
+    if (currentKeys['ArrowRight'] || currentKeys['d'] || currentKeys['D']) {
       paddle.x = Math.min(GAME_WIDTH - paddle.width, paddle.x + PADDLE_SPEED);
     }
 
@@ -523,11 +499,7 @@ export const useBrickrushGame = ({
 
     // Move balls using physics helper
     if (values.ballLaunched) {
-      const moveResult = moveBallsPhysics(
-        ballsRef.current,
-        GAME_WIDTH,
-        GAME_HEIGHT,
-      );
+      const moveResult = moveBallsPhysics(ballsRef.current, GAME_WIDTH, GAME_HEIGHT);
       ballsRef.current = moveResult.balls;
 
       // Check if all balls are lost
@@ -545,10 +517,7 @@ export const useBrickrushGame = ({
     }
 
     // Ball-paddle collision using physics helper
-    ballsRef.current = handleBallPaddleCollision(
-      ballsRef.current,
-      paddleRef.current,
-    );
+    ballsRef.current = handleBallPaddleCollision(ballsRef.current, paddleRef.current);
 
     // Ball-brick collision using physics helper
     if (brickDropProgressRef.current >= 1) {
@@ -557,7 +526,7 @@ export const useBrickrushGame = ({
         bricksRef.current,
         BRICK_ROW_COUNT,
         BRICK_COLUMN_COUNT,
-        BALL_INITIAL_SPEED,
+        BALL_INITIAL_SPEED
       );
 
       ballsRef.current = collisionResult.balls;
@@ -579,7 +548,7 @@ export const useBrickrushGame = ({
     const powerUpResult = updatePowerUpsPhysics(
       activePowerUpsRef.current,
       paddleRef.current,
-      GAME_HEIGHT,
+      GAME_HEIGHT
     );
     activePowerUpsRef.current = powerUpResult.activePowerUps;
 
@@ -606,7 +575,7 @@ export const useBrickrushGame = ({
       powerUps: activePowerUpsRef.current,
       brickDropProgress: brickDropProgressRef.current,
     }),
-    [],
+    []
   );
 
   // Initialize bricks when game starts

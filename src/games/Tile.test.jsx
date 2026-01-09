@@ -8,7 +8,7 @@ describe('Tile', () => {
   // Should display the tile value
   it('renders tile value', () => {
     render(<Tile value={2} row={0} col={0} />);
-    
+
     expect(screen.getByText('2')).toBeInTheDocument();
   });
 
@@ -16,7 +16,7 @@ describe('Tile', () => {
   // Empty tiles should not display "0"
   it('does not render text for value 0', () => {
     render(<Tile value={0} row={0} col={0} />);
-    
+
     expect(screen.queryByText('0')).not.toBeInTheDocument();
   });
 
@@ -25,10 +25,10 @@ describe('Tile', () => {
   it('renders various tile values correctly', () => {
     const { rerender } = render(<Tile value={4} row={0} col={0} />);
     expect(screen.getByText('4')).toBeInTheDocument();
-    
+
     rerender(<Tile value={128} row={0} col={0} />);
     expect(screen.getByText('128')).toBeInTheDocument();
-    
+
     rerender(<Tile value={1024} row={0} col={0} />);
     expect(screen.getByText('1024')).toBeInTheDocument();
   });
@@ -37,11 +37,11 @@ describe('Tile', () => {
   // Should apply correct position based on row and col
   it('applies correct positioning styles', () => {
     const { container } = render(<Tile value={2} row={1} col={2} />);
-    
+
     const tile = container.querySelector('.tile');
     expect(tile).toHaveStyle({
       left: 'calc(50% + 3px)', // col * 25%
-      top: 'calc(25% + 3px)',  // row * 25%
+      top: 'calc(25% + 3px)', // row * 25%
     });
   });
 
@@ -49,7 +49,7 @@ describe('Tile', () => {
   // Each value should have its own color scheme
   it('applies correct background color for value 2', () => {
     const { container } = render(<Tile value={2} row={0} col={0} />);
-    
+
     const tile = container.querySelector('.tile');
     expect(tile).toHaveStyle({
       backgroundColor: TILE_COLORS[2].bg,
@@ -59,7 +59,7 @@ describe('Tile', () => {
 
   it('applies correct background color for value 1024', () => {
     const { container } = render(<Tile value={1024} row={0} col={0} />);
-    
+
     const tile = container.querySelector('.tile');
     expect(tile).toHaveStyle({
       backgroundColor: TILE_COLORS[1024].bg,
@@ -71,7 +71,7 @@ describe('Tile', () => {
   // Value > 0 should be scaled up, 0 should be scaled down
   it('applies scale(1) transform for non-zero values', () => {
     const { container } = render(<Tile value={2} row={0} col={0} />);
-    
+
     const tile = container.querySelector('.tile');
     expect(tile).toHaveStyle({
       transform: 'scale(1)',
@@ -80,7 +80,7 @@ describe('Tile', () => {
 
   it('applies scale(0) transform for zero value', () => {
     const { container } = render(<Tile value={0} row={0} col={0} />);
-    
+
     const tile = container.querySelector('.tile');
     expect(tile).toHaveStyle({
       transform: 'scale(0)',
@@ -91,7 +91,7 @@ describe('Tile', () => {
   // Larger numbers should have smaller font
   it('has tile class for styling', () => {
     const { container } = render(<Tile value={2} row={0} col={0} />);
-    
+
     const tile = container.querySelector('.tile');
     expect(tile).toHaveClass('tile');
   });
@@ -100,7 +100,7 @@ describe('Tile', () => {
   // Higher value tiles should have glow effect
   it('applies glow effect for tiles >= 1024', () => {
     const { container } = render(<Tile value={1024} row={0} col={0} />);
-    
+
     const tile = container.querySelector('.tile');
     const style = tile.getAttribute('style');
     expect(style).toContain('box-shadow');
@@ -110,7 +110,7 @@ describe('Tile', () => {
   // Should use 2048 colors for values not in TILE_COLORS
   it('uses fallback colors for values not in TILE_COLORS', () => {
     const { container } = render(<Tile value={4096} row={0} col={0} />);
-    
+
     const tile = container.querySelector('.tile');
     expect(tile).toHaveStyle({
       backgroundColor: TILE_COLORS[2048].bg,

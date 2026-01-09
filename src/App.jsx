@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
-import { LoadingScreen, GameSelector, GameErrorBoundary } from "./components";
-import { BrickrushGame, Game1024, SnakeGame } from "./games";
-import { TRANSITION_TIMINGS } from "./constants";
+import { useState, useEffect, useCallback } from 'react';
+import { LoadingScreen, GameSelector, GameErrorBoundary } from './components';
+import { BrickrushGame, Game1024, SnakeGame } from './games';
+import { TRANSITION_TIMINGS } from './constants';
 
 // App-level game modes
 const APP_MODES = {
-  SELECTOR: "SELECTOR",
-  BRICKRUSH: "BRICKRUSH",
-  GAME_1024: "GAME_1024",
-  SNAKE: "SNAKE",
+  SELECTOR: 'SELECTOR',
+  BRICKRUSH: 'BRICKRUSH',
+  GAME_1024: 'GAME_1024',
+  SNAKE: 'SNAKE',
 };
 
 /**
@@ -27,13 +27,13 @@ function AppContent() {
   // Handle game selection
   const handleSelectGame = useCallback((game) => {
     switch (game) {
-      case "brickrush":
+      case 'brickrush':
         setAppMode(APP_MODES.BRICKRUSH);
         break;
-      case "1024":
+      case '1024':
         setAppMode(APP_MODES.GAME_1024);
         break;
-      case "snake":
+      case 'snake':
         setAppMode(APP_MODES.SNAKE);
         break;
       default:

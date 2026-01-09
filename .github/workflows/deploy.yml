@@ -2,8 +2,8 @@ name: Deploy to Production
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:  # Manual trigger button
+    branches: [main]
+  workflow_dispatch: # Manual trigger button
 
 jobs:
   deploy:

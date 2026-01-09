@@ -1,23 +1,17 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { GAME_STATES, INITIAL_LIVES, TRANSITION_TIMINGS } from '../../constants';
+import { useHighScore, useWindowSize } from '../../hooks';
+import { STORAGE_KEYS } from '../../config';
+import { GameErrorBoundary } from '../../components';
+import LevelTransition, { useLevelTransition } from '../../components/LevelTransition';
 import {
-  GAME_STATES,
-  INITIAL_LIVES,
-  TRANSITION_TIMINGS,
-} from "../../constants";
-import { useHighScore, useWindowSize } from "../../hooks";
-import { STORAGE_KEYS } from "../../config";
-import {
-  TopBar,
-  MenuOverlay,
-  DesktopControls,
-  MobileControls,
-  GameErrorBoundary,
-} from "../../components";
-import LevelTransition, {
-  useLevelTransition,
-} from "../../components/LevelTransition";
-import { useBrickrushGame } from "./useBrickrushGame";
-import BrickrushCanvas from "./BrickrushCanvas";
+  BrickrushTopBar,
+  BrickrushMenuOverlay,
+  BrickrushDesktopControls,
+  BrickrushMobileControls,
+} from './components';
+import { useBrickrushGame } from './useBrickrushGame';
+import BrickrushCanvas from './BrickrushCanvas';
 
 /**
  * BrickrushGame - Main component for the Brickrush game
@@ -28,6 +22,7 @@ import BrickrushCanvas from "./BrickrushCanvas";
  * - Centralized timing constants
  * - Error boundary protection
  * - Proper state management for transitions
+ * - Uses Brickrush-specific UI components
  */
 const BrickrushGameContent = ({ onBack }) => {
   // Game state
@@ -66,7 +61,7 @@ const BrickrushGameContent = ({ onBack }) => {
   // Hooks
   const { highScore, updateHighScore } = useHighScore(
     STORAGE_KEYS.BRICKRUSH_HIGH_SCORE,
-    "Brickrush",
+    'Brickrush'
   );
   const { isMobile, isDesktop } = useWindowSize();
 
@@ -77,34 +72,28 @@ const BrickrushGameContent = ({ onBack }) => {
       levelTransitionCallbackRef.current = onComplete;
       startTransition();
     },
-    [startTransition],
+    [startTransition]
   );
 
   // Game logic hook
-  const {
-    initGame,
-    launchBall,
-    updateGame,
-    updatePaddlePosition,
-    getGameObjects,
-    startNextLevel,
-  } = useBrickrushGame({
-    gameState,
-    score,
-    lives,
-    currentLevel,
-    ballLaunched,
-    keys,
-    onScoreChange: setScore,
-    onLivesChange: setLives,
-    onLevelChange: setCurrentLevel,
-    onBallLaunchedChange: setBallLaunched,
-    onGameOver: useCallback(() => {
-      updateHighScore(score);
-      setGameState(GAME_STATES.GAME_OVER);
-    }, [score, updateHighScore]),
-    onLevelComplete: handleLevelComplete,
-  });
+  const { initGame, launchBall, updateGame, updatePaddlePosition, getGameObjects, startNextLevel } =
+    useBrickrushGame({
+      gameState,
+      score,
+      lives,
+      currentLevel,
+      ballLaunched,
+      keys,
+      onScoreChange: setScore,
+      onLivesChange: setLives,
+      onLevelChange: setCurrentLevel,
+      onBallLaunchedChange: setBallLaunched,
+      onGameOver: useCallback(() => {
+        updateHighScore(score);
+        setGameState(GAME_STATES.GAME_OVER);
+      }, [score, updateHighScore]),
+      onLevelComplete: handleLevelComplete,
+    });
 
   // Handle start game with proper timing constants
   const handleStart = useCallback(() => {
@@ -209,7 +198,7 @@ const BrickrushGameContent = ({ onBack }) => {
       setKeys((prev) => ({ ...prev, [e.key]: true }));
 
       // Handle pause
-      if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+      if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
         if (gameState === GAME_STATES.PLAYING) {
           handlePause();
         } else if (gameState === GAME_STATES.PAUSED) {
@@ -218,7 +207,7 @@ const BrickrushGameContent = ({ onBack }) => {
       }
 
       // Handle Enter key for menu navigation
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         if (gameState === GAME_STATES.START_MENU) {
           handleStart();
         } else if (gameState === GAME_STATES.GAME_OVER) {
@@ -229,7 +218,7 @@ const BrickrushGameContent = ({ onBack }) => {
       }
 
       // Handle space for ball launch
-      if (e.key === " " && gameState === GAME_STATES.PLAYING && !ballLaunched) {
+      if (e.key === ' ' && gameState === GAME_STATES.PLAYING && !ballLaunched) {
         launchBall();
       }
     };
@@ -238,22 +227,14 @@ const BrickrushGameContent = ({ onBack }) => {
       setKeys((prev) => ({ ...prev, [e.key]: false }));
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
     };
-  }, [
-    gameState,
-    ballLaunched,
-    handlePause,
-    handleResume,
-    handleStart,
-    handleRestart,
-    launchBall,
-  ]);
+  }, [gameState, ballLaunched, handlePause, handleResume, handleStart, handleRestart, launchBall]);
 
   // hasBalls is true when game is playing
   const hasBalls = gameState === GAME_STATES.PLAYING;
@@ -261,16 +242,11 @@ const BrickrushGameContent = ({ onBack }) => {
   return (
     <div className="game-container">
       {/* Top Bar */}
-      <TopBar
-        gameState={gameState}
-        score={score}
-        level={currentLevel}
-        lives={lives}
-      />
+      <BrickrushTopBar gameState={gameState} score={score} level={currentLevel} lives={lives} />
 
       {/* Desktop Controls */}
       {isDesktop && (
-        <DesktopControls
+        <BrickrushDesktopControls
           gameState={gameState}
           ballLaunched={ballLaunched}
           hasBalls={hasBalls}
@@ -295,7 +271,7 @@ const BrickrushGameContent = ({ onBack }) => {
 
       {/* Mobile Controls */}
       {isMobile && (
-        <MobileControls
+        <BrickrushMobileControls
           gameState={gameState}
           ballLaunched={ballLaunched}
           hasBalls={hasBalls}
@@ -306,10 +282,11 @@ const BrickrushGameContent = ({ onBack }) => {
       )}
 
       {/* Menu Overlay */}
-      <MenuOverlay
+      <BrickrushMenuOverlay
         gameState={gameState}
         score={score}
         highScore={highScore}
+        level={currentLevel}
         isFadingOut={isFadingOut}
         onStart={handleStart}
         onResume={handleResume}
@@ -320,11 +297,7 @@ const BrickrushGameContent = ({ onBack }) => {
       />
 
       {/* Level Transition Overlay - React-managed via hook */}
-      <LevelTransition
-        {...transitionProps}
-        accentColor="cyan"
-        message="Level Complete!"
-      />
+      <LevelTransition {...transitionProps} accentColor="cyan" message="Level Complete!" />
     </div>
   );
 };

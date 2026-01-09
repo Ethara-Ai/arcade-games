@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef, useMemo, useState } from "react";
+import { useEffect, useCallback, useRef, useMemo, useState } from 'react';
 
 /**
  * useGameControls - Shared hook for common keyboard and touch handling across games
@@ -14,28 +14,28 @@ import { useEffect, useCallback, useRef, useMemo, useState } from "react";
 
 // Default key mappings for directional input
 export const DEFAULT_DIRECTION_KEYS = {
-  ArrowUp: "UP",
-  ArrowDown: "DOWN",
-  ArrowLeft: "LEFT",
-  ArrowRight: "RIGHT",
-  w: "UP",
-  W: "UP",
-  s: "DOWN",
-  S: "DOWN",
-  a: "LEFT",
-  A: "LEFT",
-  d: "RIGHT",
-  D: "RIGHT",
+  ArrowUp: 'UP',
+  ArrowDown: 'DOWN',
+  ArrowLeft: 'LEFT',
+  ArrowRight: 'RIGHT',
+  w: 'UP',
+  W: 'UP',
+  s: 'DOWN',
+  S: 'DOWN',
+  a: 'LEFT',
+  A: 'LEFT',
+  d: 'RIGHT',
+  D: 'RIGHT',
 };
 
 // Default pause keys
-export const DEFAULT_PAUSE_KEYS = ["p", "P", "Escape"];
+export const DEFAULT_PAUSE_KEYS = ['p', 'P', 'Escape'];
 
 // Default start/confirm keys
-export const DEFAULT_START_KEYS = ["Enter"];
+export const DEFAULT_START_KEYS = ['Enter'];
 
 // Default launch/action keys
-export const DEFAULT_ACTION_KEYS = [" "]; // Space
+export const DEFAULT_ACTION_KEYS = [' ']; // Space
 
 // Minimum swipe distance for gesture detection
 const MIN_SWIPE_DISTANCE = 50;
@@ -183,7 +183,7 @@ export const useGameControls = (options = {}) => {
       onAction,
       onDirection,
       onKeyDown,
-    ],
+    ]
   );
 
   // Key up handler
@@ -194,7 +194,7 @@ export const useGameControls = (options = {}) => {
       setPressedKeys(new Set(pressedKeysRef.current));
       onKeyUp?.(e);
     },
-    [onKeyUp],
+    [onKeyUp]
   );
 
   // Touch start handler
@@ -209,7 +209,7 @@ export const useGameControls = (options = {}) => {
         time: Date.now(),
       };
     },
-    [isActive, enableTouch],
+    [isActive, enableTouch]
   );
 
   // Touch end handler
@@ -234,10 +234,10 @@ export const useGameControls = (options = {}) => {
       let direction;
       if (absX > absY) {
         // Horizontal swipe
-        direction = deltaX > 0 ? "RIGHT" : "LEFT";
+        direction = deltaX > 0 ? 'RIGHT' : 'LEFT';
       } else {
         // Vertical swipe
-        direction = deltaY > 0 ? "DOWN" : "UP";
+        direction = deltaY > 0 ? 'DOWN' : 'UP';
       }
 
       // Call swipe handler
@@ -248,14 +248,7 @@ export const useGameControls = (options = {}) => {
         onDirection?.(direction);
       }
     },
-    [
-      isActive,
-      enableTouch,
-      minSwipeDistance,
-      onSwipe,
-      onDirection,
-      enableDirectional,
-    ],
+    [isActive, enableTouch, minSwipeDistance, onSwipe, onDirection, enableDirectional]
   );
 
   // Touch move handler (for continuous tracking if needed)
@@ -264,19 +257,19 @@ export const useGameControls = (options = {}) => {
       if (!isActive || !enableTouch) return;
       // Could be used for continuous paddle control, etc.
     },
-    [isActive, enableTouch],
+    [isActive, enableTouch]
   );
 
   // Set up keyboard event listeners
   useEffect(() => {
     if (!enableKeyboard) return;
 
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
       // Clear pressed keys on cleanup
       pressedKeysRef.current = new Set();
     };
@@ -288,14 +281,14 @@ export const useGameControls = (options = {}) => {
 
     const touchOptions = { passive: true };
 
-    document.addEventListener("touchstart", handleTouchStart, touchOptions);
-    document.addEventListener("touchend", handleTouchEnd, touchOptions);
-    document.addEventListener("touchmove", handleTouchMove, touchOptions);
+    document.addEventListener('touchstart', handleTouchStart, touchOptions);
+    document.addEventListener('touchend', handleTouchEnd, touchOptions);
+    document.addEventListener('touchmove', handleTouchMove, touchOptions);
 
     return () => {
-      document.removeEventListener("touchstart", handleTouchStart);
-      document.removeEventListener("touchend", handleTouchEnd);
-      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchmove', handleTouchMove);
     };
   }, [enableTouch, handleTouchStart, handleTouchEnd, handleTouchMove]);
 
@@ -347,8 +340,8 @@ export const createGameControls = (defaultOptions) => {
  */
 export const useBrickrushControls = createGameControls({
   enableDirectional: true,
-  actionKeys: [" "], // Space to launch ball
-  pauseKeys: ["p", "P", "Escape"],
+  actionKeys: [' '], // Space to launch ball
+  pauseKeys: ['p', 'P', 'Escape'],
 });
 
 /**
@@ -356,7 +349,7 @@ export const useBrickrushControls = createGameControls({
  */
 export const use1024Controls = createGameControls({
   enableDirectional: true,
-  pauseKeys: ["p", "P", "Escape"],
+  pauseKeys: ['p', 'P', 'Escape'],
   actionKeys: [], // No action key needed
 });
 
@@ -365,7 +358,7 @@ export const use1024Controls = createGameControls({
  */
 export const useSnakeControls = createGameControls({
   enableDirectional: true,
-  pauseKeys: ["p", "P", " ", "Escape"], // Space also pauses in snake
+  pauseKeys: ['p', 'P', ' ', 'Escape'], // Space also pauses in snake
   actionKeys: [],
 });
 
