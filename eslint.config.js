@@ -12,7 +12,6 @@ export default [
       'vite.config.js',
       'postcss.config.js',
       'tailwind.config.js',
-      'eslint.config.js',
     ],
   },
   js.configs.recommended,
