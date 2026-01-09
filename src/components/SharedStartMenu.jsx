@@ -79,7 +79,7 @@ const StartMenu = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
             <button
               onClick={onStart}
-              className={`w-full sm:flex-1 bg-gradient-to-r ${colors.gradient} text-white border-none font-raleway font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 ${colors.hoverShadow} active:brightness-90 ${colors.activeShadow} focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg flex items-center justify-center`}
+              className={`w-full sm:flex-1 bg-gradient-to-r ${colors.gradient} text-white border-none font-raleway font-semibold cursor-pointer rounded-lg sm:rounded-xl transition-all duration-300 hover:brightness-110 active:brightness-90 focus:outline-none px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg flex items-center justify-center`}
             >
               {startButtonText}
             </button>
