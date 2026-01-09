@@ -56,12 +56,7 @@ describe('SharedStartMenu', () => {
 
   // Step 6: Test How to Play button opens modal when instructions provided
   it('shows How to Play button when instructions are provided', () => {
-    render(
-      <SharedStartMenu
-        {...defaultProps}
-        instructions={['Step 1', 'Step 2']}
-      />
-    );
+    render(<SharedStartMenu {...defaultProps} instructions={['Step 1', 'Step 2']} />);
 
     expect(screen.getByText('How to Play')).toBeInTheDocument();
   });
@@ -93,13 +88,7 @@ describe('SharedStartMenu', () => {
   // Step 9: Test Enter key does not start game when modal is open
   it('does not call onStart when Enter is pressed and help modal is open', () => {
     const onStart = vi.fn();
-    render(
-      <SharedStartMenu
-        {...defaultProps}
-        onStart={onStart}
-        instructions={['Step 1']}
-      />
-    );
+    render(<SharedStartMenu {...defaultProps} onStart={onStart} instructions={['Step 1']} />);
 
     // Open the help modal
     fireEvent.click(screen.getByText('How to Play'));
@@ -118,12 +107,7 @@ describe('SharedStartMenu', () => {
 
   // Step 11: Test How to Play modal can be closed
   it('closes How to Play modal when Got It is clicked', () => {
-    render(
-      <SharedStartMenu
-        {...defaultProps}
-        instructions={['Step 1']}
-      />
-    );
+    render(<SharedStartMenu {...defaultProps} instructions={['Step 1']} />);
 
     // Open modal
     fireEvent.click(screen.getByText('How to Play'));
@@ -136,36 +120,28 @@ describe('SharedStartMenu', () => {
 
   // Step 12: Test cyan accent color
   it('applies cyan accent color styling', () => {
-    const { container } = render(
-      <SharedStartMenu {...defaultProps} accentColor="cyan" />
-    );
+    const { container } = render(<SharedStartMenu {...defaultProps} accentColor="cyan" />);
 
     expect(container.querySelector('.text-cyan-400')).toBeInTheDocument();
   });
 
   // Step 13: Test green accent color
   it('applies green accent color styling', () => {
-    const { container } = render(
-      <SharedStartMenu {...defaultProps} accentColor="green" />
-    );
+    const { container } = render(<SharedStartMenu {...defaultProps} accentColor="green" />);
 
     expect(container.querySelector('.text-green-400')).toBeInTheDocument();
   });
 
   // Step 14: Test amber accent color
   it('applies amber accent color styling', () => {
-    const { container } = render(
-      <SharedStartMenu {...defaultProps} accentColor="amber" />
-    );
+    const { container } = render(<SharedStartMenu {...defaultProps} accentColor="amber" />);
 
     expect(container.querySelector('.text-amber-400')).toBeInTheDocument();
   });
 
   // Step 15: Test pink accent color
   it('applies pink accent color styling', () => {
-    const { container } = render(
-      <SharedStartMenu {...defaultProps} accentColor="pink" />
-    );
+    const { container } = render(<SharedStartMenu {...defaultProps} accentColor="pink" />);
 
     expect(container.querySelector('.text-pink-400')).toBeInTheDocument();
   });
@@ -195,24 +171,14 @@ describe('SharedStartMenu', () => {
 
   // Step 19: Test with controls prop
   it('shows How to Play button when controls are provided', () => {
-    render(
-      <SharedStartMenu
-        {...defaultProps}
-        controls={[{ key: 'Space', action: 'Jump' }]}
-      />
-    );
+    render(<SharedStartMenu {...defaultProps} controls={[{ key: 'Space', action: 'Jump' }]} />);
 
     expect(screen.getByText('How to Play')).toBeInTheDocument();
   });
 
   // Step 20: Test with tips prop
   it('shows How to Play button when tips are provided', () => {
-    render(
-      <SharedStartMenu
-        {...defaultProps}
-        tips={['Tip 1: Do something']}
-      />
-    );
+    render(<SharedStartMenu {...defaultProps} tips={['Tip 1: Do something']} />);
 
     expect(screen.getByText('How to Play')).toBeInTheDocument();
   });
@@ -238,9 +204,7 @@ describe('SharedStartMenu', () => {
 
   // Step 23: Test fallback for unknown accent color
   it('falls back to cyan for unknown accent color', () => {
-    const { container } = render(
-      <SharedStartMenu {...defaultProps} accentColor="invalid" />
-    );
+    const { container } = render(<SharedStartMenu {...defaultProps} accentColor="invalid" />);
 
     expect(container.querySelector('.text-cyan-400')).toBeInTheDocument();
   });
@@ -255,14 +219,7 @@ describe('SharedStartMenu', () => {
 
   // Step 25: Test empty arrays do not show How to Play button
   it('does not show How to Play button when arrays are empty', () => {
-    render(
-      <SharedStartMenu
-        {...defaultProps}
-        instructions={[]}
-        controls={[]}
-        tips={[]}
-      />
-    );
+    render(<SharedStartMenu {...defaultProps} instructions={[]} controls={[]} tips={[]} />);
 
     expect(screen.queryByText('How to Play')).not.toBeInTheDocument();
   });

@@ -47,11 +47,7 @@ describe('SharedLevelCompleteMenu', () => {
   // Step 5: Test custom button text
   it('renders custom button text', () => {
     render(
-      <SharedLevelCompleteMenu
-        {...defaultProps}
-        nextLevelText="Continue"
-        mainMenuText="Exit"
-      />
+      <SharedLevelCompleteMenu {...defaultProps} nextLevelText="Continue" mainMenuText="Exit" />
     );
 
     expect(screen.getByText('Continue')).toBeInTheDocument();
@@ -91,27 +87,21 @@ describe('SharedLevelCompleteMenu', () => {
 
   // Step 9: Test cyan accent color
   it('applies cyan accent color styling', () => {
-    const { container } = render(
-      <SharedLevelCompleteMenu {...defaultProps} accentColor="cyan" />
-    );
+    const { container } = render(<SharedLevelCompleteMenu {...defaultProps} accentColor="cyan" />);
 
     expect(container.querySelector('.text-cyan-400')).toBeInTheDocument();
   });
 
   // Step 10: Test amber accent color
   it('applies amber accent color styling', () => {
-    const { container } = render(
-      <SharedLevelCompleteMenu {...defaultProps} accentColor="amber" />
-    );
+    const { container } = render(<SharedLevelCompleteMenu {...defaultProps} accentColor="amber" />);
 
     expect(container.querySelector('.text-amber-400')).toBeInTheDocument();
   });
 
   // Step 11: Test pink accent color
   it('applies pink accent color styling', () => {
-    const { container } = render(
-      <SharedLevelCompleteMenu {...defaultProps} accentColor="pink" />
-    );
+    const { container } = render(<SharedLevelCompleteMenu {...defaultProps} accentColor="pink" />);
 
     expect(container.querySelector('.text-pink-400')).toBeInTheDocument();
   });

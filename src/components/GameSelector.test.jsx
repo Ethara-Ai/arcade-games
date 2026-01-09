@@ -123,6 +123,6 @@ describe('GameSelector', () => {
     render(<GameSelector {...defaultProps} />);
 
     expect(screen.getByText(/Press/)).toBeInTheDocument();
-    expect(screen.getByText(/to quick start a game/)).toBeInTheDocument();
+    expect(screen.getByText(/to quick-start a game/)).toBeInTheDocument();
   });
 });

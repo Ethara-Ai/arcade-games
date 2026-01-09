@@ -63,11 +63,7 @@ describe('SharedGameOverMenu', () => {
   // Step 7: Test custom button text
   it('renders custom button text when provided', () => {
     render(
-      <SharedGameOverMenu
-        {...defaultProps}
-        restartText="Try Again"
-        mainMenuText="Exit Game"
-      />
+      <SharedGameOverMenu {...defaultProps} restartText="Try Again" mainMenuText="Exit Game" />
     );
 
     expect(screen.getByText('Try Again')).toBeInTheDocument();
@@ -119,36 +115,28 @@ describe('SharedGameOverMenu', () => {
 
   // Step 13: Test cyan accent color
   it('renders with cyan accent color', () => {
-    const { container } = render(
-      <SharedGameOverMenu {...defaultProps} accentColor="cyan" />
-    );
+    const { container } = render(<SharedGameOverMenu {...defaultProps} accentColor="cyan" />);
 
     expect(container.querySelector('.text-cyan-400')).toBeInTheDocument();
   });
 
   // Step 14: Test green accent color
   it('renders with green accent color', () => {
-    const { container } = render(
-      <SharedGameOverMenu {...defaultProps} accentColor="green" />
-    );
+    const { container } = render(<SharedGameOverMenu {...defaultProps} accentColor="green" />);
 
     expect(container.querySelector('.text-green-400')).toBeInTheDocument();
   });
 
   // Step 15: Test amber accent color
   it('renders with amber accent color', () => {
-    const { container } = render(
-      <SharedGameOverMenu {...defaultProps} accentColor="amber" />
-    );
+    const { container } = render(<SharedGameOverMenu {...defaultProps} accentColor="amber" />);
 
     expect(container.querySelector('.text-amber-400')).toBeInTheDocument();
   });
 
   // Step 16: Test pink accent color
   it('renders with pink accent color', () => {
-    const { container } = render(
-      <SharedGameOverMenu {...defaultProps} accentColor="pink" />
-    );
+    const { container } = render(<SharedGameOverMenu {...defaultProps} accentColor="pink" />);
 
     expect(container.querySelector('.text-pink-400')).toBeInTheDocument();
   });

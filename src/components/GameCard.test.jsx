@@ -68,12 +68,7 @@ describe('GameCard', () => {
 
   // Step 7: Test component renders without optional props
   it('renders without optional props', () => {
-    render(
-      <GameCard
-        title="Minimal Game"
-        onClick={vi.fn()}
-      />
-    );
+    render(<GameCard title="Minimal Game" onClick={vi.fn()} />);
 
     expect(screen.getByText('Minimal Game')).toBeInTheDocument();
   });
