@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import GameErrorBoundary, { withGameErrorBoundary } from './GameErrorBoundary';
+import GameErrorBoundary from './GameErrorBoundary';
+import { withGameErrorBoundary } from './withGameErrorBoundary';
 
 // Component that throws an error
 const ThrowingComponent = ({ shouldThrow = true }) => {

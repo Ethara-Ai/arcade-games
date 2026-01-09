@@ -1,12 +1,14 @@
 // ============================================
 // Error Handling Components
 // ============================================
-export { default as GameErrorBoundary, withGameErrorBoundary } from './GameErrorBoundary';
+export { default as GameErrorBoundary } from './GameErrorBoundary';
+export { withGameErrorBoundary } from './withGameErrorBoundary';
 
 // ============================================
 // Transition Components
 // ============================================
-export { default as LevelTransition, useLevelTransition } from './LevelTransition';
+export { default as LevelTransition } from './LevelTransition';
+export { useLevelTransition } from './useLevelTransition';
 
 // ============================================
 // Shared Components (reusable across all games)

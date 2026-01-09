@@ -16,6 +16,15 @@ import {
 import { STORAGE_KEYS, debugLog } from '../../config';
 import { safeGetInt, safeSetItem } from '../../utils/safeStorage';
 
+// Speed level multipliers (1 = slowest, 5 = fastest)
+const SPEED_MULTIPLIERS = {
+  1: 1.5, // 50% slower
+  2: 1.25, // 25% slower
+  3: 1.0, // Normal speed
+  4: 0.75, // 25% faster
+  5: 0.5, // 50% faster
+};
+
 /**
  * useSnakeGame - Custom hook for Snake game logic
  * Separates game state and logic from rendering concerns
@@ -84,15 +93,6 @@ export const useSnakeGame = () => {
     setScore(0);
     setSnakeLength(INITIAL_SNAKE.length);
   }, [generateFood]);
-
-  // Speed level multipliers (1 = slowest, 5 = fastest)
-  const SPEED_MULTIPLIERS = {
-    1: 1.5, // 50% slower
-    2: 1.25, // 25% slower
-    3: 1.0, // Normal speed
-    4: 0.75, // 25% faster
-    5: 0.5, // 50% faster
-  };
 
   // Get game speed based on score and speed level
   const getGameSpeed = useCallback(() => {

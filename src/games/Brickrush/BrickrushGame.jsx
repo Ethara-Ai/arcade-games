@@ -3,7 +3,8 @@ import { GAME_STATES, INITIAL_LIVES, TRANSITION_TIMINGS } from '../../constants'
 import { useHighScore, useWindowSize } from '../../hooks';
 import { STORAGE_KEYS } from '../../config';
 import { GameErrorBoundary } from '../../components';
-import LevelTransition, { useLevelTransition } from '../../components/LevelTransition';
+import LevelTransition from '../../components/LevelTransition';
+import { useLevelTransition } from '../../components/useLevelTransition';
 import {
   BrickrushTopBar,
   BrickrushMenuOverlay,

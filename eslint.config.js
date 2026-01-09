@@ -5,6 +5,9 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 
 export default [
+  {
+    ignores: ['dist/**', 'node_modules/**', '*.config.js'],
+  },
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx}'],
@@ -39,8 +42,5 @@ export default [
       'react/prop-types': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
-  },
-  {
-    ignores: ['dist/**', 'node_modules/**', '*.config.js'],
   },
 ];

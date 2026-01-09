@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
-import LevelTransition, { useLevelTransition } from './LevelTransition';
+import LevelTransition from './LevelTransition';
+import { useLevelTransition } from './useLevelTransition';
 
 describe('LevelTransition', () => {
   // Step 1: Test component does not render when not visible
@@ -15,9 +16,7 @@ describe('LevelTransition', () => {
 
   // Step 2: Test component renders when visible
   it('renders when visible is true', () => {
-    const { container } = render(
-      <LevelTransition visible={true} opacity={1} accentColor="cyan" />
-    );
+    const { container } = render(<LevelTransition visible={true} opacity={1} accentColor="cyan" />);
 
     expect(container.firstChild).not.toBeNull();
     expect(container.querySelector('.fixed')).toBeInTheDocument();
@@ -44,9 +43,7 @@ describe('LevelTransition', () => {
 
   // Step 5: Test message is not displayed when not provided
   it('does not display message when not provided', () => {
-    const { container } = render(
-      <LevelTransition visible={true} opacity={1} accentColor="cyan" />
-    );
+    const { container } = render(<LevelTransition visible={true} opacity={1} accentColor="cyan" />);
 
     // Should not have any text content in the message area
     const textElement = container.querySelector('.text-center');
@@ -105,9 +102,7 @@ describe('LevelTransition', () => {
 
   // Step 11: Test default transition duration
   it('uses default transition duration of 500ms', () => {
-    const { container } = render(
-      <LevelTransition visible={true} opacity={1} accentColor="cyan" />
-    );
+    const { container } = render(<LevelTransition visible={true} opacity={1} accentColor="cyan" />);
 
     const overlay = container.firstChild;
     expect(overlay.style.transition).toContain('500ms');
