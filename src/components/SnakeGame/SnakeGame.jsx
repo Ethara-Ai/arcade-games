@@ -1,24 +1,24 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { IoArrowBack, IoTrophy, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome } from 'react-icons/io5';
 import {
-  GRID_SIZE,
-  CELL_SIZE,
-  CANVAS_SIZE,
+  SNAKE_GRID_SIZE as GRID_SIZE,
+  SNAKE_CELL_SIZE as CELL_SIZE,
+  SNAKE_CANVAS_SIZE as CANVAS_SIZE,
   SNAKE_GAME_STATES,
-  DIRECTIONS,
-  KEY_MAPPINGS,
-  OPPOSITE_DIRECTIONS,
-  BASE_SPEED,
-  MIN_SPEED,
-  SPEED_INCREASE_PER_FOOD,
-  COLORS,
-  INITIAL_SNAKE,
-  FOOD_POINTS,
-  BONUS_FOOD_POINTS,
-  BONUS_FOOD_CHANCE,
-} from '../../constants/snakeConstants';
+  SNAKE_DIRECTIONS as DIRECTIONS,
+  SNAKE_KEY_MAPPINGS as KEY_MAPPINGS,
+  SNAKE_OPPOSITE_DIRECTIONS as OPPOSITE_DIRECTIONS,
+  SNAKE_BASE_SPEED as BASE_SPEED,
+  SNAKE_MIN_SPEED as MIN_SPEED,
+  SNAKE_SPEED_INCREASE_PER_FOOD as SPEED_INCREASE_PER_FOOD,
+  SNAKE_COLORS as COLORS,
+  SNAKE_INITIAL_POSITION as INITIAL_SNAKE,
+  SNAKE_FOOD_POINTS as FOOD_POINTS,
+  SNAKE_BONUS_FOOD_POINTS as BONUS_FOOD_POINTS,
+  SNAKE_BONUS_FOOD_CHANCE as BONUS_FOOD_CHANCE,
+} from '../../constants';
 import { STORAGE_KEYS, debugLog } from '../../config';
-import { HowToPlayModal } from '../shared';
+import { HowToPlayModal } from '../';
 
 const SNAKE_INSTRUCTIONS = [
   'Guide the snake to eat food and grow longer',
