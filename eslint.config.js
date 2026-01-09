@@ -6,7 +6,14 @@ import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', '*.config.js'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'vite.config.js',
+      'postcss.config.js',
+      'tailwind.config.js',
+      'eslint.config.js',
+    ],
   },
   js.configs.recommended,
   // Test files configuration
