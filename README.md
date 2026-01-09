@@ -1,5 +1,13 @@
 # Arcade Games Collection
 
+![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=flat-square&logo=react)
+![Vite](https://img.shields.io/badge/Vite-5.4.11-646CFF?style=flat-square&logo=vite)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4.17-38B2AC?style=flat-square&logo=tailwind-css)
+![Vitest](https://img.shields.io/badge/Vitest-4.0.16-6E9F18?style=flat-square&logo=vitest)
+![ESLint](https://img.shields.io/badge/ESLint-9.39.2-4B32C3?style=flat-square&logo=eslint)
+![Prettier](https://img.shields.io/badge/Prettier-3.3.3-F7B93E?style=flat-square&logo=prettier)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+
 A collection of classic arcade games built with React, featuring modern design, smooth animations, and responsive layouts for both desktop and mobile devices.
 
 ## Games Included
