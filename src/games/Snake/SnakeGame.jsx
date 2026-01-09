@@ -5,8 +5,6 @@ import {
   IoPause,
   IoPlay,
   IoRefresh,
-  IoRemove,
-  IoAdd,
 } from "react-icons/io5";
 import { SNAKE_GAME_STATES } from "../../constants";
 import {
@@ -32,14 +30,14 @@ const SNAKE_CONTROLS = [
   { key: "W A S D", action: "Change direction (alternative)" },
   { key: "Swipe", action: "Change direction (touch)" },
   { key: "P / Space", action: "Pause game" },
-  { key: "+ / -", action: "Adjust speed" },
+  { key: "Pause Menu", action: "Adjust speed" },
 ];
 
 const SNAKE_TIPS = [
   "Plan your path to avoid trapping yourself",
   "Use the edges carefully - don't get cornered",
   "Grab bonus food quickly for extra points",
-  "Adjust speed to your skill level",
+  "Pause the game to adjust speed to your skill level",
 ];
 
 /**
@@ -246,50 +244,6 @@ const SnakeGameContent = ({ onBack }) => {
         </div>
       )}
 
-      {/* Speed Control - visible when game is active */}
-      {isGameActive && (
-        <div className="relative z-10 flex items-center justify-center gap-3 w-full max-w-[min(90vw,400px)] mb-4">
-          <div className="glass-stat border-green-500/20 rounded-lg px-4 py-2 flex items-center gap-3">
-            {/* Speed control buttons - add min-w/min-h to maintain circular shape */}
-            <button
-              onClick={decreaseSpeed}
-              disabled={speedLevel <= 1}
-              className={`w-8 h-8 min-w-[32px] min-h-[32px] rounded-full flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
-                speedLevel <= 1
-                  ? "bg-gray-700/50 text-gray-500 cursor-not-allowed"
-                  : "bg-gradient-to-br from-green-400 to-emerald-500 text-white hover:brightness-110 active:brightness-90"
-              }`}
-              title="Decrease Speed"
-              aria-label="Decrease Speed"
-            >
-              <IoRemove className="text-lg" />
-            </button>
-            <div className="text-center min-w-[80px]">
-              <div className="text-[10px] text-green-400 font-semibold uppercase tracking-wider">
-                Speed
-              </div>
-              <div className="text-lg font-bold text-white flex items-center justify-center gap-1">
-                {speedLevel}
-                <span className="text-xs text-gray-400">/5</span>
-              </div>
-            </div>
-            <button
-              onClick={increaseSpeed}
-              disabled={speedLevel >= 5}
-              className={`w-8 h-8 min-w-[32px] min-h-[32px] rounded-full flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
-                speedLevel >= 5
-                  ? "bg-gray-700/50 text-gray-500 cursor-not-allowed"
-                  : "bg-gradient-to-br from-green-400 to-emerald-500 text-white hover:brightness-110 active:brightness-90"
-              }`}
-              title="Increase Speed"
-              aria-label="Increase Speed"
-            >
-              <IoAdd className="text-lg" />
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Game Canvas - visible when game is active */}
       {isGameActive && (
         <div className="relative z-10">
@@ -329,7 +283,7 @@ const SnakeGameContent = ({ onBack }) => {
         />
       )}
 
-      {/* Pause Menu */}
+      {/* Pause Menu - includes speed control for adjusting game speed */}
       {gameState === SNAKE_GAME_STATES.PAUSED && (
         <PauseMenu
           title="Paused"
@@ -337,6 +291,14 @@ const SnakeGameContent = ({ onBack }) => {
           onResume={handleResume}
           onRestart={handleNewGame}
           onMainMenu={handleMainMenu}
+          speedControl={{
+            speedLevel,
+            minSpeed: 1,
+            maxSpeed: 5,
+            onIncrease: increaseSpeed,
+            onDecrease: decreaseSpeed,
+            label: "Speed",
+          }}
         />
       )}
 
