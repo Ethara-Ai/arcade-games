@@ -1102,9 +1102,9 @@ body {
 }
 
 /* Override body background for 1024 game */
-.game-1024-container {
+/* .game-1024-container {
   background-color: #121212 !important;
-}
+} */
 
 /* Mobile optimizations for 1024 */
 @media (max-width: 480px) {

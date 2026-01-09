@@ -12,7 +12,7 @@ import {
  * Handles canvas setup and rendering of game objects
  */
 const SnakeCanvas = forwardRef(
-  ({ gameState, getGameObjects, moveSnake, getGameSpeed, onGameOver, gameLoopRef }, ref) => {
+  ({ gameState, restartKey, getGameObjects, moveSnake, getGameSpeed, onGameOver, gameLoopRef }, ref) => {
     const canvasRef = useRef(null);
     const animationFrameRef = useRef(null);
 
@@ -158,7 +158,7 @@ const SnakeCanvas = forwardRef(
           gameLoopRef.current = null;
         }
       };
-    }, [gameState, gameLoopCallback, getGameSpeed, draw, gameLoopRef]);
+    }, [gameState, restartKey, gameLoopCallback, getGameSpeed, draw, gameLoopRef]);
 
     // Draw initial state when game starts or resumes
     useEffect(() => {

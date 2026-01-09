@@ -40,6 +40,7 @@ export const useSnakeGame = () => {
   const [score, setScore] = useState(0);
   const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE.length);
   const [speedLevel, setSpeedLevel] = useState(3); // Speed level: 1 (slowest) to 5 (fastest), default is 3 (normal)
+  const [restartKey, setRestartKey] = useState(0); // Counter to force game loop restart
 
   // High score state - using safe storage for initialization
   const [highScore, setHighScore] = useState(() => {
@@ -92,6 +93,7 @@ export const useSnakeGame = () => {
     scoreRef.current = 0;
     setScore(0);
     setSnakeLength(INITIAL_SNAKE.length);
+    setSpeedLevel(3); // Reset speed level to default (normal speed)
   }, [generateFood]);
 
   // Get game speed based on score and speed level
@@ -207,10 +209,12 @@ export const useSnakeGame = () => {
     setGameState(SNAKE_GAME_STATES.PLAYING);
   }, [initGame]);
 
-  // New game
+  // New game - Reset and restart the game properly
+  // We increment restartKey to force SnakeCanvas useEffect to re-run even if gameState is already PLAYING
   const handleNewGame = useCallback(() => {
     stopGameLoop();
     initGame();
+    setRestartKey((prev) => prev + 1); // Force game loop restart
     setGameState(SNAKE_GAME_STATES.PLAYING);
   }, [initGame, stopGameLoop]);
 
@@ -337,6 +341,7 @@ export const useSnakeGame = () => {
     highScore,
     snakeLength,
     speedLevel,
+    restartKey,
 
     // Refs for direct access
     snakeRef,

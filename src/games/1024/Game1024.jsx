@@ -91,7 +91,13 @@ const Game1024Content = ({ onBack }) => {
   }, []);
 
   return (
-    <div className="game-1024-container flex flex-col items-center justify-center min-h-screen overflow-hidden p-4 bg-[#0a0a0a]">
+    <div
+      className="game-1024-container flex flex-col items-center min-h-screen overflow-hidden p-4 bg-[#0a0a0a]"
+      style={{
+        touchAction: 'none',
+        overscrollBehavior: 'none',
+      }}
+    >
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -104,9 +110,9 @@ const Game1024Content = ({ onBack }) => {
         />
       </div>
 
-      {/* Header with controls - visible when game is active */}
+      {/* Header with controls - visible when game is active, sticks to top */}
       {isGameActive && (
-        <div className="relative z-20 flex items-center justify-between w-full max-w-[min(90vw,400px)] mb-4">
+        <div className="relative z-20 flex items-center justify-between w-full max-w-[min(90vw,400px)] mb-4 flex-shrink-0">
           {/* Back button - Step 3: Add responsive sizing w-9/h-9 for mobile, w-10/h-10 for larger screens 
               to ensure circular shape is maintained */}
           <button
@@ -171,9 +177,9 @@ const Game1024Content = ({ onBack }) => {
         </div>
       )}
 
-      {/* Game Board - visible when game is active */}
+      {/* Game Board - visible when game is active, centered in remaining space */}
       {isGameActive && (
-        <div className="relative z-10">
+        <div className="relative z-10 flex-1 flex items-center justify-center">
           <Game1024Board
             grid={grid}
             score={score}

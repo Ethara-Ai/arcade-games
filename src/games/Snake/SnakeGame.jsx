@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome } from 'react-icons/io5';
+import { IoArrowBack, IoHelpCircle, IoPause, IoPlay, IoRefresh, IoHome, IoArrowUp, IoArrowDown, IoArrowForward } from 'react-icons/io5';
 import { SNAKE_GAME_STATES } from '../../constants';
 import {
   StartMenu,
@@ -22,7 +22,7 @@ const SNAKE_INSTRUCTIONS = [
 const SNAKE_CONTROLS = [
   { key: '↑ ↓ ← →', action: 'Change direction' },
   { key: 'W A S D', action: 'Change direction (alternative)' },
-  { key: 'Swipe', action: 'Change direction (touch)' },
+  { key: 'Swipe / Buttons', action: 'Change direction (mobile)' },
   { key: 'P / Space', action: 'Pause game' },
   { key: 'Pause Menu', action: 'Adjust speed' },
 ];
@@ -48,6 +48,7 @@ const SnakeGameContent = ({ onBack }) => {
     highScore,
     snakeLength,
     speedLevel,
+    restartKey,
     gameLoopRef,
     handleStartGame,
     handleNewGame,
@@ -62,6 +63,7 @@ const SnakeGameContent = ({ onBack }) => {
     getGameObjects,
     increaseSpeed,
     decreaseSpeed,
+    changeDirection,
   } = useSnakeGame();
 
   // UI state
@@ -245,6 +247,7 @@ const SnakeGameContent = ({ onBack }) => {
           <SnakeCanvas
             ref={canvasRef}
             gameState={gameState}
+            restartKey={restartKey}
             getGameObjects={getGameObjects}
             moveSnake={moveSnake}
             getGameSpeed={getGameSpeed}
@@ -252,10 +255,46 @@ const SnakeGameContent = ({ onBack }) => {
             gameLoopRef={gameLoopRef}
           />
 
-          {/* Mobile Instructions */}
-          <p className="text-gray-500 text-xs text-center mt-4 sm:hidden">
-            Swipe to change direction
-          </p>
+          {/* Mobile D-Pad Controls - only visible on mobile */}
+          <div className="sm:hidden mt-6 flex flex-col items-center gap-2">
+            {/* Up button */}
+            <button
+              onClick={() => changeDirection('UP')}
+              className="w-14 h-14 bg-gradient-to-br from-green-500/80 to-emerald-600/80 rounded-xl text-white flex items-center justify-center shadow-lg shadow-green-500/30 active:scale-95 active:brightness-90 transition-all border border-green-400/30"
+              aria-label="Move Up"
+            >
+              <IoArrowUp className="text-2xl" />
+            </button>
+            
+            {/* Left, Down, Right row */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => changeDirection('LEFT')}
+                className="w-14 h-14 bg-gradient-to-br from-green-500/80 to-emerald-600/80 rounded-xl text-white flex items-center justify-center shadow-lg shadow-green-500/30 active:scale-95 active:brightness-90 transition-all border border-green-400/30"
+                aria-label="Move Left"
+              >
+                <IoArrowBack className="text-2xl" />
+              </button>
+              <button
+                onClick={() => changeDirection('DOWN')}
+                className="w-14 h-14 bg-gradient-to-br from-green-500/80 to-emerald-600/80 rounded-xl text-white flex items-center justify-center shadow-lg shadow-green-500/30 active:scale-95 active:brightness-90 transition-all border border-green-400/30"
+                aria-label="Move Down"
+              >
+                <IoArrowDown className="text-2xl" />
+              </button>
+              <button
+                onClick={() => changeDirection('RIGHT')}
+                className="w-14 h-14 bg-gradient-to-br from-green-500/80 to-emerald-600/80 rounded-xl text-white flex items-center justify-center shadow-lg shadow-green-500/30 active:scale-95 active:brightness-90 transition-all border border-green-400/30"
+                aria-label="Move Right"
+              >
+                <IoArrowForward className="text-2xl" />
+              </button>
+            </div>
+            
+            <p className="text-gray-500 text-xs text-center mt-2">
+              Tap buttons or swipe to move
+            </p>
+          </div>
 
           {/* Desktop Instructions */}
           <p className="text-gray-500 text-xs text-center mt-4 hidden sm:block">
