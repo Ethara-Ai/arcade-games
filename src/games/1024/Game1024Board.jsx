@@ -113,7 +113,7 @@ const Game1024Board = ({
         </div>
 
         {/* Tiles */}
-        <div className="absolute inset-1.5 sm:inset-2 relative">
+        <div className="absolute inset-1.5 sm:inset-2">
           {grid.map((row, rowIndex) =>
             row.map((value, colIndex) => (
               <Tile
