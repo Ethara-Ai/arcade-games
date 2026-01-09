@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { GameCard } from "./shared";
+import GameCard from "./GameCard";
 
 // Icon components for each game
 const BrickrushIcon = () => (

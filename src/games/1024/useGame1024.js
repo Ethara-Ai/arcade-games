@@ -2,15 +2,15 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import {
   GAME_1024_KEY_MAPPINGS as KEY_MAPPINGS,
   GAME_1024_STATES,
-} from "../../../constants";
-import { STORAGE_KEYS, debugLog } from "../../../config";
+} from "../../constants";
+import { STORAGE_KEYS, debugLog } from "../../config";
 import {
   initializeGrid,
   move,
   addRandomTile,
   getGameState,
   getHighestTile,
-} from "../../../utils/game1024Logic";
+} from "../../utils/game1024Logic";
 
 /**
  * useGame1024 - Custom hook for 1024 game logic

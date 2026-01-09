@@ -27,13 +27,13 @@ import {
   GAME_STATES,
   BRICK_PATTERNS,
   STEEL_BRICK_PATTERNS,
-} from "../../../constants";
+} from "../../constants";
 import {
   handleBallPaddleCollision,
   handleBallBrickCollision,
   moveBalls as moveBallsPhysics,
   updatePowerUps as updatePowerUpsPhysics,
-} from "../../../utils/gamePhysics";
+} from "../../utils/gamePhysics";
 
 /**
  * Custom hook for Brickrush game state and logic
@@ -117,7 +117,8 @@ export const useBrickrushGame = ({
           continue;
         }
 
-        const brickX = c * (BRICK_BASE_WIDTH + BRICK_PADDING) + BRICK_OFFSET_LEFT;
+        const brickX =
+          c * (BRICK_BASE_WIDTH + BRICK_PADDING) + BRICK_OFFSET_LEFT;
         const brickY = r * (BRICK_HEIGHT + BRICK_PADDING) + BRICK_OFFSET_TOP;
         let powerUpType = null;
 
@@ -132,7 +133,10 @@ export const useBrickrushGame = ({
         }
 
         // Check if steel brick
-        const steelPatternIndex = Math.min(level - 1, STEEL_BRICK_PATTERNS.length - 1);
+        const steelPatternIndex = Math.min(
+          level - 1,
+          STEEL_BRICK_PATTERNS.length - 1,
+        );
         const isSteel =
           level >= 2 &&
           STEEL_BRICK_PATTERNS[steelPatternIndex] &&
@@ -140,7 +144,10 @@ export const useBrickrushGame = ({
           STEEL_BRICK_PATTERNS[steelPatternIndex][r][c] === 1;
 
         if (!isSteel && Math.random() < powerUpChance) {
-          powerUpType = Math.random() < 0.5 ? POWERUP_TYPES.MULTIBALL : POWERUP_TYPES.STRETCH_PADDLE;
+          powerUpType =
+            Math.random() < 0.5
+              ? POWERUP_TYPES.MULTIBALL
+              : POWERUP_TYPES.STRETCH_PADDLE;
         }
 
         bricks[c][r] = {
@@ -148,7 +155,9 @@ export const useBrickrushGame = ({
           y: brickY,
           width: BRICK_BASE_WIDTH,
           height: BRICK_HEIGHT,
-          color: isSteel ? STEEL_BRICK_COLOR : BRICK_COLORS[r % BRICK_COLORS.length],
+          color: isSteel
+            ? STEEL_BRICK_COLOR
+            : BRICK_COLORS[r % BRICK_COLORS.length],
           status: 1,
           powerUp: powerUpType,
           isSteel: isSteel,
@@ -204,7 +213,11 @@ export const useBrickrushGame = ({
 
   // Launch ball
   const launchBall = useCallback(() => {
-    if (!ballLaunchedRef.current && gameStateRef.current === GAME_STATES.PLAYING && ballsRef.current.length > 0) {
+    if (
+      !ballLaunchedRef.current &&
+      gameStateRef.current === GAME_STATES.PLAYING &&
+      ballsRef.current.length > 0
+    ) {
       const ball = ballsRef.current[0];
       const launchAngle = (Math.random() * Math.PI) / 2 + Math.PI / 4;
       ballsRef.current[0] = {
@@ -273,7 +286,13 @@ export const useBrickrushGame = ({
         levelTransitioningRef.current = false;
       });
     }
-  }, [onLevelChange, onBallLaunchedChange, createBricks, startBrickDropAnimation, onLevelComplete]);
+  }, [
+    onLevelChange,
+    onBallLaunchedChange,
+    createBricks,
+    startBrickDropAnimation,
+    onLevelComplete,
+  ]);
 
   // Spawn power-up from brick
   const spawnPowerUp = useCallback((brick) => {
@@ -294,7 +313,11 @@ export const useBrickrushGame = ({
     const paddle = paddleRef.current;
 
     if (powerUp.type === POWERUP_TYPES.MULTIBALL) {
-      if (ballsRef.current.length === 0 || gameStateRef.current !== GAME_STATES.PLAYING) return;
+      if (
+        ballsRef.current.length === 0 ||
+        gameStateRef.current !== GAME_STATES.PLAYING
+      )
+        return;
 
       const originalBall = ballsRef.current[0];
       const spawnX = paddle.x + paddle.width / 2;
@@ -346,7 +369,9 @@ export const useBrickrushGame = ({
           const elapsed = Date.now() - shrinkStartTime;
           const progress = Math.min(elapsed / shrinkDuration, 1);
           const easeProgress = progress * progress * progress;
-          paddle.width = shrinkStartWidth + (shrinkEndWidth - shrinkStartWidth) * easeProgress;
+          paddle.width =
+            shrinkStartWidth +
+            (shrinkEndWidth - shrinkStartWidth) * easeProgress;
 
           if (progress < 1) {
             requestAnimationFrame(animateShrink);
@@ -381,7 +406,8 @@ export const useBrickrushGame = ({
 
     // Filter invalid balls
     ballsRef.current = ballsRef.current.filter(
-      (ball) => ball && typeof ball.x === "number" && typeof ball.y === "number"
+      (ball) =>
+        ball && typeof ball.x === "number" && typeof ball.y === "number",
     );
 
     // Reset if no balls and not launched
@@ -409,7 +435,11 @@ export const useBrickrushGame = ({
 
     // Move balls using physics helper
     if (ballLaunchedRef.current) {
-      const moveResult = moveBallsPhysics(ballsRef.current, GAME_WIDTH, GAME_HEIGHT);
+      const moveResult = moveBallsPhysics(
+        ballsRef.current,
+        GAME_WIDTH,
+        GAME_HEIGHT,
+      );
       ballsRef.current = moveResult.balls;
 
       // Check if all balls are lost
@@ -427,7 +457,10 @@ export const useBrickrushGame = ({
     }
 
     // Ball-paddle collision using physics helper
-    ballsRef.current = handleBallPaddleCollision(ballsRef.current, paddleRef.current);
+    ballsRef.current = handleBallPaddleCollision(
+      ballsRef.current,
+      paddleRef.current,
+    );
 
     // Ball-brick collision using physics helper
     if (brickDropProgressRef.current >= 1) {
@@ -436,7 +469,7 @@ export const useBrickrushGame = ({
         bricksRef.current,
         BRICK_ROW_COUNT,
         BRICK_COLUMN_COUNT,
-        BALL_INITIAL_SPEED
+        BALL_INITIAL_SPEED,
       );
 
       ballsRef.current = collisionResult.balls;
@@ -455,7 +488,11 @@ export const useBrickrushGame = ({
     }
 
     // Update power-ups using physics helper
-    const powerUpResult = updatePowerUpsPhysics(activePowerUpsRef.current, paddleRef.current, GAME_HEIGHT);
+    const powerUpResult = updatePowerUpsPhysics(
+      activePowerUpsRef.current,
+      paddleRef.current,
+      GAME_HEIGHT,
+    );
     activePowerUpsRef.current = powerUpResult.activePowerUps;
 
     // Activate collected power-ups
@@ -473,13 +510,16 @@ export const useBrickrushGame = ({
   ]);
 
   // Get current game objects for rendering
-  const getGameObjects = useCallback(() => ({
-    paddle: paddleRef.current,
-    balls: ballsRef.current,
-    bricks: bricksRef.current,
-    powerUps: activePowerUpsRef.current,
-    brickDropProgress: brickDropProgressRef.current,
-  }), []);
+  const getGameObjects = useCallback(
+    () => ({
+      paddle: paddleRef.current,
+      balls: ballsRef.current,
+      bricks: bricksRef.current,
+      powerUps: activePowerUpsRef.current,
+      brickDropProgress: brickDropProgressRef.current,
+    }),
+    [],
+  );
 
   // Initialize bricks when game starts
   useEffect(() => {

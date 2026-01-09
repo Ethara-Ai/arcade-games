@@ -8,8 +8,8 @@ import {
   DesktopControls,
   MobileControls,
 } from "../../components";
-import { useBrickrushGame } from "./hooks/useBrickrushGame";
-import BrickrushCanvas from "./components/BrickrushCanvas";
+import { useBrickrushGame } from "./useBrickrushGame";
+import BrickrushCanvas from "./BrickrushCanvas";
 
 /**
  * BrickrushGame - Main component for the Brickrush game

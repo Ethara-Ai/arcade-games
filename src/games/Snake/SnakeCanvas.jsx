@@ -1,11 +1,17 @@
-import { useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
+import {
+  useRef,
+  useEffect,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import {
   SNAKE_GRID_SIZE as GRID_SIZE,
   SNAKE_CELL_SIZE as CELL_SIZE,
   SNAKE_CANVAS_SIZE as CANVAS_SIZE,
   SNAKE_COLORS as COLORS,
   SNAKE_GAME_STATES,
-} from "../../../constants";
+} from "../../constants";
 
 /**
  * SnakeCanvas - Presentation component for the Snake game

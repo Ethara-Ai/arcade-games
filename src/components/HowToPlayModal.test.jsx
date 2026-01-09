@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import HowToPlayModal from "./shared/HowToPlayModal";
+import HowToPlayModal from "./HowToPlayModal";
 
 describe("HowToPlayModal", () => {
   const defaultProps = {

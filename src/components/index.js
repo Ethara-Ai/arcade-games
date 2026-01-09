@@ -1,17 +1,16 @@
 // ============================================================
 // Shared Components (reusable across all games)
 // ============================================================
-export {
-  GameCard,
-  GameResultCard,
-  HowToPlayModal,
-  LoadingScreen,
-  // Generic Menu Components
-  StartMenu,
-  PauseMenu,
-  GameOverMenu,
-  LevelCompleteMenu,
-} from "./shared";
+export { default as GameCard } from "./GameCard";
+export { default as GameResultCard } from "./GameResultCard";
+export { default as HowToPlayModal } from "./HowToPlayModal";
+export { default as LoadingScreen } from "./LoadingScreen";
+
+// Generic Menu Components (from shared, renamed to avoid conflicts)
+export { default as StartMenu } from "./SharedStartMenu";
+export { default as PauseMenu } from "./SharedPauseMenu";
+export { default as GameOverMenu } from "./SharedGameOverMenu";
+export { default as LevelCompleteMenu } from "./SharedLevelCompleteMenu";
 
 // ============================================================
 // UI Components (general purpose)

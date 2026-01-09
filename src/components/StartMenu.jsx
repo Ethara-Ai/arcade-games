@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { IoHelpCircle, IoArrowBack } from "react-icons/io5";
-import { HowToPlayModal } from "./shared";
+import HowToPlayModal from "./HowToPlayModal";
 
 const BRICKRUSH_INSTRUCTIONS = [
   "Break all the bricks to complete each level",

@@ -12,9 +12,9 @@ import {
   PauseMenu,
   GameOverMenu,
   HowToPlayModal,
-} from "../../components/shared";
-import { useGame1024 } from "./hooks/useGame1024";
-import { Game1024Board } from "./components";
+} from "../../components";
+import { useGame1024 } from "./useGame1024";
+import Game1024Board from "./Game1024Board";
 
 // Game-specific content for menus
 const GAME_1024_INSTRUCTIONS = [
@@ -132,10 +132,11 @@ const Game1024 = ({ onBack }) => {
             </button>
             <button
               onClick={handlePauseToggle}
-              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${isPaused
+              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
+                isPaused
                   ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
                   : "bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-400/40"
-                }`}
+              }`}
               title={isPaused ? "Resume" : "Pause"}
             >
               {isPaused ? <IoPlay /> : <IoPause />}

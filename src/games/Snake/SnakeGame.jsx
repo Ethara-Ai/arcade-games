@@ -12,9 +12,9 @@ import {
   PauseMenu,
   GameOverMenu,
   HowToPlayModal,
-} from "../../components/shared";
-import { useSnakeGame } from "./hooks/useSnakeGame";
-import { SnakeCanvas } from "./components";
+} from "../../components";
+import { useSnakeGame } from "./useSnakeGame";
+import SnakeCanvas from "./SnakeCanvas";
 
 // Game-specific content for menus
 const SNAKE_INSTRUCTIONS = [
@@ -172,10 +172,11 @@ const SnakeGame = ({ onBack }) => {
             </button>
             <button
               onClick={handlePauseToggle}
-              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${isPaused
+              className={`w-10 h-10 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
+                isPaused
                   ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
                   : "bg-gradient-to-br from-green-400 to-emerald-500 shadow-green-400/40"
-                }`}
+              }`}
               title={isPaused ? "Resume" : "Pause"}
             >
               {isPaused ? <IoPlay /> : <IoPause />}

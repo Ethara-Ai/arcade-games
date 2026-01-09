@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import LoadingScreen from "./shared/LoadingScreen";
+import LoadingScreen from "./LoadingScreen";
 
 describe("LoadingScreen", () => {
   // Step 1: Test that component renders correctly when visible

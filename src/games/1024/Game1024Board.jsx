@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import Tile from "../../Tile";
+import Tile from "../Tile";
 
 /**
  * Game1024Board - Presentation component for the 1024 game board
@@ -81,7 +81,9 @@ const Game1024Board = ({
           >
             Top Tile
           </div>
-          <div className={`text-lg sm:text-xl font-bold ${colors.tileHighlight}`}>
+          <div
+            className={`text-lg sm:text-xl font-bold ${colors.tileHighlight}`}
+          >
             {highestTile}
           </div>
         </div>

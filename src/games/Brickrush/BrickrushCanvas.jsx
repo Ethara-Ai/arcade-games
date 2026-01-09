@@ -13,7 +13,7 @@ import {
   BRICK_COLUMN_COUNT,
   POWERUP_TYPES,
   GAME_STATES,
-} from "../../../constants";
+} from "../../constants";
 
 /**
  * BrickrushCanvas - Pure rendering component for the Brickrush game

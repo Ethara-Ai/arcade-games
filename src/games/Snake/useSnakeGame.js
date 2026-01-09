@@ -12,8 +12,8 @@ import {
   SNAKE_FOOD_POINTS as FOOD_POINTS,
   SNAKE_BONUS_FOOD_POINTS as BONUS_FOOD_POINTS,
   SNAKE_BONUS_FOOD_CHANCE as BONUS_FOOD_CHANCE,
-} from "../../../constants";
-import { STORAGE_KEYS, debugLog } from "../../../config";
+} from "../../constants";
+import { STORAGE_KEYS, debugLog } from "../../config";
 
 /**
  * useSnakeGame - Custom hook for Snake game logic
