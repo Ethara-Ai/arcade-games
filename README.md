@@ -6,7 +6,6 @@
 ![Vitest](https://img.shields.io/badge/Vitest-4.0.16-6E9F18?style=flat-square&logo=vitest)
 ![ESLint](https://img.shields.io/badge/ESLint-9.39.2-4B32C3?style=flat-square&logo=eslint)
 ![Prettier](https://img.shields.io/badge/Prettier-3.3.3-F7B93E?style=flat-square&logo=prettier)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 A collection of classic arcade games built with React, featuring modern design, smooth animations, and responsive layouts for both desktop and mobile devices.
 
@@ -185,7 +184,6 @@ arcade-games/
 ├── postcss.config.js
 ├── tailwind.config.js
 ├── vite.config.js
-├── LICENSE
 ├── CONTRIBUTING.md
 └── README.md
 ```
@@ -311,10 +309,6 @@ Add the following secrets to your GitHub repository (Settings > Secrets and vari
 - Efficient React component updates
 - Responsive images and assets
 - Minimal bundle size with Vite tree-shaking
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
