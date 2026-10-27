@@ -325,3 +325,9 @@ Contributions are welcome. Please read the [CONTRIBUTING.md](CONTRIBUTING.md) fi
 - Inspired by classic arcade games
 - Built with modern web technologies
 - Designed for accessibility and responsiveness
+
+---
+
+## Copyright
+
+Copyright (c) 2026 Green Rider Technology LLP (Ethara AI). All rights reserved.
